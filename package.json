@@ -1,0 +1,20 @@
+{
+  "name": "svelte-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node build.js",
+    "build": "esbuild index.js --outfile=build.js --bundle --platform=node --target=node16"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "polka": "^0.5.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.0"
+  }
+}
