@@ -8,7 +8,6 @@
 
         "strict": true,
         "declaration": false,
-        "removeComments": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
@@ -16,16 +15,8 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "allowJs": true,
-
-        "baseUrl": ".",
-        "paths": {
-            "@type/*": ["src/types/*"],
-            "@core/*": ["src/core/*"],
-            "@config": ["src/config"],
-            "@ce": ["src/types/CE"]
-        }
+        "allowJs": true
     },
-    "include": ["src/**/*", "src/**/*.json"],
+    "include": ["src/**/*"],
     "exclude": ["dist"]
 }
