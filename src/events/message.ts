@@ -14,6 +14,17 @@ const linkOnlyChannels = [
     '837012201444999248',
 ];
 
+const autoThreadChannels = [
+    // testing
+    '918932662226386994',
+
+    // Showcase
+    '479653552869081089',
+
+    // Resources
+    '837012201444999248',
+];
+
 export default event({
     name: 'messageCreate',
 
@@ -41,7 +52,20 @@ export default event({
                 } catch {
                     // this will fail if message is already deleted but we don't know or if the dm can't be sent - either way we don't need to do anything
                 }
+
+                return;
             }
+        }
+
+        if (
+            autoThreadChannels.includes(message.channel.id) &&
+            !message.hasThread &&
+            message.channel.type == 'GUILD_TEXT'
+        ) {
+            message.channel.threads.create({
+                name: 'discussion',
+                startMessage: message,
+            });
         }
     },
 });
