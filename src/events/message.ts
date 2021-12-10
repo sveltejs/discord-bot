@@ -14,8 +14,6 @@ const linkOnlyChannels = [
     '837012201444999248',
 ];
 
-//t
-
 export default event({
     name: 'messageCreate',
 
@@ -28,8 +26,6 @@ export default event({
             if (!hasLink) {
                 try {
                     if (message.deletable) await message.delete();
-
-                    console.log(`Found message ${message.id} at ${Date.now()}`);
 
                     await message.author.send({
                         embeds: [
