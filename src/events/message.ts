@@ -24,21 +24,27 @@ export default event({
             const hasLink = urlRegex().test(message.content);
 
             if (!hasLink) {
-                if (message.deletable) await message.delete();
+                try {
+                    if (message.deletable) await message.delete();
 
-                // Use nice try so I don't have to make a try catch block
-                const dm = await niceTry.promise(async () =>
-                    message.author.createDM(),
-                );
+                    const dm = await message.author.createDM();
 
-                if (dm)
-                    message.author.send({
-                        embeds: [
-                            {
-                                description: `Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread`,
-                            },
-                        ],
-                    });
+                    if (dm) {
+                        await message.author.send({
+                            embeds: [
+                                {
+                                    description: `Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
+                                },
+                            ],
+                        });
+
+                        await message.author.send({
+                            content: message.content,
+                        });
+                    }
+                } catch {
+                    // this will fail if message is already deleted but we don't know or if the dm can't be sent - either way we don't need to do anything
+                }
             }
         }
     },
