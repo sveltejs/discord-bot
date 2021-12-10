@@ -14,6 +14,8 @@ const linkOnlyChannels = [
     '837012201444999248',
 ];
 
+//t
+
 export default event({
     name: 'messageCreate',
 
