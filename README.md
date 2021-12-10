@@ -9,4 +9,6 @@ something can go here
     cp .env.example .env
     ```
 
-2. Run the bot with `pnpm dev` or `pnpm start`
+2. Run the bot with `pnpm dev`
+
+> if the bot has a error of cannot find module dist/index.js just give it a sec to compile and nodemon will auto restart!
