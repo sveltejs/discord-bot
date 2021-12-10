@@ -39,7 +39,7 @@ export default event({
                         });
 
                         await message.author.send({
-                            content: message.content,
+                            content: '```\n' + message.content + '\n```',
                         });
                     }
                 } catch {
