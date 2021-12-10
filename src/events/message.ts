@@ -27,6 +27,8 @@ export default event({
                 try {
                     if (message.deletable) await message.delete();
 
+                    console.log(`Found message ${message.id} at ${Date.now()}`);
+
                     await message.author.send({
                         embeds: [
                             {
