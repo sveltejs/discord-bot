@@ -62,10 +62,14 @@ export default event({
             !message.hasThread &&
             message.channel.type == 'GUILD_TEXT'
         ) {
-            message.channel.threads.create({
-                name: 'Discussion',
-                startMessage: message,
-            });
+            try {
+                message.channel.threads.create({
+                    name: 'Discussion',
+                    startMessage: message,
+                });
+            } catch {
+                // we can ignore this error since chances are it will be that thread already exists
+            }
         }
     },
 });
