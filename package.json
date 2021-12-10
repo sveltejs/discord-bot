@@ -2,14 +2,25 @@
   "name": "svelte-bot",
   "private": true,
   "version": "0.0.0",
-  "main": "index.js",
-  "scripts": {},
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "dev": "rimraf dist && run-p dev:*",
+    "dev:tsc": "tsc -w",
+    "dev:nodemon": "nodemon .",
+    "start": "node ."
+  },
   "license": "MIT",
   "dependencies": {
     "@types/node": "^16.11.12",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
     "jellycommands": "^1.0.0-10",
-    "typescript": "^4.5.3"
+    "typescript": "^4.5.3",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "npm-run-all": "^4.1.5"
   }
 }
