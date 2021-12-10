@@ -1,5 +1,6 @@
 import { event } from 'jellycommands';
 
-export default event('ready', {
+export default event({
+    name: 'ready',
     run: () => console.log('Bot is online!'),
 });
