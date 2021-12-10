@@ -63,7 +63,7 @@ export default event({
             message.channel.type == 'GUILD_TEXT'
         ) {
             message.channel.threads.create({
-                name: 'discussion',
+                name: 'Discussion',
                 startMessage: message,
             });
         }
