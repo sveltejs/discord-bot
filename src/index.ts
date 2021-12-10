@@ -7,7 +7,11 @@ const client = new JellyCommands({
     events: 'dist/events',
 
     clientOptions: {
-        intents: [Intents.FLAGS.GUILDS],
+        intents: [
+            Intents.FLAGS.GUILDS,
+            Intents.FLAGS.GUILD_MESSAGES,
+            Intents.FLAGS.GUILD_MEMBERS,
+        ],
     },
 
     dev: {
