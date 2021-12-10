@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "dev": "rimraf dist && run-p dev:*",
-    "dev:tsc": "tsc -w",
+    "dev:tsc": "tsc -w --preserveWatchOutput",
     "dev:nodemon": "nodemon .",
     "start": "node ."
   },
