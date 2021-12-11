@@ -1,29 +1,11 @@
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
 import niceTry from 'nice-try';
-
-// TODO discuss best way to store these ids
-const linkOnlyChannels = [
-	// Testing Channel
-	'918915215368810566',
-
-	// Showcase
-	'479653552869081089',
-
-	// Resources
-	'837012201444999248',
-];
-
-const autoThreadChannels = [
-	// testing
-	'918932662226386994',
-
-	// Showcase
-	'479653552869081089',
-
-	// Resources
-	'837012201444999248',
-];
+import {
+	AUTO_THREAD_CHANNELS,
+	LINK_ONLY_CHANNELS,
+	SVELTE_ORANGE,
+} from '../config';
 
 export default event({
 	name: 'messageCreate',
@@ -31,7 +13,7 @@ export default event({
 	run: async ({}, message) => {
 		if (message.author.bot) return;
 
-		if (linkOnlyChannels.includes(message.channel.id)) {
+		if (LINK_ONLY_CHANNELS.includes(message.channel.id)) {
 			const hasLink = urlRegex().test(message.content);
 
 			if (!hasLink) {
@@ -42,6 +24,7 @@ export default event({
 						embeds: [
 							{
 								description: `Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
+								color: SVELTE_ORANGE,
 							},
 						],
 					});
@@ -58,7 +41,7 @@ export default event({
 		}
 
 		if (
-			autoThreadChannels.includes(message.channel.id) &&
+			AUTO_THREAD_CHANNELS.includes(message.channel.id) &&
 			!message.hasThread &&
 			message.channel.type == 'GUILD_TEXT'
 		) {

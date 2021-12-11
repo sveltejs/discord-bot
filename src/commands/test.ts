@@ -1,4 +1,5 @@
 import { command } from 'jellycommands';
+import { SVELTE_ORANGE } from '../config';
 
 export default command({
 	name: 'test',
@@ -8,5 +9,7 @@ export default command({
 	dev: true,
 
 	run: ({ interaction }) =>
-		interaction.reply({ embeds: [{ description: 'Hello World!' }] }),
+		interaction.reply({
+			embeds: [{ description: 'Hello World!', color: SVELTE_ORANGE }],
+		}),
 });
