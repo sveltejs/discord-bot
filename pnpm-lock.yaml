@@ -9,6 +9,7 @@ specifiers:
   nice-try: ^3.0.0
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
+  prettier: ^2.5.1
   rimraf: ^3.0.2
   typescript: ^4.5.3
   url-regex: ^5.0.0
@@ -27,6 +28,7 @@ dependencies:
 devDependencies:
   nodemon: 2.0.15
   npm-run-all: 4.1.5
+  prettier: 2.5.1
 
 packages:
 
@@ -1143,6 +1145,12 @@ packages:
   /prepend-http/2.0.0:
     resolution: {integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=}
     engines: {node: '>=4'}
+    dev: true
+
+  /prettier/2.5.1:
+    resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /pstree.remy/1.1.8:

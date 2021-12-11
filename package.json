@@ -1,29 +1,31 @@
 {
-  "name": "svelte-bot",
-  "private": true,
-  "version": "0.0.0",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "rimraf dist && tsc",
-    "dev": "rimraf dist && run-p dev:*",
-    "dev:tsc": "tsc -w --preserveWatchOutput",
-    "dev:nodemon": "nodemon .",
-    "start": "node ."
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@types/nice-try": "^2.1.0",
-    "@types/node": "^16.11.12",
-    "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0",
-    "jellycommands": "^1.0.0-12",
-    "nice-try": "^3.0.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.5.3",
-    "url-regex": "^5.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15",
-    "npm-run-all": "^4.1.5"
-  }
+	"name": "svelte-bot",
+	"private": true,
+	"version": "0.0.0",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "rimraf dist && tsc",
+		"dev": "rimraf dist && run-p dev:*",
+		"dev:tsc": "tsc -w --preserveWatchOutput",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"dev:nodemon": "nodemon .",
+		"start": "node ."
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@types/nice-try": "^2.1.0",
+		"@types/node": "^16.11.12",
+		"discord.js": "^13.3.1",
+		"dotenv": "^10.0.0",
+		"jellycommands": "^1.0.0-12",
+		"nice-try": "^3.0.0",
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.3",
+		"url-regex": "^5.0.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.5.1"
+	}
 }
