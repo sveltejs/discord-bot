@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import fuzzysort from 'fuzzysort';
+import { SVELTE_ORANGE } from '../../config';
 
 // Might be a better idea to read this from a JSON file created in a build script
 const tutorials: Record<string, string> = {
@@ -114,7 +115,7 @@ export default command({
 					{
 						description: `Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet?\n\
 						It covers all you need to know to start using svelte.`,
-						color: 0xff3e00,
+						color: SVELTE_ORANGE,
 					},
 				],
 			});
@@ -137,7 +138,7 @@ export default command({
 							}](https://svelte.dev/tutorial/${
 								tutorials[topResult.target]
 							})?`,
-							color: 0xff3e00,
+							color: SVELTE_ORANGE,
 						},
 					],
 				});
