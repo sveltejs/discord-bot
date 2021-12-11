@@ -4,6 +4,8 @@ export const TEST_GUILD_ID = '918887934822858802';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
+export const SVELTE_ORANGE = 0xff3e00;
+
 export const LINK_ONLY_CHANNELS =
 	process.env.MODE === 'DEV'
 		? [
