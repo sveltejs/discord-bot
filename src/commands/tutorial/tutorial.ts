@@ -4,6 +4,7 @@ import fuzzysort from 'fuzzysort';
 import { SVELTE_ORANGE } from '../../config';
 
 // Might be a better idea to read this from a JSON file created in a build script
+// instead of hardcoding it, but for now
 const tutorials: Record<string, string> = {
 	Basics: 'basics',
 	'Adding data': 'adding-data',
