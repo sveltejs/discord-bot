@@ -5,6 +5,7 @@ specifiers:
   '@types/node': ^16.11.12
   discord.js: ^13.3.1
   dotenv: ^10.0.0
+  fuzzysort: ^1.1.4
   jellycommands: ^1.0.0-12
   nice-try: ^3.0.0
   nodemon: ^2.0.15
@@ -19,6 +20,7 @@ dependencies:
   '@types/node': 16.11.12
   discord.js: 13.3.1
   dotenv: 10.0.0
+  fuzzysort: 1.1.4
   jellycommands: 1.0.0-12
   nice-try: 3.0.0
   rimraf: 3.0.2
@@ -531,6 +533,10 @@ packages:
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
     dev: true
+
+  /fuzzysort/1.1.4:
+    resolution: {integrity: sha512-JzK/lHjVZ6joAg3OnCjylwYXYVjRiwTY6Yb25LvfpJHK8bjisfnZJ5bY8aVWwTwCXgxPNgLAtmHL+Hs5q1ddLQ==}
+    dev: false
 
   /get-intrinsic/1.1.1:
     resolution: {integrity: sha512-kWZrnVM42QCiEA2Ig1bG8zjoIMOgxWwYCEeNdwY6Tv/cOSeGpcoX4pXHfKUxNKVoArnrEr2e9srnAxxGIraS9Q==}
