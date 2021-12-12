@@ -9,7 +9,6 @@ export default command({
 	name: 'mdn',
 	description: 'Search the mdn docs',
 	global: true,
-	dev: true,
 	options: [
 		{
 			name: 'topic',
