@@ -11,6 +11,9 @@ export const LINK_ONLY_CHANNELS =
 		? [
 				// #test-link-validation
 				'918915215368810566',
+
+				// #both-both-is-good
+				'919196322303725568',
 		  ]
 		: [
 				// Showcase
@@ -25,6 +28,9 @@ export const AUTO_THREAD_CHANNELS =
 		? [
 				// #test-auto-thread
 				'918932662226386994',
+
+				// #both-both-is-good
+				'919196322303725568',
 		  ]
 		: [
 				// Showcase
