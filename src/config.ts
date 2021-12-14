@@ -8,6 +8,8 @@ export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 export const SVELTE_ORANGE = 0xff3e00;
 
+export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
 export const LINK_ONLY_CHANNELS = DEV_MODE
 	? [
 			// #test-link-validation
