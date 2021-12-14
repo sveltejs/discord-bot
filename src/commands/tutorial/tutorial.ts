@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import fuzzysort from 'fuzzysort';
-import { SVELTE_ORANGE } from '../../config';
+import { DEV_MODE, SVELTE_ORANGE } from '../../config';
 
 // Might be a better idea to read this from a JSON file created in a build script
 // instead of hardcoding it, but for now
@@ -106,6 +106,7 @@ export default command({
 			required: false,
 		},
 	],
+	dev: DEV_MODE,
 	global: true,
 
 	run: ({ interaction }) => {

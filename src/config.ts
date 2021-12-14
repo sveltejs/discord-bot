@@ -1,5 +1,7 @@
 import 'dotenv/config';
 
+export const DEV_MODE = process.env.MODE === 'DEV';
+
 export const TEST_GUILD_ID = '918887934822858802';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
