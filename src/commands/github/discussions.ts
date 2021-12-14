@@ -20,7 +20,6 @@ export default command({
 	name: 'discussion',
 	description: 'Search for a discussion on github.',
 	global: true,
-	dev: true,
 
 	options: [
 		{
