@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { REPOS, REPO_DETAILS } from '../../utils/repositories';
-import githubSearch from './_githubGQL';
+import { REPOS } from '../../utils/repositories';
+import { githubCommandHandler } from './_common';
 
 const query = `query searchResults($searchQuery: String!) {
 	search(type: DISCUSSION, query: $searchQuery, first: 5) {
@@ -43,32 +43,6 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		const thisRepoDetails =
-			REPO_DETAILS[
-				interaction.options.getInteger('repository', true) as REPOS
-			];
-		const topic = interaction.options.getString('topic');
-
-		const searchQuery = `repo:${thisRepoDetails.REPOSITORY_NAME} ${
-			topic || ''
-		}`;
-
-		let results = await githubSearch({
-			query,
-			variables: {
-				searchQuery,
-			},
-		});
-
-		if (results) {
-			await interaction.reply({
-				embeds: [results],
-			});
-		} else {
-			await interaction.reply({
-				content: 'No results found.',
-				ephemeral: true,
-			});
-		}
+		await githubCommandHandler(interaction, query);
 	},
 });
