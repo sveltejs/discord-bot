@@ -20,7 +20,6 @@ export default command({
 	name: 'issue',
 	description: 'Search for an issue on github',
 	global: true,
-	dev: true,
 
 	options: [
 		{

@@ -20,7 +20,6 @@ export default command({
 	name: 'pr',
 	description: 'Search for a pull request on github',
 	global: true,
-	dev: true,
 
 	options: [
 		{
