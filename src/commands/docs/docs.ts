@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import fuzzysort from 'fuzzysort';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
-import { SVELTE_ORANGE } from '../../config';
+import { DEV_MODE, SVELTE_ORANGE } from '../../config';
 import { listOfLinks } from '../../utils/embedBuilder';
 import { REPOS, REPO_DETAILS } from '../../utils/repositories';
 
@@ -10,7 +10,7 @@ export default command({
 	name: 'docs',
 	description: 'Search svelte or sveltekit docs',
 	global: true,
-	dev: true,
+	dev: DEV_MODE,
 	options: [
 		{
 			name: 'project',

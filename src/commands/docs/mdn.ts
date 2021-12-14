@@ -2,13 +2,14 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { SVELTE_ORANGE } from '../../config';
+import { DEV_MODE, SVELTE_ORANGE } from '../../config';
 import { listOfLinks } from '../../utils/embedBuilder';
 
 export default command({
 	name: 'mdn',
 	description: 'Search the mdn docs',
 	global: true,
+	dev: DEV_MODE,
 	options: [
 		{
 			name: 'topic',
