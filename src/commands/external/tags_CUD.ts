@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config';
 
-enum Actions {
+const enum Actions {
 	CREATE = 'create',
 	UPDATE = 'update',
 	DELETE = 'delete',
