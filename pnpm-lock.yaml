@@ -2,29 +2,29 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/nice-try': ^2.1.0
-  '@types/node': ^16.11.12
+  '@types/node': ^16.11.14
   discord.js: ^13.3.1
   dotenv: ^10.0.0
   fuzzysort: ^1.1.4
   jellycommands: ^1.0.0-12
-  node-fetch: '2'
+  node-fetch: ^2.6.6
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
   prettier: ^2.5.1
   rimraf: ^3.0.2
-  typescript: ^4.5.3
+  typescript: ^4.5.4
   url-regex: ^5.0.0
 
 dependencies:
   '@types/nice-try': 2.1.0
-  '@types/node': 16.11.12
+  '@types/node': 16.11.14
   discord.js: 13.3.1
   dotenv: 10.0.0
   fuzzysort: 1.1.4
   jellycommands: 1.0.0-12
   node-fetch: 2.6.6
   rimraf: 3.0.2
-  typescript: 4.5.3
+  typescript: 4.5.4
   url-regex: 5.0.0
 
 devDependencies:
@@ -112,18 +112,18 @@ packages:
   /@types/node-fetch/2.5.12:
     resolution: {integrity: sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw==}
     dependencies:
-      '@types/node': 16.11.12
+      '@types/node': 16.11.14
       form-data: 3.0.1
     dev: false
 
-  /@types/node/16.11.12:
-    resolution: {integrity: sha512-+2Iggwg7PxoO5Kyhvsq9VarmPbIelXP070HMImEpbtGCoyWNINQj4wzjbQCXzdHTRXnqufutJb5KAURZANNBAw==}
+  /@types/node/16.11.14:
+    resolution: {integrity: sha512-mK6BKLpL0bG6v2CxHbm0ed6RcZrAtTHBTd/ZpnlVPVa3HkumsqLE4BC4u6TQ8D7pnrRbOU0am6epuALs+Ncnzw==}
     dev: false
 
   /@types/ws/8.2.2:
     resolution: {integrity: sha512-NOn5eIcgWLOo6qW8AcuLZ7G8PycXu0xTxxkS6Q18VWFxgPUSOwV0pBj2a/4viNZVu25i7RIB7GttdkAIUUXOOg==}
     dependencies:
-      '@types/node': 16.11.12
+      '@types/node': 16.11.14
     dev: false
 
   /abbrev/1.1.1:
@@ -460,11 +460,11 @@ packages:
       has-symbols: 1.0.2
       internal-slot: 1.0.3
       is-callable: 1.2.4
-      is-negative-zero: 2.0.1
+      is-negative-zero: 2.0.2
       is-regex: 1.1.4
       is-shared-array-buffer: 1.0.1
       is-string: 1.0.7
-      is-weakref: 1.0.1
+      is-weakref: 1.0.2
       object-inspect: 1.11.1
       object-keys: 1.1.1
       object.assign: 4.1.2
@@ -787,8 +787,8 @@ packages:
       is-path-inside: 3.0.3
     dev: true
 
-  /is-negative-zero/2.0.1:
-    resolution: {integrity: sha512-2z6JzQvZRa9A2Y7xC6dQQm4FSTSTNWjKIYYTt4246eMTJmIo0Q+ZyOsU66X8lxK1AbB92dFeglPLrhwpeRKO6w==}
+  /is-negative-zero/2.0.2:
+    resolution: {integrity: sha512-dqJvarLawXsFbNDeJW7zAz8ItJ9cd28YufuuFzh0G8pNHjJMnY08Dv7sYX2uF5UpQOwieAeOExEYAWWfu7ZZUA==}
     engines: {node: '>= 0.4'}
     dev: true
 
@@ -848,8 +848,8 @@ packages:
     resolution: {integrity: sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=}
     dev: true
 
-  /is-weakref/1.0.1:
-    resolution: {integrity: sha512-b2jKc2pQZjaeFYWEf7ScFj+Be1I+PXmlu572Q8coTXZ+LD/QQZ7ShPMst8h16riVgyXTQwUsFEl74mDvc/3MHQ==}
+  /is-weakref/1.0.2:
+    resolution: {integrity: sha512-qctsuLZmIQ0+vSSMfoVvyFe2+GSEvnmZ2ezTup1SBse9+twCCeial6EEi3Nc2KFcf6+qz2FBPnjXsk8xhKSaPQ==}
     dependencies:
       call-bind: 1.0.2
     dev: true
@@ -1423,8 +1423,8 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
-  /typescript/4.5.3:
-    resolution: {integrity: sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==}
+  /typescript/4.5.4:
+    resolution: {integrity: sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
