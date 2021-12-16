@@ -8,3 +8,27 @@ export function listOfLinks(links: string[], title?: string) {
 		title,
 	});
 }
+
+export function tagsEmbedBuilder({
+	tagName,
+	tagContent,
+	author,
+}: {
+	tagName: string;
+	tagContent: string;
+	author?: User;
+}) {
+	return new MessageEmbed({
+		title: tagName,
+		description: tagContent,
+		author: author
+			? {
+					name: author.tag,
+					icon_url: author.displayAvatarURL({
+						size: 64,
+					}),
+			  }
+			: undefined,
+		color: SVELTE_ORANGE,
+	});
+}

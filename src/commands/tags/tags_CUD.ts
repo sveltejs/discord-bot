@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config';
+import { tagsEmbedBuilder } from '../../utils/embedBuilder';
 
 const enum Actions {
 	CREATE = 'create',
@@ -12,7 +13,7 @@ const enum Actions {
 export default command({
 	name: 'tags',
 	description: 'Create, edit or delete tags',
-	disabled: true,
+	// disabled: true,
 	global: true,
 	dev: DEV_MODE,
 	options: [
@@ -59,7 +60,6 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
-
 		switch (subcommand) {
 			case Actions.CREATE: {
 				const tagName = interaction.options.getString('name', true);
@@ -76,13 +76,28 @@ export default command({
 						message.author === interaction.user,
 					max: 1,
 				});
-				if (!messageColl?.size) {
+
+				const message = messageColl?.first();
+				if (!message) {
 					await interaction.editReply({
 						content: 'No content received for the tag. Aborting.',
 					});
 					return;
 				}
+				await message?.delete();
+				// All messages from the bot are ephemeral so feels kinda weird to have the message stick around
+
 				// TODO: Add the tag to the database, send an error if a tag with the same name exists already
+				await interaction.editReply({
+					content: `Added tag "${tagName}".`,
+					embeds: [
+						tagsEmbedBuilder({
+							tagName,
+							tagContent: message?.content as string,
+							author: interaction.user,
+						}),
+					],
+				});
 
 				break;
 			}
