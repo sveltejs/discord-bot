@@ -1,6 +1,6 @@
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
-import niceTry from 'nice-try';
+
 import {
 	AUTO_THREAD_CHANNELS,
 	LINK_ONLY_CHANNELS,

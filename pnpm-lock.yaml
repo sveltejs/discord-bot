@@ -7,7 +7,6 @@ specifiers:
   dotenv: ^10.0.0
   fuzzysort: ^1.1.4
   jellycommands: ^1.0.0-12
-  nice-try: ^3.0.0
   node-fetch: '2'
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
@@ -23,7 +22,6 @@ dependencies:
   dotenv: 10.0.0
   fuzzysort: 1.1.4
   jellycommands: 1.0.0-12
-  nice-try: 3.0.0
   node-fetch: 2.6.6
   rimraf: 3.0.2
   typescript: 4.5.3
@@ -982,10 +980,6 @@ packages:
   /nice-try/1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: true
-
-  /nice-try/3.0.0:
-    resolution: {integrity: sha512-JVAWBFZ6kFO/c6jtbcYAM4aAJK5XnAOyWAgBZ53V1HUNTfIjJdjXa96oWhDpegeQSRhTQXpOwU5bpYbzkkrcSA==}
-    dev: false
 
   /node-fetch/2.6.6:
     resolution: {integrity: sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==}
