@@ -13,6 +13,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@supabase/supabase-js": "^1.28.5",
 		"@types/nice-try": "^2.1.0",
 		"@types/node": "^16.11.14",
 		"discord.js": "^13.3.1",

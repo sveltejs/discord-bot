@@ -1,6 +1,12 @@
-import { TEST_GUILD_ID } from './config';
+import { createClient } from '@supabase/supabase-js';
 import { JellyCommands } from 'jellycommands';
+import { TEST_GUILD_ID } from './config';
 import { Intents } from 'discord.js';
+
+const supabase = createClient(
+	process.env['SUPABASE_URL']!,
+	process.env['SUPABASE_KEY']!,
+);
 
 const client = new JellyCommands({
 	commands: 'dist/commands',
@@ -17,6 +23,10 @@ const client = new JellyCommands({
 	dev: {
 		// If we set dev to true in a command it disabled global and adds it to the guilds bellow
 		guilds: [TEST_GUILD_ID],
+	},
+
+	props: {
+		supabase,
 	},
 
 	// we can disable this but I like to see the debug messages xD - GHOST
