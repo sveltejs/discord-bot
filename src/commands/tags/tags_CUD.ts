@@ -37,7 +37,7 @@ export default command({
 			options: [
 				{
 					name: 'name',
-					description: 'The exact name of the tag to create',
+					description: 'The exact name of the tag to edit',
 					type: ApplicationCommandOptionTypes.STRING,
 					required: true,
 				},
@@ -60,10 +60,10 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
+		const tagName = interaction.options.getString('name', true);
+
 		switch (subcommand) {
 			case Actions.CREATE: {
-				const tagName = interaction.options.getString('name', true);
-
 				await interaction.reply({
 					content:
 						'Send the contents for the tag in this channel within the next 60 seconds.',
@@ -103,7 +103,6 @@ export default command({
 			}
 
 			case Actions.DELETE: {
-				const tagName = interaction.options.getString('name', true);
 				const tag = {}; // Get the tag from the database
 				if (
 					true
@@ -124,7 +123,6 @@ export default command({
 			}
 
 			case Actions.UPDATE: {
-				const tagName = interaction.options.getString('name', true);
 				const tag = {}; // Get the tag from the database
 				if (
 					true
