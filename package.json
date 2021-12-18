@@ -19,7 +19,7 @@
 		"discord.js": "^13.3.1",
 		"dotenv": "^10.0.0",
 		"fuzzysort": "^1.1.4",
-		"jellycommands": "^1.0.0-12",
+		"jellycommands": "^1.0.0-13",
 		"node-fetch": "^2.6.6",
 		"rimraf": "^3.0.2",
 		"typescript": "^4.5.4",
