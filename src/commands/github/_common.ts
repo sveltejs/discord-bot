@@ -68,6 +68,3 @@ export async function githubCommandHandler(
 		// TODO: Do nothing or log the error or something
 	}
 }
-
-// Jellycommands feels jelly if there is no default export, TODO: remove temporary workaround
-export default {};
