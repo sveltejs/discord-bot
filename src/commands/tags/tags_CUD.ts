@@ -1,8 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Message } from 'discord.js';
+import type { GuildMember, Message, Snowflake } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { DEV_MODE } from '../../config';
+import { DEV_MODE, TAG_DEL_PERMITTED_ROLES } from '../../config';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder';
 import type { Tag } from './tags_read';
 
@@ -143,8 +143,11 @@ export default command({
 						return;
 					}
 					if (
-						interaction.user.id !==
-						tag.author_id /*TODO: add moderator check*/
+						interaction.user.id !== tag.author_id &&
+						!hasAnyRole(
+							interaction.member as GuildMember,
+							TAG_DEL_PERMITTED_ROLES,
+						)
 					) {
 						await interaction.reply({
 							content:
@@ -255,3 +258,7 @@ export default command({
 		}
 	},
 });
+
+function hasAnyRole(member: GuildMember, roles: Snowflake[]): boolean {
+	return member.roles.cache.hasAny(...roles);
+}
