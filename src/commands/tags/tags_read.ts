@@ -32,23 +32,27 @@ export default command({
 
 		const tag = tags?.[0];
 
-		if (!tag) {
+		try {
+			if (!tag) {
+				await interaction.reply({
+					content:
+						'No tag found with that name, remember tag names have to be exact.',
+					ephemeral: true,
+				});
+				return;
+			}
 			await interaction.reply({
-				content:
-					'No tag found with that name, remember tag names have to be exact.',
-				ephemeral: true,
+				embeds: [
+					tagsEmbedBuilder({
+						tagName: tag.tag_name,
+						tagContent: tag.tag_content,
+						author: client.users.cache.get(tag.author_id),
+					}),
+				],
 			});
-			return;
+		} catch {
+			// Do something with the errors
 		}
-		await interaction.reply({
-			embeds: [
-				tagsEmbedBuilder({
-					tagName: tag.tag_name,
-					tagContent: tag.tag_content,
-					author: client.users.cache.get(tag.author_id),
-				}),
-			],
-		});
 	},
 });
 
