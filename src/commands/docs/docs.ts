@@ -41,47 +41,51 @@ export default command({
 		const thisRepoDetails = REPO_DETAILS[repo];
 		const topic = interaction.options.getString('topic');
 
-		if (!topic) {
-			await interaction.reply({
-				embeds: [
-					{
-						description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
-						color: SVELTE_ORANGE,
-					},
-				],
-			});
-		} else {
-			if (!thisRepoDetails.DOCS_CACHE) {
-				await buildDocsCache(repo);
-			}
-			const docsCache = thisRepoDetails.DOCS_CACHE as Record<
-				string,
-				string
-			>;
-			const results = fuzzysort.go(topic, Object.keys(docsCache), {
-				limit: 5,
-			});
-
-			if (results.total === 0) {
-				await interaction.reply({
-					content:
-						'No matching result found. Try again with a different search term.',
-					ephemeral: true,
-				});
-			} else {
+		try {
+			if (!topic) {
 				await interaction.reply({
 					embeds: [
-						listOfLinks(
-							results.map(
-								(result) =>
-									`[${result.target}](${
-										thisRepoDetails.DOCS_URL
-									}#${docsCache[result.target]})`,
-							),
-						),
+						{
+							description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
+							color: SVELTE_ORANGE,
+						},
 					],
 				});
+			} else {
+				if (!thisRepoDetails.DOCS_CACHE) {
+					await buildDocsCache(repo);
+				}
+				const docsCache = thisRepoDetails.DOCS_CACHE as Record<
+					string,
+					string
+				>;
+				const results = fuzzysort.go(topic, Object.keys(docsCache), {
+					limit: 5,
+				});
+
+				if (results.total === 0) {
+					await interaction.reply({
+						content:
+							'No matching result found. Try again with a different search term.',
+						ephemeral: true,
+					});
+				} else {
+					await interaction.reply({
+						embeds: [
+							listOfLinks(
+								results.map(
+									(result) =>
+										`[${result.target}](${
+											thisRepoDetails.DOCS_URL
+										}#${docsCache[result.target]})`,
+								),
+							),
+						],
+					});
+				}
 			}
+		} catch {
+			// Do something with the errors
 		}
 	},
 });
