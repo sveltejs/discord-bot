@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config';
-import type { Tag } from './tags_read';
+import { Tag } from './_common';
 import { tagCreateCommandHandler } from './_tags_create';
 import { tagDeleteCommandHandler } from './_tags_delete';
 import { tagUpdateCommandHandler } from './_tags_update';

@@ -3,7 +3,7 @@ import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_ROLES } from '../../config';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { Tag } from './tags_read';
+import { EARLY_RETURN_EXCEPTION, Tag } from './_common';
 
 export async function tagDeleteCommandHandler({
 	tag,
@@ -23,7 +23,7 @@ export async function tagDeleteCommandHandler({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	if (
 		interaction.user.id !== tag.author_id &&
@@ -34,7 +34,7 @@ export async function tagDeleteCommandHandler({
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 
 	const { error } = await supabase
@@ -46,7 +46,7 @@ export async function tagDeleteCommandHandler({
 			content: `Failed to delete tag "${tagName}".`,
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	await interaction.reply({
 		content: `Tag "${tagName}" was successfully deleted.`,

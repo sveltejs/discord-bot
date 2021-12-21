@@ -1,7 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { Tag } from './tags_read';
+import { EARLY_RETURN_EXCEPTION, Tag } from './_common';
+
+const validatorRegex = /^[a-z0-9\-\+\_\.\ ]*$/;
 
 export async function tagCreateCommandHandler({
 	tag,
@@ -20,16 +22,16 @@ export async function tagCreateCommandHandler({
 				'A tag with that name exists already. Did you mean to do `/tags update` instead?',
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 
-	if (!/^[a-z0-9\-\+\_\.\ ]*$/.test(tagName)) {
+	if (!validatorRegex.test(tagName)) {
 		await interaction.reply({
 			content:
 				"The name provided isn't valid. It must match `/^[a-z0-9\\-\\+\\_\\.\\ ]*$/`",
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 
 	await interaction.reply({
@@ -49,7 +51,7 @@ export async function tagCreateCommandHandler({
 		await interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	await message.delete();
 	// All messages from the bot are ephemeral so feels kinda weird to have the message stick around
@@ -62,7 +64,7 @@ export async function tagCreateCommandHandler({
 		await interaction.editReply({
 			content: `There was an error in creating the tag "${tagName}". Tag names are case insensitive and should be unique.`,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	await interaction.editReply({
 		content: `Added tag "${tagName}".`,

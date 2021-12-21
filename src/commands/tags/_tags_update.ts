@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { Tag } from './tags_read';
+import { EARLY_RETURN_EXCEPTION, Tag } from './_common';
 
 export async function tagUpdateCommandHandler({
 	tag,
@@ -23,7 +23,7 @@ export async function tagUpdateCommandHandler({
 				'No tag with that name exists. Did you mean to do `/tags create` instead?',
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	if (interaction.user.id !== tag.author_id) {
 		await interaction.reply({
@@ -31,7 +31,7 @@ export async function tagUpdateCommandHandler({
 				"You don't have the permissions to edit that tag. You have to be the author of the tag.",
 			ephemeral: true,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 
 	await interaction.reply({
@@ -57,7 +57,7 @@ export async function tagUpdateCommandHandler({
 		await interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	await message.delete();
 
@@ -70,7 +70,7 @@ export async function tagUpdateCommandHandler({
 		await interaction.editReply({
 			content: `Failed to update tag "${tagName}."`,
 		});
-		throw new Error('EARLY_RETURN_EXCEPTION');
+		throw EARLY_RETURN_EXCEPTION;
 	}
 	await interaction.editReply({
 		content: `Tag "${tagName}" was successfully updated.`,

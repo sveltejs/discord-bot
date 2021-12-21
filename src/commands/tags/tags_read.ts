@@ -3,6 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config';
 import { listOfLinks, tagsEmbedBuilder } from '../../utils/embedBuilder';
+import { Tag } from './_common';
 
 export default command({
 	name: 'tag',
@@ -74,10 +75,3 @@ export default command({
 		}
 	},
 });
-
-export interface Tag {
-	id: number;
-	tag_name: string;
-	tag_content: string;
-	author_id: string;
-}
