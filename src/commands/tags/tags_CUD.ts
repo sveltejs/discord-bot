@@ -90,6 +90,7 @@ export default command({
 						await interaction.reply({
 							content:
 								"The name provided isn't valid. It must match `/^[a-z0-9\\-\\+\\_\\.\\ ]*$/`",
+							ephemeral: true,
 						});
 						return;
 					}
