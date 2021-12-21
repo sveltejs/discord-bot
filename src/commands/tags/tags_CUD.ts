@@ -83,6 +83,15 @@ export default command({
 								'A tag with that name exists already. Did you mean to do `/tags update` instead?',
 							ephemeral: true,
 						});
+						return;
+					}
+
+					if (!/^[a-z0-9\-\+\_\.\ ]*$/.test(tagName)) {
+						await interaction.reply({
+							content:
+								"The name provided isn't valid. It must match `/^[a-z0-9\\-\\+\\_\\.\\ ]*$/`",
+						});
+						return;
 					}
 
 					await interaction.reply({
