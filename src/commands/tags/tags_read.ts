@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder';
+import { listOfLinks, tagsEmbedBuilder } from '../../utils/embedBuilder';
 
 export default command({
 	name: 'tag',
@@ -34,10 +34,28 @@ export default command({
 
 		try {
 			if (!tag) {
-				await interaction.reply({
-					content:
-						'No tag found with that name, remember tag names have to be exact.',
+				await interaction.deferReply({
 					ephemeral: true,
+				});
+				const { data: close_matches } = await supabase.rpc<Tag>(
+					'matching_tags',
+					{
+						to_search: tagName,
+					},
+				);
+				await interaction.followUp({
+					content: `No tag found with that name, remember tag names have to be exact. ${
+						close_matches?.length ? 'Did you mean?' : ''
+					}`,
+					embeds: close_matches?.length
+						? [
+								listOfLinks(
+									close_matches?.map(
+										(t) => `\`${t.tag_name}\``,
+									) as string[],
+								),
+						  ]
+						: undefined,
 				});
 				return;
 			}
