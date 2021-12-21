@@ -34,7 +34,7 @@ export default command({
 
 		try {
 			if (!tag) {
-				await interaction.deferReply({
+				const deferPromise = interaction.deferReply({
 					ephemeral: true,
 				});
 				const { data: close_matches } = await supabase.rpc<Tag>(
@@ -43,6 +43,7 @@ export default command({
 						to_search: tagName,
 					},
 				);
+				await deferPromise;
 				await interaction.followUp({
 					content: `No tag found with that name, remember tag names have to be exact. ${
 						close_matches?.length ? 'Did you mean?' : ''
