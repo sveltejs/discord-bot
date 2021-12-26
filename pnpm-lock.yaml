@@ -6,8 +6,8 @@ specifiers:
   '@types/node': ^16.11.14
   discord.js: ^13.3.1
   dotenv: ^10.0.0
-  fuzzysort: ^1.1.4
   jellycommands: ^1.0.0-13
+  js-trgm: ^1.0.1
   node-fetch: ^2.6.6
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
@@ -22,8 +22,8 @@ dependencies:
   '@types/node': 16.11.14
   discord.js: 13.3.1
   dotenv: 10.0.0
-  fuzzysort: 1.1.4
   jellycommands: 1.0.0-13
+  js-trgm: 1.0.1
   node-fetch: 2.6.6
   rimraf: 3.0.2
   typescript: 4.5.4
@@ -632,10 +632,6 @@ packages:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
     dev: true
 
-  /fuzzysort/1.1.4:
-    resolution: {integrity: sha512-JzK/lHjVZ6joAg3OnCjylwYXYVjRiwTY6Yb25LvfpJHK8bjisfnZJ5bY8aVWwTwCXgxPNgLAtmHL+Hs5q1ddLQ==}
-    dev: false
-
   /get-intrinsic/1.1.1:
     resolution: {integrity: sha512-kWZrnVM42QCiEA2Ig1bG8zjoIMOgxWwYCEeNdwY6Tv/cOSeGpcoX4pXHfKUxNKVoArnrEr2e9srnAxxGIraS9Q==}
     dependencies:
@@ -980,6 +976,12 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: false
 
+  /js-trgm/1.0.1:
+    resolution: {integrity: sha512-AOEqcqOPZSqPoZ1cZavDPzwhkSciXPIv7nBiuaN1+CrcxNrG16l5FSURFgl/OQ1nYHFFHFrBzOldY6mikyFFGQ==}
+    dependencies:
+      lodash-es: 4.17.21
+    dev: false
+
   /json-buffer/3.0.0:
     resolution: {integrity: sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=}
     dev: true
@@ -1010,6 +1012,10 @@ packages:
       pify: 3.0.0
       strip-bom: 3.0.0
     dev: true
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha1-QVxEePK8wwEgwizhDtMib30+GOA=}

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-import fuzzysort from 'fuzzysort';
 import { command } from 'jellycommands';
+import { trgm_search } from 'js-trgm';
 import fetch from 'node-fetch';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
 
@@ -54,11 +54,11 @@ export default command({
 			if (!tutorialsCache) {
 				await buildTutorialsCache();
 			}
-			let results = fuzzysort.go(topic, Object.keys(tutorialsCache), {
+			let results = trgm_search(topic, Object.keys(tutorialsCache), {
 				limit: 1,
 			});
 
-			if (results.total === 0) {
+			if (results.length === 0) {
 				interaction.reply({
 					content: `No matching result found. Try again with a different search term.`,
 					ephemeral: true,
