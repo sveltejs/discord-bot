@@ -56,10 +56,7 @@ export default command({
 			if (!thisRepoDetails.DOCS_CACHE) {
 				await buildDocsCache(repo);
 			}
-			const docsCache = thisRepoDetails.DOCS_CACHE as Record<
-				string,
-				string
-			>;
+			const docsCache = thisRepoDetails.DOCS_CACHE!;
 			const results = fuzzysort.go(topic, Object.keys(docsCache), {
 				limit: 5,
 			});
