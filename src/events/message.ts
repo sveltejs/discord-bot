@@ -5,7 +5,7 @@ import {
 	AUTO_THREAD_CHANNELS,
 	LINK_ONLY_CHANNELS,
 	SVELTE_ORANGE,
-} from '../config';
+} from '../config.js';
 
 export default event({
 	name: 'messageCreate',

@@ -2,8 +2,8 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { DEV_MODE, SVELTE_ORANGE } from '../../config';
-import { listOfLinks } from '../../utils/embedBuilder';
+import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
+import { listOfLinks } from '../../utils/embedBuilder.js';
 
 export default command({
 	name: 'mdn',

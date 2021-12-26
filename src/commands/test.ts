@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { SVELTE_ORANGE } from '../config';
+import { SVELTE_ORANGE } from '../config.js';
 import { command } from 'jellycommands';
 
 export default command({

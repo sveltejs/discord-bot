@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import fuzzysort from 'fuzzysort';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
-import { DEV_MODE, SVELTE_ORANGE } from '../../config';
+import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
 
 let tutorialsCache: Record<string, string>;
 

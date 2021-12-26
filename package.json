@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"main": "dist/index.js",
+	"type": "module",
 	"scripts": {
 		"build": "rimraf dist && tsc",
 		"dev": "rimraf dist && run-p dev:*",

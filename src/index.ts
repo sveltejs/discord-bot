@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { JellyCommands } from 'jellycommands';
-import { TEST_GUILD_ID } from './config';
+import { TEST_GUILD_ID } from './config.js';
 import { Intents } from 'discord.js';
 
 const supabase = createClient(

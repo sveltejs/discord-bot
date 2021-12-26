@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { SVELTE_ORANGE } from '../config';
+import { SVELTE_ORANGE } from '../config.js';
 
 export function listOfLinks(links: string[], title?: string) {
 	return new MessageEmbed({
