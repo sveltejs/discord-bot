@@ -1,8 +1,8 @@
 import { CommandInteraction } from 'discord.js';
 import fetch, { Headers } from 'node-fetch';
-import { GITHUB_TOKEN } from '../../config';
-import { listOfLinks } from '../../utils/embedBuilder';
-import { REPOS, REPO_DETAILS } from '../../utils/repositories';
+import { GITHUB_TOKEN } from '../../config.js';
+import { listOfLinks } from '../../utils/embedBuilder.js';
+import { REPOS, REPO_DETAILS } from '../../utils/repositories.js';
 
 async function githubSearch(body: {
 	query: string;
@@ -19,8 +19,8 @@ async function githubSearch(body: {
 	if (!res.ok) {
 		return null;
 	}
-	const results: Array<Record<string, any>> = (await res.json()).data.search
-		.nodes;
+	const results: Array<Record<string, any>> = ((await res.json()) as any).data
+		.search.nodes;
 	if (!results.length) {
 		return null;
 	}

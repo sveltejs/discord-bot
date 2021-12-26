@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { REPOS } from '../../utils/repositories';
-import { githubCommandHandler } from './_common';
+import { REPOS } from '../../utils/repositories.js';
+import { githubCommandHandler } from './_common.js';
 
 const query = `query searchResults($searchQuery: String!) {
 	search(type: DISCUSSION, query: $searchQuery, first: 5) {
