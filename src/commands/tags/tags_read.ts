@@ -1,9 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { DEV_MODE } from '../../config';
-import { listOfLinks, tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { Tag } from './_common';
+import { DEV_MODE } from '../../config.js';
+import { listOfLinks, tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { Tag } from './_common.js';
 
 export default command({
 	name: 'tag',

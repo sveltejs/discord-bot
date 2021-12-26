@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export function listOfLinks(links: string[], title?: string) {

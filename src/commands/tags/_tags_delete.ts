@@ -1,9 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { TAG_DEL_PERMITTED_ROLES } from '../../config';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { EARLY_RETURN_EXCEPTION, Tag } from './_common';
+import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
+import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
 
 export async function tagDeleteCommandHandler({
 	tag,

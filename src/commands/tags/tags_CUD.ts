@@ -1,11 +1,11 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { DEV_MODE } from '../../config';
-import { Tag } from './_common';
-import { tagCreateCommandHandler } from './_tags_create';
-import { tagDeleteCommandHandler } from './_tags_delete';
-import { tagUpdateCommandHandler } from './_tags_update';
+import { DEV_MODE } from '../../config.js';
+import { Tag } from './_common.js';
+import { tagCreateCommandHandler } from './_tags_create.js';
+import { tagDeleteCommandHandler } from './_tags_delete.js';
+import { tagUpdateCommandHandler } from './_tags_update.js';
 
 const enum Actions {
 	CREATE = 'create',

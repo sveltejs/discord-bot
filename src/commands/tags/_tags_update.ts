@@ -1,8 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder';
-import { EARLY_RETURN_EXCEPTION, Tag } from './_common';
+import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
 
 export async function tagUpdateCommandHandler({
 	tag,
