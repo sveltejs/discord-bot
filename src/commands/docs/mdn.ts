@@ -31,20 +31,20 @@ export default command({
 						},
 					],
 				});
-			} else {
-				let results = await mdnSearch(searchTopic);
+				return;
+			}
+			let results = await mdnSearch(searchTopic);
 
-				if (results) {
-					await interaction.reply({
-						embeds: [listOfLinks(results, 'MDN Docs')],
-					});
-				} else {
-					await interaction.reply({
-						content:
-							'No results found. Try again with a different search term.',
-						ephemeral: true,
-					});
-				}
+			if (results) {
+				await interaction.reply({
+					embeds: [listOfLinks(results, 'MDN Docs')],
+				});
+			} else {
+				await interaction.reply({
+					content:
+						'No results found. Try again with a different search term.',
+					ephemeral: true,
+				});
 			}
 		} catch {
 			// Do nothing

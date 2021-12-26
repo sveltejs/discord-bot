@@ -43,43 +43,43 @@ export default command({
 				interaction.reply({
 					embeds: [
 						{
-							description: `Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet?\n\
-							It covers all you need to know to start using svelte.`,
+							description:
+								'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
 							color: SVELTE_ORANGE,
 						},
 					],
 				});
-			} else {
-				if (!tutorialsCache) {
-					await buildTutorialsCache();
-				}
-				let results = fuzzysort.go(topic, Object.keys(tutorialsCache), {
-					limit: 1,
-				});
-
-				if (results.total === 0) {
-					interaction.reply({
-						content: `No matching result found. Try again with a different search term.`,
-						ephemeral: true,
-					});
-				} else {
-					let topResult = results[0];
-
-					interaction.reply({
-						embeds: [
-							{
-								description: `Have you gone through the tutorial page on [${
-									topResult.target
-								}](https://svelte.dev/tutorial/${
-									tutorialsCache[topResult.target]
-								})?`,
-								color: SVELTE_ORANGE,
-							},
-						],
-					});
-				}
+				return;
 			}
-		} catch (error) {
+			if (!tutorialsCache) {
+				await buildTutorialsCache();
+			}
+			let results = fuzzysort.go(topic, Object.keys(tutorialsCache), {
+				limit: 1,
+			});
+
+			if (results.total === 0) {
+				interaction.reply({
+					content: `No matching result found. Try again with a different search term.`,
+					ephemeral: true,
+				});
+				return;
+			}
+
+			const topResult = results[0];
+			interaction.reply({
+				embeds: [
+					{
+						description: `Have you gone through the tutorial page on [${
+							topResult.target
+						}](https://svelte.dev/tutorial/${
+							tutorialsCache[topResult.target]
+						})?`,
+						color: SVELTE_ORANGE,
+					},
+				],
+			});
+		} catch {
 			// Do something or nothing
 		}
 	},
