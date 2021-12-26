@@ -6,11 +6,21 @@ import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
 
 let tutorialsCache: Record<string, string>;
 
+interface Tutorial {
+	name: string;
+	slug: string;
+}
+
+interface TutorialSection {
+	name: string;
+	tutorials: Tutorial[];
+}
+
 async function buildTutorialsCache() {
 	const res = await fetch('https://api.svelte.dev/docs/svelte/tutorial');
 	console.log('Fetching tutorials');
 	if (res.ok) {
-		const data = await res.json();
+		const data = (await res.json()) as Array<TutorialSection>;
 		tutorialsCache = {};
 
 		for (let tutSection of data) {

@@ -92,7 +92,7 @@ async function buildDocsCache(project: REPOS) {
 	const res = await fetch(REPO_DETAILS[project].DOCS_API_URL as string);
 
 	if (res.ok) {
-		const data: DocsSection[] = await res.json();
+		const data = (await res.json()) as DocsSection[];
 
 		let flattened: Record<string, string> = {};
 

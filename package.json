@@ -21,7 +21,7 @@
 		"dotenv": "^10.0.0",
 		"jellycommands": "^1.0.0-13",
 		"js-trgm": "^1.0.1",
-		"node-fetch": "^2.6.6",
+		"node-fetch": "3",
 		"rimraf": "^3.0.2",
 		"typescript": "^4.5.4",
 		"url-regex": "^5.0.0"
