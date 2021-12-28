@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"target": "ES2021",
-		"module": "nodenext",
 		"outDir": "./dist",
 		"lib": ["ES2021"],
+		"moduleResolution": "Node",
 
 		"strict": true,
 		"declaration": false,
