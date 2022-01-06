@@ -6,6 +6,7 @@ export default command({
 	name: 'test2',
 	description: "Testing again because bot doesn't wanna work",
 
+	global: true,
 	dev: true,
 
 	run: ({ interaction, client }) => {
