@@ -3,16 +3,14 @@ import { SVELTE_ORANGE } from '../config.js';
 import { command } from 'jellycommands';
 
 export default command({
-	name: 'test',
-	description: 'Testing that the bot works fine',
+	name: 'test2',
+	description: "Testing again because bot doesn't wanna work",
 
 	dev: true,
 
 	run: ({ interaction, client }) => {
-		const supabase = client.props.get<SupabaseClient>('supabase');
-
 		interaction.reply({
-			embeds: [{ description: 'Hello World!', color: SVELTE_ORANGE }],
+			embeds: [{ description: 'ok', color: SVELTE_ORANGE }],
 		});
 	},
 });
