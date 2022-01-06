@@ -6,7 +6,7 @@ specifiers:
   '@types/node': ^16.11.19
   discord.js: ^13.5.0
   dotenv: ^10.0.0
-  jellycommands: ^1.0.0-13
+  jellycommands: ^1.0.0-14
   js-trgm: ^1.0.1
   node-fetch: ^3.1.0
   nodemon: ^2.0.15
@@ -22,7 +22,7 @@ dependencies:
   '@types/node': 16.11.19
   discord.js: 13.5.0
   dotenv: 10.0.0
-  jellycommands: 1.0.0-13
+  jellycommands: 1.0.0-14
   js-trgm: 1.0.1
   node-fetch: 3.1.0
   rimraf: 3.0.2
@@ -963,8 +963,8 @@ packages:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=}
     dev: true
 
-  /jellycommands/1.0.0-13:
-    resolution: {integrity: sha512-F9VNU4cvvdXm4JR9swbAOX2mWlGQCAAZZ/AIFLazzy642PODOpcTYG8U8/wyLDjj/9LfcSPHfyg8/uElfw+o/Q==}
+  /jellycommands/1.0.0-14:
+    resolution: {integrity: sha512-zcF6zFmW4WRgybok08E1Xkv0KRzqgIuwWCa+hiEsHrGHbqTtK9rpSOHTWBgmVBG4JrNDL6YZttRTWCN5F5a/bw==}
     dependencies:
       axios: 0.24.0
       discord-api-types: 0.25.2
