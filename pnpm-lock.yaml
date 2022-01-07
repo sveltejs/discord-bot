@@ -6,14 +6,14 @@ specifiers:
   '@types/node': ^16.11.19
   discord.js: ^13.5.0
   dotenv: ^10.0.0
-  jellycommands: ^1.0.0-14
+  jellycommands: ^1.0.0-next.15
   js-trgm: ^1.0.1
   node-fetch: ^3.1.0
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
   prettier: ^2.5.1
   rimraf: ^3.0.2
-  typescript: ^4.6.0-dev.20220106
+  typescript: ^4.6.0-dev.20220107
   url-regex: ^5.0.0
 
 dependencies:
@@ -22,11 +22,11 @@ dependencies:
   '@types/node': 16.11.19
   discord.js: 13.5.0
   dotenv: 10.0.0
-  jellycommands: 1.0.0-14
+  jellycommands: 1.0.0-next.15
   js-trgm: 1.0.1
   node-fetch: 3.1.0
   rimraf: 3.0.2
-  typescript: 4.6.0-dev.20220106
+  typescript: 4.6.0-dev.20220107
   url-regex: 5.0.0
 
 devDependencies:
@@ -963,8 +963,8 @@ packages:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=}
     dev: true
 
-  /jellycommands/1.0.0-14:
-    resolution: {integrity: sha512-zcF6zFmW4WRgybok08E1Xkv0KRzqgIuwWCa+hiEsHrGHbqTtK9rpSOHTWBgmVBG4JrNDL6YZttRTWCN5F5a/bw==}
+  /jellycommands/1.0.0-next.15:
+    resolution: {integrity: sha512-FID657B9FnIdGkHI1UhamOkVoExCOrKVSLS8oMHKYdScW5qOYhUezfHG4jKcHY2HBULEbLgcu++NMUIapjYAOA==}
     dependencies:
       axios: 0.24.0
       discord-api-types: 0.25.2
@@ -1554,8 +1554,8 @@ packages:
     dependencies:
       is-typedarray: 1.0.0
 
-  /typescript/4.6.0-dev.20220106:
-    resolution: {integrity: sha512-DsU5FQw5v59ftX9CJXfgn6AQCZz+iIvLHtQcAGuo+CFiBdByh+1uiL3COxvA0ljoH1yitWutkNkOBqiSLOjKjA==}
+  /typescript/4.6.0-dev.20220107:
+    resolution: {integrity: sha512-U/PitU3Hvyf8/znYmodIuyUQ+66zTKloq71N+hJg7mT8oCRBuh0NOAbT2GhHwbouxIeuDfhsiNqonPyZ4bkdTA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
