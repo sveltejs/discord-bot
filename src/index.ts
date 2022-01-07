@@ -1,6 +1,6 @@
+import { TEST_GUILD_ID, DEV_MODE } from './config.js';
 import { createClient } from '@supabase/supabase-js';
 import { JellyCommands } from 'jellycommands';
-import { TEST_GUILD_ID } from './config.js';
 import { Intents } from 'discord.js';
 
 const supabase = createClient(
@@ -31,6 +31,9 @@ const client = new JellyCommands({
 
 	// we can disable this but I like to see the debug messages xD - GHOST
 	debug: true,
+
+	// This should hopefully fix the issues in production
+	cache: DEV_MODE,
 });
 
 // Auto reads the DISCORD_TOKEN environment variable
