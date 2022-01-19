@@ -1,32 +1,32 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@supabase/supabase-js': ^1.29.1
+  '@supabase/supabase-js': ^1.29.2
   '@types/nice-try': ^2.1.0
-  '@types/node': ^16.11.19
-  discord.js: ^13.5.0
+  '@types/node': ^16.11.21
+  discord.js: ^13.6.0
   dotenv: ^10.0.0
   jellycommands: ^1.0.0-next.15
   js-trgm: ^1.0.1
-  node-fetch: ^3.1.0
+  node-fetch: ^3.1.1
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
   prettier: ^2.5.1
   rimraf: ^3.0.2
-  typescript: ^4.6.0-dev.20220107
+  typescript: ^4.6.0-dev.20220119
   url-regex: ^5.0.0
 
 dependencies:
-  '@supabase/supabase-js': 1.29.1
+  '@supabase/supabase-js': 1.29.2
   '@types/nice-try': 2.1.0
-  '@types/node': 16.11.19
-  discord.js: 13.5.0
+  '@types/node': 16.11.21
+  discord.js: 13.6.0
   dotenv: 10.0.0
   jellycommands: 1.0.0-next.15
   js-trgm: 1.0.1
-  node-fetch: 3.1.0
+  node-fetch: 3.1.1
   rimraf: 3.0.2
-  typescript: 4.6.0-dev.20220107
+  typescript: 4.6.0-dev.20220119
   url-regex: 5.0.0
 
 devDependencies:
@@ -40,7 +40,7 @@ packages:
     resolution: {integrity: sha512-ZTB8yJdJKrKlq44dpWkNUrAtEJEq0gqpb7ASdv4vmq6/mZal5kOv312hQ56I/vxwMre+VIkoHquNUAfnTbiYtg==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@sindresorhus/is': 4.2.0
+      '@sindresorhus/is': 4.3.0
       discord-api-types: 0.26.1
       ts-mixer: 6.0.0
       tslib: 2.3.1
@@ -86,43 +86,43 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /@sindresorhus/is/4.2.0:
-    resolution: {integrity: sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==}
+  /@sindresorhus/is/4.3.0:
+    resolution: {integrity: sha512-wwOvh0eO3PiTEivGJWiZ+b946SlMSb4pe+y+Ur/4S87cwo09pYi+FWHHnbrM3W9W7cBYKDqQXcrFYjYUCOJUEQ==}
     engines: {node: '>=10'}
     dev: false
 
-  /@supabase/gotrue-js/1.21.7:
-    resolution: {integrity: sha512-YnL4cO3Q+ugatWEtgCEnLt+Wwi0VpOVTPSSjSSUho2x3cH7+juRBTrVbYky/W6YVgAw/ZJrVUFPh/NcUCUhdmw==}
+  /@supabase/gotrue-js/1.22.0:
+    resolution: {integrity: sha512-6r8YJvl8+mEBO6a5xoFr9K0kVw7C0FmcudFFAop+2FNSo6BXR/eEsPx/yAgVgv+1GowG4n2kOm0TYB7EvcH2QQ==}
     dependencies:
       cross-fetch: 3.1.4
     dev: false
 
-  /@supabase/postgrest-js/0.35.0:
-    resolution: {integrity: sha512-z+XKJ2oXuGEAEBVXseeQUXaM3ekQZK4XF0Kc399Glyg+rZaBTwNeJtY+Q/23NcIE5uNMYbTnEXm80jZbLBnWdw==}
+  /@supabase/postgrest-js/0.35.1:
+    resolution: {integrity: sha512-N9IOxwgKvek2HqVrC3Usr6hUWvzy53vebsoqLqUBaelu8StATTrhdqaw+9IKthQsn8qoB9A0XD2vN39SGlgd/A==}
     dependencies:
       cross-fetch: 3.1.4
     dev: false
 
-  /@supabase/realtime-js/1.3.4:
-    resolution: {integrity: sha512-N9xerTleMp6OKgsqYp0WujYJvKplMxhSJ9agTvAL6vc/+4hh5uxak4wLpgqigy3ZBzpRUSYty7hDyS017+waiw==}
+  /@supabase/realtime-js/1.3.5:
+    resolution: {integrity: sha512-If+C0A6eT1BflFOOZNlnGw/91gNuj7f/M19/WutsPM0pjhx++8Dj0YH8z+tbgxX0nf/2UGVUMMgTBckzpk9R3g==}
     dependencies:
       '@types/websocket': 1.0.4
       websocket: 1.0.34
     dev: false
 
-  /@supabase/storage-js/1.5.0:
-    resolution: {integrity: sha512-ki2HT9FrCYRN3yoqWqX+u47TUHQ8lgSStAqV/97kMov1z2d+iIlqGBGVcaGDqq4NvK8CipG8IJARYM72oX+afA==}
+  /@supabase/storage-js/1.5.1:
+    resolution: {integrity: sha512-W82st1RvkChVJ/FTCcPXFXfS3V0Z4rZuMnoDnB9/NI5i9r9zspZS40tHpUQ+vbN6R6k0pfr/Waa1jcEd3YAtrQ==}
     dependencies:
       cross-fetch: 3.1.4
     dev: false
 
-  /@supabase/supabase-js/1.29.1:
-    resolution: {integrity: sha512-5UPgB93XCzALTpbuwvEGH+Y7i3YBY3y3y96uNnzAWYerGWlqx2kIVmV++GAiEPp/tp+QRsv103AoLKiP3dP2DA==}
+  /@supabase/supabase-js/1.29.2:
+    resolution: {integrity: sha512-zyURfsWxGeuVQd4QfqeSyzhpplYIQznL92mATcb8uUjnoXRC+oDiVQ3Ak5mtFJlPPT1tRwEWTr5o9fr0AncOcg==}
     dependencies:
-      '@supabase/gotrue-js': 1.21.7
-      '@supabase/postgrest-js': 0.35.0
-      '@supabase/realtime-js': 1.3.4
-      '@supabase/storage-js': 1.5.0
+      '@supabase/gotrue-js': 1.22.0
+      '@supabase/postgrest-js': 0.35.1
+      '@supabase/realtime-js': 1.3.5
+      '@supabase/storage-js': 1.5.1
     dev: false
 
   /@szmarczak/http-timer/1.1.2:
@@ -139,24 +139,24 @@ packages:
   /@types/node-fetch/2.5.12:
     resolution: {integrity: sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw==}
     dependencies:
-      '@types/node': 16.11.19
+      '@types/node': 16.11.21
       form-data: 3.0.1
     dev: false
 
-  /@types/node/16.11.19:
-    resolution: {integrity: sha512-BPAcfDPoHlRQNKktbsbnpACGdypPFBuX4xQlsWDE7B8XXcfII+SpOLay3/qZmCLb39kV5S1RTYwXdkx2lwLYng==}
+  /@types/node/16.11.21:
+    resolution: {integrity: sha512-Pf8M1XD9i1ksZEcCP8vuSNwooJ/bZapNmIzpmsMaL+jMI+8mEYU3PKvs+xDNuQcJWF/x24WzY4qxLtB0zNow9A==}
     dev: false
 
   /@types/websocket/1.0.4:
     resolution: {integrity: sha512-qn1LkcFEKK8RPp459jkjzsfpbsx36BBt3oC3pITYtkoBw/aVX+EZFa5j3ThCRTNpLFvIMr5dSTD4RaMdilIOpA==}
     dependencies:
-      '@types/node': 16.11.19
+      '@types/node': 16.11.21
     dev: false
 
   /@types/ws/8.2.2:
     resolution: {integrity: sha512-NOn5eIcgWLOo6qW8AcuLZ7G8PycXu0xTxxkS6Q18VWFxgPUSOwV0pBj2a/4viNZVu25i7RIB7GttdkAIUUXOOg==}
     dependencies:
-      '@types/node': 16.11.19
+      '@types/node': 16.11.21
     dev: false
 
   /abbrev/1.1.1:
@@ -203,7 +203,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.6
+      follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -293,8 +293,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /chokidar/3.5.2:
-    resolution: {integrity: sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==}
+  /chokidar/3.5.3:
+    resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
     dependencies:
       anymatch: 3.1.2
@@ -450,8 +450,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /discord.js/13.5.0:
-    resolution: {integrity: sha512-K+ZcB0f+wA1ZzDhz3hlaAi4Ap7jSvVEUZ+U29T4DMoiNNUv22F4vu1byrOq8GyyLLDFiZ3iSudea0MvSHu3fQA==}
+  /discord.js/13.6.0:
+    resolution: {integrity: sha512-tXNR8zgsEPxPBvGk3AQjJ9ljIIC6/LOPjzKwpwz8Y1Q2X66Vi3ZqFgRHYwnHKC0jC0F+l4LzxlhmOJsBZDNg9g==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     dependencies:
       '@discordjs/builders': 0.11.0
@@ -461,10 +461,11 @@ packages:
       '@types/ws': 8.2.2
       discord-api-types: 0.26.1
       form-data: 4.0.0
-      node-fetch: 2.6.6
-      ws: 8.4.0
+      node-fetch: 2.6.7
+      ws: 8.4.2
     transitivePeerDependencies:
       - bufferutil
+      - encoding
       - utf-8-validate
     dev: false
 
@@ -588,8 +589,8 @@ packages:
       to-regex-range: 5.0.1
     dev: true
 
-  /follow-redirects/1.14.6:
-    resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
+  /follow-redirects/1.14.7:
+    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -1101,15 +1102,20 @@ packages:
     engines: {node: 4.x || >=6.0.0}
     dev: false
 
-  /node-fetch/2.6.6:
-    resolution: {integrity: sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==}
+  /node-fetch/2.6.7:
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
     dependencies:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch/3.1.0:
-    resolution: {integrity: sha512-QU0WbIfMUjd5+MUzQOYhenAazakV7Irh1SGkWCsRzBwvm4fAhzEUaHMJ6QLP7gWT6WO9/oH2zhKMMGMuIrDyKw==}
+  /node-fetch/3.1.1:
+    resolution: {integrity: sha512-SMk+vKgU77PYotRdWzqZGTZeuFKlsJ0hu4KPviQKkfY+N3vn2MIzr0rvpnYpR8MtB3IEuhlEcuOLbGvLRlA+yg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       data-uri-to-buffer: 4.0.0
@@ -1128,7 +1134,7 @@ packages:
     hasBin: true
     requiresBuild: true
     dependencies:
-      chokidar: 3.5.2
+      chokidar: 3.5.3
       debug: 3.2.7
       ignore-by-default: 1.0.1
       minimatch: 3.0.4
@@ -1554,8 +1560,8 @@ packages:
     dependencies:
       is-typedarray: 1.0.0
 
-  /typescript/4.6.0-dev.20220107:
-    resolution: {integrity: sha512-U/PitU3Hvyf8/znYmodIuyUQ+66zTKloq71N+hJg7mT8oCRBuh0NOAbT2GhHwbouxIeuDfhsiNqonPyZ4bkdTA==}
+  /typescript/4.6.0-dev.20220119:
+    resolution: {integrity: sha512-Ux13gRlLkWU4L1Pv8CrKsY4eDDvWwKacexub3IoEzISa4VFDNwgY9Soi+vlte82Hl6K6glHqeYVPhcMUwCd30A==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
@@ -1703,8 +1709,8 @@ packages:
       typedarray-to-buffer: 3.1.5
     dev: true
 
-  /ws/8.4.0:
-    resolution: {integrity: sha512-IHVsKe2pjajSUIl4KYMQOdlyliovpEPquKkqbwswulszzI7r0SfQrxnXdWAEqOlDCLrVSJzo+O1hAwdog2sKSQ==}
+  /ws/8.4.2:
+    resolution: {integrity: sha512-Kbk4Nxyq7/ZWqr/tarI9yIt/+iNNFOjBXEWgTb4ydaNHBNGgvf2QHbS9fdfsndfjFlFwEd4Al+mw83YkaD10ZA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1

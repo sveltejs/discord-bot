@@ -14,16 +14,16 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@supabase/supabase-js": "^1.29.1",
+		"@supabase/supabase-js": "^1.29.2",
 		"@types/nice-try": "^2.1.0",
-		"@types/node": "^16.11.19",
-		"discord.js": "^13.5.0",
+		"@types/node": "^16.11.21",
+		"discord.js": "^13.6.0",
 		"dotenv": "^10.0.0",
 		"jellycommands": "^1.0.0-next.15",
 		"js-trgm": "^1.0.1",
-		"node-fetch": "^3.1.0",
+		"node-fetch": "^3.1.1",
 		"rimraf": "^3.0.2",
-		"typescript": "^4.6.0-dev.20220107",
+		"typescript": "^4.6.0-dev.20220119",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
