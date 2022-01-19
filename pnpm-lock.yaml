@@ -6,7 +6,7 @@ specifiers:
   '@types/node': ^16.11.21
   discord.js: ^13.6.0
   dotenv: ^10.0.0
-  jellycommands: ^1.0.0-next.15
+  jellycommands: 1.0.0-next.17
   js-trgm: ^1.0.1
   node-fetch: ^3.1.1
   nodemon: ^2.0.15
@@ -22,7 +22,7 @@ dependencies:
   '@types/node': 16.11.21
   discord.js: 13.6.0
   dotenv: 10.0.0
-  jellycommands: 1.0.0-next.15
+  jellycommands: 1.0.0-next.17
   js-trgm: 1.0.1
   node-fetch: 3.1.1
   rimraf: 3.0.2
@@ -438,11 +438,6 @@ packages:
   /delayed-stream/1.0.0:
     resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=}
     engines: {node: '>=0.4.0'}
-    dev: false
-
-  /discord-api-types/0.25.2:
-    resolution: {integrity: sha512-O243LXxb5gLLxubu5zgoppYQuolapGVWPw3ll0acN0+O8TnPUE2kFp9Bt3sTRYodw8xFIknOVxjSeyWYBpVcEQ==}
-    engines: {node: '>=12'}
     dev: false
 
   /discord-api-types/0.26.1:
@@ -964,11 +959,11 @@ packages:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=}
     dev: true
 
-  /jellycommands/1.0.0-next.15:
-    resolution: {integrity: sha512-FID657B9FnIdGkHI1UhamOkVoExCOrKVSLS8oMHKYdScW5qOYhUezfHG4jKcHY2HBULEbLgcu++NMUIapjYAOA==}
+  /jellycommands/1.0.0-next.17:
+    resolution: {integrity: sha512-JpG3DkByfXuBOiBRjjvZfrQQ3AAlYewHIBaYMGCj72VegrUgKRDDnSR3e4TniZo39S3SSThur3oWtWoIa4Bv7A==}
     dependencies:
       axios: 0.24.0
-      discord-api-types: 0.25.2
+      discord-api-types: 0.26.1
       ghoststools: 0.6.3
       joi: 17.5.0
     transitivePeerDependencies:
