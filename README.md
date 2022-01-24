@@ -27,3 +27,7 @@ Click on the links below to view the documentation on the different parts of the
 -   The bots main config is located `src/config.ts`, by default it will have the Svelte Discord & Testing configuartions.
 
 -   All secrets should be in a `.env` file, the template/example one can be found in .env.example
+
+# Contributing
+
+All contributing is welcome, please try and make a issue first since most new features might warrant a discussion beforehand. Bug fixes probably won't need a issue and direct pull requests are ok
