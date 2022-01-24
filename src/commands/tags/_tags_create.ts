@@ -25,8 +25,7 @@ export async function tagCreateCommandHandler({
 		)
 	) {
 		await interaction.reply({
-			content:
-				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
+			content: "You don't have the permissions to create a tag.",
 			ephemeral: true,
 		});
 		throw EARLY_RETURN_EXCEPTION;
