@@ -22,8 +22,8 @@ export default command({
 	run: async ({ interaction }) => {
 		const searchTopic = interaction.options.getString('topic');
 		try {
-			if (!searchTopic) {
-				await interaction.reply({
+			if (!searchTopic)
+				return await interaction.reply({
 					embeds: [
 						{
 							color: SVELTE_ORANGE,
@@ -31,21 +31,19 @@ export default command({
 						},
 					],
 				});
-				return;
-			}
+
 			let results = await mdnSearch(searchTopic);
 
-			if (results) {
-				await interaction.reply({
+			if (results)
+				return await interaction.reply({
 					embeds: [listOfLinks(results, 'MDN Docs')],
 				});
-			} else {
-				await interaction.reply({
-					content:
-						'No results found. Try again with a different search term.',
-					ephemeral: true,
-				});
-			}
+
+			await interaction.reply({
+				content:
+					'No results found. Try again with a different search term.',
+				ephemeral: true,
+			});
 		} catch {
 			// Do nothing
 		}

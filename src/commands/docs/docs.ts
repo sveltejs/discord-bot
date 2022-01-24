@@ -42,8 +42,8 @@ export default command({
 		const topic = interaction.options.getString('topic');
 
 		try {
-			if (!topic) {
-				await interaction.reply({
+			if (!topic)
+				return await interaction.reply({
 					embeds: [
 						{
 							description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
@@ -51,24 +51,21 @@ export default command({
 						},
 					],
 				});
-				return;
-			}
-			if (!thisRepoDetails.DOCS_CACHE) {
-				await buildDocsCache(repo);
-			}
+
+			if (!thisRepoDetails.DOCS_CACHE) await buildDocsCache(repo);
+
 			const docsCache = thisRepoDetails.DOCS_CACHE!;
+
 			const results = trgm_search(topic, Object.keys(docsCache), {
 				limit: 5,
 			});
 
-			if (results.length === 0) {
-				await interaction.reply({
+			if (results.length === 0)
+				return await interaction.reply({
 					content:
 						'No matching result found. Try again with a different search term.',
 					ephemeral: true,
 				});
-				return;
-			}
 
 			await interaction.reply({
 				embeds: [
