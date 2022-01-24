@@ -57,3 +57,19 @@ export const TAG_DEL_PERMITTED_ROLES = DEV_MODE
 			// Admins role
 			'476141440091815947',
 	  ];
+
+export const TAG_CREATE_PERMITTED_ROLES = DEV_MODE
+	? [
+			// Perms role in test server
+			'918888136581476402',
+	  ]
+	: [
+			// Moderators role in main server
+			'919214972557484073',
+
+			// Maintainers role
+			'571775211431526410',
+
+			// Admins role
+			'476141440091815947',
+	  ];

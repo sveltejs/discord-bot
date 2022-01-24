@@ -1,7 +1,9 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, Message } from 'discord.js';
+import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
 import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
+import { TAG_CREATE_PERMITTED_ROLES } from '../../config.js';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Message } from 'discord.js';
 
 const validatorRegex = /^[a-z0-9\-\+\_\.\ ]*$/;
 
@@ -16,6 +18,20 @@ export async function tagCreateCommandHandler({
 	tagName: string;
 	supabase: SupabaseClient;
 }) {
+	if (
+		!hasAnyRole(
+			interaction.member as GuildMember,
+			TAG_CREATE_PERMITTED_ROLES,
+		)
+	) {
+		await interaction.reply({
+			content:
+				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
+			ephemeral: true,
+		});
+		throw EARLY_RETURN_EXCEPTION;
+	}
+
 	if (tag) {
 		await interaction.reply({
 			content:
@@ -76,4 +92,8 @@ export async function tagCreateCommandHandler({
 			}),
 		],
 	});
+}
+
+function hasAnyRole(member: GuildMember, roles: Snowflake[]): boolean {
+	return member.roles.cache.hasAny(...roles);
 }
