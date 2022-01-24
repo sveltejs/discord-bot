@@ -1,32 +1,32 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@supabase/supabase-js': ^1.29.2
+  '@supabase/supabase-js': ^1.29.4
   '@types/nice-try': ^2.1.0
   '@types/node': ^16.11.21
   discord.js: ^13.6.0
   dotenv: ^10.0.0
   jellycommands: 1.0.0-next.17
   js-trgm: ^1.0.1
-  node-fetch: ^3.1.1
+  node-fetch: ^3.2.0
   nodemon: ^2.0.15
   npm-run-all: ^4.1.5
   prettier: ^2.5.1
   rimraf: ^3.0.2
-  typescript: ^4.6.0-dev.20220119
+  typescript: ^4.6.0-dev.20220124
   url-regex: ^5.0.0
 
 dependencies:
-  '@supabase/supabase-js': 1.29.2
+  '@supabase/supabase-js': 1.29.4
   '@types/nice-try': 2.1.0
   '@types/node': 16.11.21
   discord.js: 13.6.0
   dotenv: 10.0.0
   jellycommands: 1.0.0-next.17
   js-trgm: 1.0.1
-  node-fetch: 3.1.1
+  node-fetch: 3.2.0
   rimraf: 3.0.2
-  typescript: 4.6.0-dev.20220119
+  typescript: 4.6.0-dev.20220124
   url-regex: 5.0.0
 
 devDependencies:
@@ -94,13 +94,17 @@ packages:
   /@supabase/gotrue-js/1.22.0:
     resolution: {integrity: sha512-6r8YJvl8+mEBO6a5xoFr9K0kVw7C0FmcudFFAop+2FNSo6BXR/eEsPx/yAgVgv+1GowG4n2kOm0TYB7EvcH2QQ==}
     dependencies:
-      cross-fetch: 3.1.4
+      cross-fetch: 3.1.5
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
-  /@supabase/postgrest-js/0.35.1:
-    resolution: {integrity: sha512-N9IOxwgKvek2HqVrC3Usr6hUWvzy53vebsoqLqUBaelu8StATTrhdqaw+9IKthQsn8qoB9A0XD2vN39SGlgd/A==}
+  /@supabase/postgrest-js/0.36.0:
+    resolution: {integrity: sha512-KOnhVy8tEr/qNnvOLpFqwOkt7ilRDFMXY+JJfmLjS3+eZuna1G57w4zb3L0SdY6BL7AKnfzP5BG3yHTAuJPSww==}
     dependencies:
-      cross-fetch: 3.1.4
+      cross-fetch: 3.1.5
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /@supabase/realtime-js/1.3.5:
@@ -113,16 +117,20 @@ packages:
   /@supabase/storage-js/1.5.1:
     resolution: {integrity: sha512-W82st1RvkChVJ/FTCcPXFXfS3V0Z4rZuMnoDnB9/NI5i9r9zspZS40tHpUQ+vbN6R6k0pfr/Waa1jcEd3YAtrQ==}
     dependencies:
-      cross-fetch: 3.1.4
+      cross-fetch: 3.1.5
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
-  /@supabase/supabase-js/1.29.2:
-    resolution: {integrity: sha512-zyURfsWxGeuVQd4QfqeSyzhpplYIQznL92mATcb8uUjnoXRC+oDiVQ3Ak5mtFJlPPT1tRwEWTr5o9fr0AncOcg==}
+  /@supabase/supabase-js/1.29.4:
+    resolution: {integrity: sha512-RR3/Ji6o6GPO1/pXbG9sHoNynWIc3MnBnwgbC0UFc10kQfYcPaRgQCfI66V7O4Gesa0qGGYpcYq6/IUg8Qmh0A==}
     dependencies:
       '@supabase/gotrue-js': 1.22.0
-      '@supabase/postgrest-js': 0.35.1
+      '@supabase/postgrest-js': 0.36.0
       '@supabase/realtime-js': 1.3.5
       '@supabase/storage-js': 1.5.1
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /@szmarczak/http-timer/1.1.2:
@@ -366,10 +374,12 @@ packages:
       xdg-basedir: 4.0.0
     dev: true
 
-  /cross-fetch/3.1.4:
-    resolution: {integrity: sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==}
+  /cross-fetch/3.1.5:
+    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.1
+      node-fetch: 2.6.7
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /cross-spawn/6.0.5:
@@ -570,10 +580,11 @@ packages:
       type: 2.5.0
     dev: false
 
-  /fetch-blob/3.1.3:
-    resolution: {integrity: sha512-ax1Y5I9w+9+JiM+wdHkhBoxew+zG4AJ2SvAD1v1szpddUIiPERVGBxrMcB2ZqW0Y3PP8bOWYv2zqQq1Jp2kqUQ==}
+  /fetch-blob/3.1.4:
+    resolution: {integrity: sha512-Eq5Xv5+VlSrYWEqKrusxY1C3Hm/hjeAsCGVG3ft7pZahlUAChpGZT/Ms1WmSLnEAisEXszjzu/s+ce6HZB2VHA==}
     engines: {node: ^12.20 || >= 14.13}
     dependencies:
+      node-domexception: 1.0.0
       web-streams-polyfill: 3.2.0
     dev: false
 
@@ -616,7 +627,7 @@ packages:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
     engines: {node: '>=12.20.0'}
     dependencies:
-      fetch-blob: 3.1.3
+      fetch-blob: 3.1.4
     dev: false
 
   /fs.realpath/1.0.0:
@@ -1092,9 +1103,9 @@ packages:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: true
 
-  /node-fetch/2.6.1:
-    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
-    engines: {node: 4.x || >=6.0.0}
+  /node-domexception/1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
     dev: false
 
   /node-fetch/2.6.7:
@@ -1109,12 +1120,12 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch/3.1.1:
-    resolution: {integrity: sha512-SMk+vKgU77PYotRdWzqZGTZeuFKlsJ0hu4KPviQKkfY+N3vn2MIzr0rvpnYpR8MtB3IEuhlEcuOLbGvLRlA+yg==}
+  /node-fetch/3.2.0:
+    resolution: {integrity: sha512-8xeimMwMItMw8hRrOl3C9/xzU49HV/yE6ORew/l+dxWimO5A4Ra8ld2rerlJvc/O7et5Z1zrWsPX43v1QBjCxw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       data-uri-to-buffer: 4.0.0
-      fetch-blob: 3.1.3
+      fetch-blob: 3.1.4
       formdata-polyfill: 4.0.10
     dev: false
 
@@ -1152,7 +1163,7 @@ packages:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
       hosted-git-info: 2.8.9
-      resolve: 1.21.0
+      resolve: 1.22.0
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: true
@@ -1336,8 +1347,8 @@ packages:
       rc: 1.2.8
     dev: true
 
-  /resolve/1.21.0:
-    resolution: {integrity: sha512-3wCbTpk5WJlyE4mSOtDLhqQmGFi0/TD9VPwmiolnk8U0wRgMEktqCXd3vy5buTO3tljvalNvKrjHEfrd2WpEKA==}
+  /resolve/1.22.0:
+    resolution: {integrity: sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==}
     hasBin: true
     dependencies:
       is-core-module: 2.8.1
@@ -1555,8 +1566,8 @@ packages:
     dependencies:
       is-typedarray: 1.0.0
 
-  /typescript/4.6.0-dev.20220119:
-    resolution: {integrity: sha512-Ux13gRlLkWU4L1Pv8CrKsY4eDDvWwKacexub3IoEzISa4VFDNwgY9Soi+vlte82Hl6K6glHqeYVPhcMUwCd30A==}
+  /typescript/4.6.0-dev.20220124:
+    resolution: {integrity: sha512-G9kuKvKbpecjC3HpVG23HMd3dic0R/bfk4aH4HNY7+JRGdadGt05GbKKy5xyGfvA1SNSSpXvPnZnj4jeFTDhBw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
