@@ -72,7 +72,9 @@ export default command({
 			.select('*')
 			.eq('tag_name', tagName)
 			.limit(1);
+
 		if (error) return;
+
 		const tag = tags?.[0];
 
 		try {

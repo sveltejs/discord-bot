@@ -52,9 +52,9 @@ export default command({
 					embeds: close_matches?.length
 						? [
 								listOfLinks(
-									close_matches?.map(
+									close_matches.map(
 										(t) => `\`${t.tag_name}\``,
-									) as string[],
+									),
 								),
 						  ]
 						: undefined,

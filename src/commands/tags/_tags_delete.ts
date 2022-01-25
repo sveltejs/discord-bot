@@ -1,9 +1,10 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
+import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
-import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
+import { hasAnyRole } from '../../utils/hasAnyRole.js';
+import { Tag } from './_common.js';
 
 export async function tagDeleteCommandHandler({
 	tag,
@@ -19,35 +20,30 @@ export async function tagDeleteCommandHandler({
 	client: JellyCommands;
 }) {
 	if (!tag) {
-		await interaction.reply({
+		return await interaction.reply({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
 	if (
 		interaction.user.id !== tag.author_id &&
 		!hasAnyRole(interaction.member as GuildMember, TAG_DEL_PERMITTED_ROLES)
 	) {
-		await interaction.reply({
+		return await interaction.reply({
 			content:
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
 
-	const { error } = await supabase
-		.from<Tag>('tags')
-		.delete()
-		.eq('id', tag.id);
-	if (error) {
-		await interaction.reply({
+	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
+		return await interaction.reply({
 			content: `Failed to delete tag "${tagName}".`,
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
 	await interaction.reply({
 		content: `Tag "${tagName}" was successfully deleted.`,
 		embeds: [
@@ -59,8 +55,4 @@ export async function tagDeleteCommandHandler({
 		],
 		ephemeral: true,
 	});
-}
-
-function hasAnyRole(member: GuildMember, roles: Snowflake[]): boolean {
-	return member.roles.cache.hasAny(...roles);
 }
