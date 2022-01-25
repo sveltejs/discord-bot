@@ -31,3 +31,12 @@ Click on the links below to view the documentation on the different parts of the
 # Contributing
 
 All contributing is welcome, please try and make a issue first since most new features might warrant a discussion beforehand. Bug fixes probably won't need a issue and direct pull requests are ok
+
+# Deploying
+
+The bot is able to be ran in any Node 16+ environment. It's built with typescript so you first build the bot then run it:
+
+```sh
+pnpm build
+pnpm start
+```
