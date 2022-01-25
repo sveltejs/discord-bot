@@ -1,11 +1,15 @@
 import { GuildMember, Snowflake } from 'discord.js';
 
 /**
- * Check if a member has any of the given roles.
+ * Check if a member has any of the given roles or ids.
  *
  * @param {GuildMember} member
- * @param {Snowflake[]} roles - The list of roles to compare the member's roles against
+ * @param {Snowflake[]} snowflakes - The list of snowflakes to compare the member's roles/id against
  */
-export function hasAnyRole(member: GuildMember, roles: Snowflake[]): boolean {
-	return member.roles.cache.hasAny(...roles);
+export function has_any_role_or_id(member: GuildMember, snowflakes: Snowflake[]): boolean {
+	for (const snowflake of snowflakes) {
+		if (snowflake === member.id || member.roles.cache.has(snowflake))
+			return true;
+	}
+	return false;
 }

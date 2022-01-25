@@ -3,7 +3,7 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
-import { hasAnyRole } from '../../utils/hasAnyRole.js';
+import { has_any_role_or_id } from '../../utils/hasAnyRole.js';
 import { Tag } from './_common.js';
 
 export async function tagDeleteCommandHandler({
@@ -28,10 +28,7 @@ export async function tagDeleteCommandHandler({
 
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
 	if (
-		!(
-			interaction.user.id === tag.author_id ||
-			hasAnyRole(member, TAG_DEL_PERMITTED_ROLES)
-		)
+		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_ROLES])
 	) {
 		return await interaction.reply({
 			content:

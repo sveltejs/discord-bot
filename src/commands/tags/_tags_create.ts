@@ -3,7 +3,7 @@ import { CommandInteraction, GuildMember, Message } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_CREATE_PERMITTED_ROLES } from '../../config.js';
 import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
-import { hasAnyRole } from '../../utils/hasAnyRole.js';
+import { has_any_role_or_id } from '../../utils/hasAnyRole.js';
 import { Tag } from './_common.js';
 
 const validatorRegex = /^[a-z0-9\-\+\_\.\ ]*$/;
@@ -20,7 +20,7 @@ export async function tagCreateCommandHandler({
 	supabase: SupabaseClient;
 }) {
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
-	if (!hasAnyRole(member, TAG_CREATE_PERMITTED_ROLES)) {
+	if (!has_any_role_or_id(member, TAG_CREATE_PERMITTED_ROLES)) {
 		return await interaction.reply({
 			content: "You don't have the permissions to create a tag.",
 			ephemeral: true,
