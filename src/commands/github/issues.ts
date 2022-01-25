@@ -1,20 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { REPOS } from '../../utils/repositories.js';
-import { githubCommandHandler } from './_common.js';
-
-const query = `query searchResults($searchQuery: String!) {
-	search(type: ISSUE, query: $searchQuery, first: 5) {
-		nodes {
-			... on Issue {
-				title
-				number
-				url
-			}
-		}
-	}
-}
-`;
+import { Repos } from '../../utils/repositories.js';
+import { githubCommandHandler, GithubResultType } from './_common.js';
 
 export default command({
 	name: 'issue',
@@ -29,15 +16,15 @@ export default command({
 			choices: [
 				{
 					name: 'Svelte',
-					value: REPOS.SVELTE,
+					value: Repos.SVELTE,
 				},
 				{
 					name: 'SvelteKit',
-					value: REPOS.SVELTEKIT,
+					value: Repos.SVELTE_KIT,
 				},
 				{
 					name: 'Language Tools',
-					value: REPOS.LANGUAGETOOLS,
+					value: Repos.LANGUAGE_TOOLS,
 				},
 			],
 			required: true,
@@ -50,6 +37,6 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		await githubCommandHandler(interaction, query, 'issue');
+		await githubCommandHandler(interaction, GithubResultType.ISSUE);
 	},
 });

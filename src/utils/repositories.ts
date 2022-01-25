@@ -1,11 +1,11 @@
-export enum REPOS {
+export enum Repos {
 	'SVELTE' = 1,
-	'SVELTEKIT' = 2,
+	'SVELTE_KIT' = 2,
 	'RFCS' = 3,
-	'LANGUAGETOOLS' = 4,
+	'LANGUAGE_TOOLS' = 4,
 }
 
-export const REPO_DETAILS: Record<REPOS, REPO_DETAILS> = {
+export const RepositoryDetails: Record<Repos, RepoInfo> = {
 	1: {
 		NAME: 'Svelte',
 		DOCS_API_URL: 'https://api.svelte.dev/docs/svelte/docs',
@@ -28,7 +28,7 @@ export const REPO_DETAILS: Record<REPOS, REPO_DETAILS> = {
 	},
 };
 
-interface REPO_DETAILS {
+interface RepoInfo {
 	NAME: string;
 	REPOSITORY_NAME: string;
 	DOCS_CACHE?: Record<string, string>;

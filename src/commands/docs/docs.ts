@@ -4,7 +4,7 @@ import { trgm_search } from 'js-trgm';
 import fetch from 'node-fetch';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
 import { listOfLinks } from '../../utils/embedBuilder.js';
-import { REPOS, REPO_DETAILS } from '../../utils/repositories.js';
+import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 export default command({
 	name: 'docs',
@@ -19,11 +19,11 @@ export default command({
 			choices: [
 				{
 					name: 'Svelte',
-					value: REPOS.SVELTE,
+					value: Repos.SVELTE,
 				},
 				{
 					name: 'SvelteKit',
-					value: REPOS.SVELTEKIT,
+					value: Repos.SVELTE_KIT,
 				},
 			],
 			required: true,
@@ -36,9 +36,9 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		const repo: REPOS.SVELTE | REPOS.SVELTEKIT =
+		const repo: Repos.SVELTE | Repos.SVELTE_KIT =
 			interaction.options.getInteger('project', true);
-		const thisRepoDetails = REPO_DETAILS[repo];
+		const thisRepoDetails = RepositoryDetails[repo];
 		const topic = interaction.options.getString('topic');
 
 		try {
@@ -85,8 +85,8 @@ export default command({
 	},
 });
 
-async function buildDocsCache(project: REPOS) {
-	const res = await fetch(REPO_DETAILS[project].DOCS_API_URL as string);
+async function buildDocsCache(project: Repos) {
+	const res = await fetch(RepositoryDetails[project].DOCS_API_URL!);
 
 	if (res.ok) {
 		const data = (await res.json()) as DocsSection[];
@@ -97,7 +97,7 @@ async function buildDocsCache(project: REPOS) {
 			flattened = { ...flattened, ...flattenSection(section) };
 		}
 
-		REPO_DETAILS[project].DOCS_CACHE = flattened;
+		RepositoryDetails[project].DOCS_CACHE = flattened;
 	}
 }
 
