@@ -26,9 +26,12 @@ export async function tagDeleteCommandHandler({
 		});
 	}
 
+	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
 	if (
-		interaction.user.id !== tag.author_id &&
-		!hasAnyRole(interaction.member as GuildMember, TAG_DEL_PERMITTED_ROLES)
+		!(
+			interaction.user.id === tag.author_id ||
+			hasAnyRole(member, TAG_DEL_PERMITTED_ROLES)
+		)
 	) {
 		return await interaction.reply({
 			content:
