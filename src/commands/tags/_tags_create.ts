@@ -1,22 +1,21 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, GuildMember, Message } from 'discord.js';
-import { JellyCommands } from 'jellycommands';
+import { CommandInteraction, Message } from 'discord.js';
 import { TAG_CREATE_PERMITTED_ROLES } from '../../config.js';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { tags_embed_builder } from '../../utils/embedBuilder.js';
 import { has_any_role_or_id } from '../../utils/hasAnyRole.js';
 import { Tag } from './_common.js';
 
-const validatorRegex = /^[a-z0-9\-\+\_\.\ ]*$/;
+const validator_regex = /^[a-z0-9\-\+\_\.\ ]*$/;
 
-export async function tagCreateCommandHandler({
+export async function tag_create_command_handler({
 	tag,
 	interaction,
-	tagName,
+	tag_name,
 	supabase,
 }: {
 	tag: Tag | undefined;
 	interaction: CommandInteraction;
-	tagName: string;
+	tag_name: string;
 	supabase: SupabaseClient;
 }) {
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
@@ -35,7 +34,7 @@ export async function tagCreateCommandHandler({
 		});
 	}
 
-	if (!validatorRegex.test(tagName)) {
+	if (!validator_regex.test(tag_name)) {
 		return await interaction.reply({
 			content:
 				"The name provided isn't valid. It must match `/^[a-z0-9\\-\\+\\_\\.\\ ]*$/`",
@@ -49,13 +48,13 @@ export async function tagCreateCommandHandler({
 		ephemeral: true,
 	});
 
-	let messageColl = await interaction.channel?.awaitMessages({
+	let message_coll = await interaction.channel?.awaitMessages({
 		time: 60000,
 		filter: (message: Message) => message.author === interaction.user,
 		max: 1,
 	});
 
-	const message = messageColl?.first();
+	const message = message_coll?.first();
 	if (!message) {
 		return await interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
@@ -68,23 +67,23 @@ export async function tagCreateCommandHandler({
 	if (
 		(
 			await supabase.from<Tag>('tags').insert({
-				tag_name: tagName,
+				tag_name: tag_name,
 				tag_content: message.content,
 				author_id: interaction.user.id,
 			})
 		).error
 	) {
 		return await interaction.editReply({
-			content: `There was an error in creating the tag "${tagName}". Tag names are case insensitive and should be unique.`,
+			content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
 		});
 	}
 
 	await interaction.editReply({
-		content: `Added tag "${tagName}".`,
+		content: `Added tag "${tag_name}".`,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: message.content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: message.content,
 				author: interaction.user,
 			}),
 		],

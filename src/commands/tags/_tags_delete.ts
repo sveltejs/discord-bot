@@ -2,21 +2,21 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { tags_embed_builder } from '../../utils/embedBuilder.js';
 import { has_any_role_or_id } from '../../utils/hasAnyRole.js';
 import { Tag } from './_common.js';
 
-export async function tagDeleteCommandHandler({
+export async function tag_delete_command_handler({
 	tag,
 	interaction,
 	supabase,
-	tagName,
+	tag_name,
 	client,
 }: {
 	tag: Tag | undefined;
 	interaction: CommandInteraction;
 	supabase: SupabaseClient;
-	tagName: string;
+	tag_name: string;
 	client: JellyCommands;
 }) {
 	if (!tag) {
@@ -39,17 +39,17 @@ export async function tagDeleteCommandHandler({
 
 	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
 		return await interaction.reply({
-			content: `Failed to delete tag "${tagName}".`,
+			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,
 		});
 	}
 
 	await interaction.reply({
-		content: `Tag "${tagName}" was successfully deleted.`,
+		content: `Tag "${tag_name}" was successfully deleted.`,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: tag.tag_content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: tag.tag_content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],

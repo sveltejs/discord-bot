@@ -3,9 +3,9 @@ import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config.js';
 import { Tag } from './_common.js';
-import { tagCreateCommandHandler } from './_tags_create.js';
-import { tagDeleteCommandHandler } from './_tags_delete.js';
-import { tagUpdateCommandHandler } from './_tags_update.js';
+import { tag_create_command_handler } from './_tags_create.js';
+import { tag_delete_command_handler } from './_tags_delete.js';
+import { tag_update_command_handler } from './_tags_update.js';
 
 const enum Actions {
 	CREATE = 'create',
@@ -62,7 +62,7 @@ export default command({
 
 	run: async ({ interaction, client }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
-		const tagName = interaction.options
+		const tag_name = interaction.options
 			.getString('name', true)
 			.toLowerCase();
 		const supabase: SupabaseClient = client.props.get('supabase');
@@ -70,7 +70,7 @@ export default command({
 		const { data: tags, error } = await supabase
 			.from<Tag>('tags')
 			.select('*')
-			.eq('tag_name', tagName)
+			.eq('tag_name', tag_name)
 			.limit(1);
 
 		if (error) return;
@@ -80,31 +80,31 @@ export default command({
 		try {
 			switch (subcommand) {
 				case Actions.CREATE: {
-					await tagCreateCommandHandler({
+					await tag_create_command_handler({
 						tag,
 						interaction,
-						tagName,
+						tag_name,
 						supabase,
 					});
 					break;
 				}
 
 				case Actions.DELETE: {
-					await tagDeleteCommandHandler({
+					await tag_delete_command_handler({
 						tag,
 						interaction,
 						supabase,
-						tagName,
+						tag_name,
 						client,
 					});
 					break;
 				}
 
 				case Actions.UPDATE: {
-					await tagUpdateCommandHandler({
+					await tag_update_command_handler({
 						tag,
 						interaction,
-						tagName,
+						tag_name,
 						client,
 						supabase,
 					});

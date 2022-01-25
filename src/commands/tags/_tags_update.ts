@@ -1,19 +1,19 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
+import { tags_embed_builder } from '../../utils/embedBuilder.js';
 import { Tag } from './_common.js';
 
-export async function tagUpdateCommandHandler({
+export async function tag_update_command_handler({
 	tag,
 	interaction,
-	tagName,
+	tag_name,
 	client,
 	supabase,
 }: {
 	tag: Tag | undefined;
 	interaction: CommandInteraction;
-	tagName: string;
+	tag_name: string;
 	client: JellyCommands;
 	supabase: SupabaseClient;
 }) {
@@ -34,12 +34,12 @@ export async function tagUpdateCommandHandler({
 	}
 
 	await interaction.reply({
-		content: `Editing tag "${tagName}". Send the new contents for the tag in this channel within the next 60 seconds.`,
+		content: `Editing tag "${tag_name}". Send the new contents for the tag in this channel within the next 60 seconds.`,
 		ephemeral: true,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: tag.tag_content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: tag.tag_content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],
@@ -68,16 +68,16 @@ export async function tagUpdateCommandHandler({
 		).error
 	) {
 		return await interaction.editReply({
-			content: `Failed to update tag "${tagName}."`,
+			content: `Failed to update tag "${tag_name}."`,
 		});
 	}
 
 	await interaction.editReply({
-		content: `Tag "${tagName}" was successfully updated.`,
+		content: `Tag "${tag_name}" was successfully updated.`,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: message.content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: message.content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],
