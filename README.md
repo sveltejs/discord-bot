@@ -12,7 +12,7 @@ Welcome to the repo for the official Svelte Discord bot!
 
 2. Run the bot with `pnpm dev`
 
-> if the bot has a error of cannot find module dist/index.js just give it a sec to compile and nodemon will auto restart!
+> You might get a `MODULE_NOT_FOUND` error, just wait a while for tsc to finish compiling the files and nodemon will restart.
 
 # Documentation
 
@@ -24,17 +24,17 @@ Click on the links below to view the documentation on the different parts of the
 
 # Config
 
--   The bots main config is located `src/config.ts`, by default it will have the Svelte Discord & Testing configuartions.
+-   The bots main config is located at [src/config.ts](src/config.ts), by default it will have the Svelte Discord & Testing configurations.
 
--   All secrets should be in a `.env` file, the template/example one can be found in .env.example
+-   All secrets should be in a `.env` file, the template/example can be found [here](./.env.example).
 
 # Contributing
 
-All contributing is welcome, please try and make a issue first since most new features might warrant a discussion beforehand. Bug fixes probably won't need a issue and direct pull requests are ok
+All contributions are welcome, please try and make an issue first since most new features might warrant a discussion beforehand. Bug fixes probably won't need an issue and direct pull requests are ok for them.
 
 # Deploying
 
-The bot is able to be ran in any Node 16+ environment. It's built with typescript so you first build the bot then run it:
+The bot can be ran in any Node 16+ environment. It's written in typescript so you have to build it before running it:
 
 ```sh
 pnpm build
