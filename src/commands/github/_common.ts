@@ -4,28 +4,30 @@ import { GITHUB_TOKEN } from '../../config.js';
 import { listOfLinks } from '../../utils/embedBuilder.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
-const query = `
-query searchResults($search_string: String!, $type: SearchType!, $num: Int!) {
-	search(type: $type, query: $search_string, first: $num) {
-		nodes {
-			... on Discussion {
-				title
-				number
-				url
-			}
-			... on Issue {
-				title
-				number
-				url
-			}
-			... on PullRequest {
-				title
-				number
-				url
+const query =
+	`query searchResults($search_string: String!, $type: SearchType!, $num: Int!) {
+		search(type: $type, query: $search_string, first: $num) {
+			nodes {
+				... on Discussion {
+					title
+					number
+					url
+				}
+				... on Issue {
+					title
+					number
+					url
+				}
+				... on PullRequest {
+					title
+					number
+					url
+				}
 			}
 		}
-	}
-}`.replaceAll('\t', ''); // Indentation doesn't matter so shave some bytes from the payload
+	}`
+		.replaceAll('\t', '') // Indentation doesn't matter so shave some bytes from the payload
+		.trimStart();
 
 /**
  * Query the Github GraphQL API
