@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
-import { TAG_CREATE_PERMITTED_ROLES } from '../../config.js';
+import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
 import { tags_embed_builder } from '../../utils/embedBuilder.js';
 import { has_any_role_or_id } from '../../utils/has_any_role_or_id.js';
 import { Tag } from './_common.js';
@@ -19,7 +19,7 @@ export async function tag_create_command_handler({
 	supabase: SupabaseClient;
 }) {
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
-	if (!has_any_role_or_id(member, TAG_CREATE_PERMITTED_ROLES)) {
+	if (!has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)) {
 		return await interaction.reply({
 			content: "You don't have the permissions to create a tag.",
 			ephemeral: true,

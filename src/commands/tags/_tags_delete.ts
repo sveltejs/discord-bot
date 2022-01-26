@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
+import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { tags_embed_builder } from '../../utils/embedBuilder.js';
 import { has_any_role_or_id } from '../../utils/has_any_role_or_id.js';
 import { Tag } from './_common.js';
@@ -28,7 +28,7 @@ export async function tag_delete_command_handler({
 
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
 	if (
-		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_ROLES])
+		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {
 		return await interaction.reply({
 			content:

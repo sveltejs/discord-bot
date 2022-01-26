@@ -41,8 +41,10 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			// Resources
 			'837012201444999248',
 	  ];
-
-export const TAG_DEL_PERMITTED_ROLES = DEV_MODE
+/**
+ * List of roles/user IDs allowed to delete tags even if they're not the author.
+ */
+export const TAG_DEL_PERMITTED_IDS = DEV_MODE
 	? [
 			// Perms role in test server
 			'918888136581476402',
@@ -57,8 +59,10 @@ export const TAG_DEL_PERMITTED_ROLES = DEV_MODE
 			// Admins role
 			'476141440091815947',
 	  ];
-
-export const TAG_CREATE_PERMITTED_ROLES = DEV_MODE
+/**
+ * List of roles/user IDs allowed to create tags.
+ */
+export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	? [
 			// Perms role in test server
 			'918888136581476402',
