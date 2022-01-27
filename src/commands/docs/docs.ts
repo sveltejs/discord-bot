@@ -43,7 +43,7 @@ export default command({
 
 		try {
 			if (!topic)
-				return await interaction.reply({
+				return interaction.reply({
 					embeds: [
 						{
 							description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
@@ -61,7 +61,7 @@ export default command({
 			});
 
 			if (results.length === 0)
-				return await interaction.reply({
+				return interaction.reply({
 					content:
 						'No matching result found. Try again with a different search term.',
 					ephemeral: true,

@@ -1,66 +1,58 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
+import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { TAG_DEL_PERMITTED_ROLES } from '../../config.js';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
-import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
+import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
+import { tags_embed_builder } from '../../utils/embedBuilder.js';
+import { has_any_role_or_id } from '../../utils/snowflake.js';
+import { Tag } from './_common.js';
 
-export async function tagDeleteCommandHandler({
+export async function tag_delete_command_handler({
 	tag,
 	interaction,
 	supabase,
-	tagName,
+	tag_name,
 	client,
 }: {
 	tag: Tag | undefined;
 	interaction: CommandInteraction;
 	supabase: SupabaseClient;
-	tagName: string;
+	tag_name: string;
 	client: JellyCommands;
 }) {
 	if (!tag) {
-		await interaction.reply({
+		return interaction.reply({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
+	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
 	if (
-		interaction.user.id !== tag.author_id &&
-		!hasAnyRole(interaction.member as GuildMember, TAG_DEL_PERMITTED_ROLES)
+		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {
-		await interaction.reply({
+		return interaction.reply({
 			content:
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
 
-	const { error } = await supabase
-		.from<Tag>('tags')
-		.delete()
-		.eq('id', tag.id);
-	if (error) {
-		await interaction.reply({
-			content: `Failed to delete tag "${tagName}".`,
+	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
+		return interaction.reply({
+			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
 	await interaction.reply({
-		content: `Tag "${tagName}" was successfully deleted.`,
+		content: `Tag "${tag_name}" was successfully deleted.`,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: tag.tag_content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: tag.tag_content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],
 		ephemeral: true,
 	});
-}
-
-function hasAnyRole(member: GuildMember, roles: Snowflake[]): boolean {
-	return member.roles.cache.hasAny(...roles);
 }

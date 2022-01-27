@@ -9,18 +9,18 @@ export function listOfLinks(links: string[], title?: string) {
 	});
 }
 
-export function tagsEmbedBuilder({
-	tagName,
-	tagContent,
+export function tags_embed_builder({
+	tag_name,
+	tag_content,
 	author,
 }: {
-	tagName: string;
-	tagContent: string;
+	tag_name: string;
+	tag_content: string;
 	author?: User;
 }) {
 	return new MessageEmbed({
-		title: tagName,
-		description: tagContent,
+		title: tag_name,
+		description: tag_content,
 		author: author
 			? {
 					name: author.tag,
