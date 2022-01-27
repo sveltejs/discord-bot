@@ -64,15 +64,13 @@ export async function tag_create_command_handler({
 	// All messages from the bot are ephemeral so feels kinda weird to have the message stick around
 	await message.delete();
 
-	if (
-		(
-			await supabase.from<Tag>('tags').insert({
-				tag_name: tag_name,
-				tag_content: message.content,
-				author_id: interaction.user.id,
-			})
-		).error
-	) {
+	const tag_update = await supabase.from<Tag>('tags').insert({
+		tag_name: tag_name,
+		tag_content: message.content,
+		author_id: interaction.user.id,
+	});
+
+	if (tag_update.error) {
 		return interaction.editReply({
 			content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
 		});
