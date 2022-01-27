@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
 import { tags_embed_builder } from '../../utils/embedBuilder.js';
-import { has_any_role_or_id } from '../../utils/has_any_role_or_id.js';
+import { has_any_role_or_id } from '../../utils/snowflake.js';
 import { Tag } from './_common.js';
 
 const validator_regex = /^[a-z0-9\-\+\_\.\ ]*$/;

@@ -3,7 +3,7 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { tags_embed_builder } from '../../utils/embedBuilder.js';
-import { has_any_role_or_id } from '../../utils/has_any_role_or_id.js';
+import { has_any_role_or_id } from '../../utils/snowflake.js';
 import { Tag } from './_common.js';
 
 export async function tag_delete_command_handler({
