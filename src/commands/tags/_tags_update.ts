@@ -59,14 +59,12 @@ export async function tag_update_command_handler({
 	}
 	await message.delete();
 
-	if (
-		(
-			await supabase
-				.from<Tag>('tags')
-				.update({ tag_content: message.content })
-				.eq('id', tag.id)
-		).error
-	) {
+	const tags_update = await supabase
+		.from<Tag>('tags')
+		.update({ tag_content: message.content })
+		.eq('id', tag.id);
+
+	if (tags_update.error) {
 		return interaction.editReply({
 			content: `Failed to update tag "${tag_name}."`,
 		});
