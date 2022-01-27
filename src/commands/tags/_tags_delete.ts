@@ -20,7 +20,7 @@ export async function tag_delete_command_handler({
 	client: JellyCommands;
 }) {
 	if (!tag) {
-		return await interaction.reply({
+		return interaction.reply({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
@@ -30,7 +30,7 @@ export async function tag_delete_command_handler({
 	if (
 		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {
-		return await interaction.reply({
+		return interaction.reply({
 			content:
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
@@ -38,7 +38,7 @@ export async function tag_delete_command_handler({
 	}
 
 	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
-		return await interaction.reply({
+		return interaction.reply({
 			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,
 		});

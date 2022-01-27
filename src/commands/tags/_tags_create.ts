@@ -20,14 +20,14 @@ export async function tag_create_command_handler({
 }) {
 	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
 	if (!has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)) {
-		return await interaction.reply({
+		return interaction.reply({
 			content: "You don't have the permissions to create a tag.",
 			ephemeral: true,
 		});
 	}
 
 	if (tag) {
-		return await interaction.reply({
+		return interaction.reply({
 			content:
 				'A tag with that name exists already. Did you mean to do `/tags update` instead?',
 			ephemeral: true,
@@ -35,7 +35,7 @@ export async function tag_create_command_handler({
 	}
 
 	if (!validator_regex.test(tag_name)) {
-		return await interaction.reply({
+		return interaction.reply({
 			content:
 				"The name provided isn't valid. It must match `/^[a-z0-9\\-\\+\\_\\.\\ ]*$/`",
 			ephemeral: true,
@@ -56,7 +56,7 @@ export async function tag_create_command_handler({
 
 	const message = message_coll?.first();
 	if (!message) {
-		return await interaction.editReply({
+		return interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
 	}
@@ -73,7 +73,7 @@ export async function tag_create_command_handler({
 			})
 		).error
 	) {
-		return await interaction.editReply({
+		return interaction.editReply({
 			content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
 		});
 	}

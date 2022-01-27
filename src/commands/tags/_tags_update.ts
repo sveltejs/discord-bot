@@ -18,7 +18,7 @@ export async function tag_update_command_handler({
 	supabase: SupabaseClient;
 }) {
 	if (!tag) {
-		return await interaction.reply({
+		return interaction.reply({
 			content:
 				'No tag with that name exists. Did you mean to do `/tags create` instead?',
 			ephemeral: true,
@@ -26,7 +26,7 @@ export async function tag_update_command_handler({
 	}
 
 	if (interaction.user.id !== tag.author_id) {
-		return await interaction.reply({
+		return interaction.reply({
 			content:
 				"You don't have the permissions to edit that tag. You have to be the author of the tag.",
 			ephemeral: true,
@@ -53,7 +53,7 @@ export async function tag_update_command_handler({
 
 	const message = messageColl?.first();
 	if (!message) {
-		return await interaction.editReply({
+		return interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
 	}
@@ -67,7 +67,7 @@ export async function tag_update_command_handler({
 				.eq('id', tag.id)
 		).error
 	) {
-		return await interaction.editReply({
+		return interaction.editReply({
 			content: `Failed to update tag "${tag_name}."`,
 		});
 	}
