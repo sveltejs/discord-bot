@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 let cached_tutorials: Record<string, string>;
 
 interface Tutorial {
@@ -15,9 +17,9 @@ interface TutorialSection {
  */
 export async function get_tutorials() {
 	if (cached_tutorials) return cached_tutorials;
-
+	console.log('Fetching tutorials.');
 	const res = await fetch('https://api.svelte.dev/docs/svelte/tutorial');
-
+	console.log(res);
 	if (res.ok) {
 		const data = (await res.json()) as Array<TutorialSection>;
 		cached_tutorials = {};

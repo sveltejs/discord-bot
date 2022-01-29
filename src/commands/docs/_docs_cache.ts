@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 const cache = new Map<Repos, Record<string, string>>();
