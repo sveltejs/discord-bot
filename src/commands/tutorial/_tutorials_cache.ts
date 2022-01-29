@@ -24,9 +24,9 @@ export async function get_tutorials() {
 		const data = (await res.json()) as Array<TutorialSection>;
 		cached_tutorials = {};
 
-		for (let tutSection of data) {
-			for (let tutorial of tutSection.tutorials) {
-				const title = `${tutSection.name}: ${tutorial.name}`;
+		for (const section of data) {
+			for (const tutorial of section.tutorials) {
+				const title = `${section.name}: ${tutorial.name}`;
 				cached_tutorials[title] = tutorial.slug;
 			}
 		}
