@@ -26,7 +26,8 @@ const query =
 			}
 		}
 	}`
-		.replaceAll('\t', '') // Indentation doesn't matter so shave some bytes from the payload
+		.replace(/\t/g, '')
+		.replace(/\n}/g, '}') // Indentation doesn't matter so shave some bytes from the payload
 		.trimStart();
 
 /**
