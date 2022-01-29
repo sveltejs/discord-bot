@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import fetch from 'node-fetch';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { get_docs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',
@@ -52,11 +52,9 @@ export default command({
 					],
 				});
 
-			if (!thisRepoDetails.DOCS_CACHE) await buildDocsCache(repo);
+			const cached_docs = await get_docs(repo);
 
-			const docsCache = thisRepoDetails.DOCS_CACHE!;
-
-			const results = trgm_search(topic, Object.keys(docsCache), {
+			const results = trgm_search(topic, Object.keys(cached_docs), {
 				limit: 5,
 			});
 
@@ -74,7 +72,7 @@ export default command({
 							(result) =>
 								`[${result.target}](${
 									thisRepoDetails.DOCS_URL
-								}#${docsCache[result.target]})`,
+								}#${cached_docs[result.target]})`,
 						),
 					),
 				],
@@ -84,37 +82,3 @@ export default command({
 		}
 	},
 });
-
-async function buildDocsCache(project: Repos) {
-	const res = await fetch(RepositoryDetails[project].DOCS_API_URL!);
-
-	if (res.ok) {
-		const data = (await res.json()) as DocsSection[];
-
-		let flattened: Record<string, string> = {};
-
-		for (let section of data) {
-			flattened = { ...flattened, ...flattenSection(section) };
-		}
-
-		RepositoryDetails[project].DOCS_CACHE = flattened;
-	}
-}
-
-function flattenSection(section: DocsSection) {
-	let subsections: Record<string, string> = {};
-
-	subsections[section.title] = section.slug;
-
-	for (let subsection of section.sections) {
-		subsections = { ...subsections, ...flattenSection(subsection) };
-	}
-
-	return subsections;
-}
-
-type DocsSection = {
-	slug: string;
-	title: string;
-	sections: Array<DocsSection>;
-};
