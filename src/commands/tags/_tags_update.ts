@@ -1,46 +1,45 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, Message } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
-import { tagsEmbedBuilder } from '../../utils/embedBuilder.js';
-import { EARLY_RETURN_EXCEPTION, Tag } from './_common.js';
+import { tags_embed_builder } from '../../utils/embedBuilder.js';
+import { Tag } from './_common.js';
 
-export async function tagUpdateCommandHandler({
+export async function tag_update_command_handler({
 	tag,
 	interaction,
-	tagName,
+	tag_name,
 	client,
 	supabase,
 }: {
 	tag: Tag | undefined;
 	interaction: CommandInteraction;
-	tagName: string;
+	tag_name: string;
 	client: JellyCommands;
 	supabase: SupabaseClient;
 }) {
 	if (!tag) {
-		await interaction.reply({
+		return interaction.reply({
 			content:
 				'No tag with that name exists. Did you mean to do `/tags create` instead?',
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
 	if (interaction.user.id !== tag.author_id) {
-		await interaction.reply({
+		return interaction.reply({
 			content:
 				"You don't have the permissions to edit that tag. You have to be the author of the tag.",
 			ephemeral: true,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
 
 	await interaction.reply({
-		content: `Editing tag "${tagName}". Send the new contents for the tag in this channel within the next 60 seconds.`,
+		content: `Editing tag "${tag_name}". Send the new contents for the tag in this channel within the next 60 seconds.`,
 		ephemeral: true,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: tag.tag_content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: tag.tag_content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],
@@ -54,30 +53,29 @@ export async function tagUpdateCommandHandler({
 
 	const message = messageColl?.first();
 	if (!message) {
-		await interaction.editReply({
+		return interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
 	await message.delete();
 
-	const { error } = await supabase
+	const tags_update = await supabase
 		.from<Tag>('tags')
 		.update({ tag_content: message.content })
 		.eq('id', tag.id);
 
-	if (error) {
-		await interaction.editReply({
-			content: `Failed to update tag "${tagName}."`,
+	if (tags_update.error) {
+		return interaction.editReply({
+			content: `Failed to update tag "${tag_name}."`,
 		});
-		throw EARLY_RETURN_EXCEPTION;
 	}
+
 	await interaction.editReply({
-		content: `Tag "${tagName}" was successfully updated.`,
+		content: `Tag "${tag_name}" was successfully updated.`,
 		embeds: [
-			tagsEmbedBuilder({
-				tagName,
-				tagContent: message.content,
+			tags_embed_builder({
+				tag_name,
+				tag_content: message.content,
 				author: client.users.cache.get(tag.author_id),
 			}),
 		],

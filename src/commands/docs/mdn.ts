@@ -23,7 +23,7 @@ export default command({
 		const searchTopic = interaction.options.getString('topic');
 		try {
 			if (!searchTopic)
-				return await interaction.reply({
+				return interaction.reply({
 					embeds: [
 						{
 							color: SVELTE_ORANGE,
@@ -35,7 +35,7 @@ export default command({
 			let results = await mdnSearch(searchTopic);
 
 			if (results)
-				return await interaction.reply({
+				return interaction.reply({
 					embeds: [listOfLinks(results, 'MDN Docs')],
 				});
 

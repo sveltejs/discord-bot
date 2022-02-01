@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
-export const TEST_GUILD_ID = '918887934822858802';
+export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '918887934822858802';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
@@ -41,8 +41,10 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			// Resources
 			'837012201444999248',
 	  ];
-
-export const TAG_DEL_PERMITTED_ROLES = DEV_MODE
+/**
+ * List of roles/user IDs allowed to delete tags even if they're not the author.
+ */
+export const TAG_DEL_PERMITTED_IDS = DEV_MODE
 	? [
 			// Perms role in test server
 			'918888136581476402',
@@ -57,8 +59,10 @@ export const TAG_DEL_PERMITTED_ROLES = DEV_MODE
 			// Admins role
 			'476141440091815947',
 	  ];
-
-export const TAG_CREATE_PERMITTED_ROLES = DEV_MODE
+/**
+ * List of roles/user IDs allowed to create tags.
+ */
+export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	? [
 			// Perms role in test server
 			'918888136581476402',

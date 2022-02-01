@@ -13,7 +13,7 @@ specifiers:
   npm-run-all: ^4.1.5
   prettier: ^2.5.1
   rimraf: ^3.0.2
-  typescript: ^4.6.0-dev.20220201
+  typescript: ^4.5.5
   url-regex: ^5.0.0
 
 dependencies:
@@ -26,7 +26,7 @@ dependencies:
   js-trgm: 1.0.2
   node-fetch: 3.2.0
   rimraf: 3.0.2
-  typescript: 4.6.0-dev.20220201
+  typescript: 4.5.5
   url-regex: 5.0.0
 
 devDependencies:
@@ -1566,8 +1566,8 @@ packages:
     dependencies:
       is-typedarray: 1.0.0
 
-  /typescript/4.6.0-dev.20220201:
-    resolution: {integrity: sha512-FWbG/TBTm+wS18VS0QrZ8VDeBbjVPXhRlfEXb1KjhQ4sTGupiFzdEpHeJTsARd4KoJ8MP4OTdWNm/Wz+O4EosQ==}
+  /typescript/4.5.5:
+    resolution: {integrity: sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false

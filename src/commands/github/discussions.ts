@@ -1,20 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
-import { REPOS } from '../../utils/repositories.js';
-import { githubCommandHandler } from './_common.js';
-
-const query = `query searchResults($searchQuery: String!) {
-	search(type: DISCUSSION, query: $searchQuery, first: 5) {
-		nodes {
-			... on Discussion {
-				title
-				number
-				url
-			}
-		}
-	}
-}
-`;
+import { Repos } from '../../utils/repositories.js';
+import { githubCommandHandler, GithubResultType } from './_common.js';
 
 export default command({
 	name: 'discussion',
@@ -29,7 +16,7 @@ export default command({
 			choices: [
 				{
 					name: 'SvelteKit',
-					value: REPOS.SVELTEKIT,
+					value: Repos.SVELTE_KIT,
 				},
 			],
 			required: true,
@@ -42,6 +29,6 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		await githubCommandHandler(interaction, query);
+		await githubCommandHandler(interaction, GithubResultType.DISCUSSION);
 	},
 });
