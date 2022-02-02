@@ -1,3 +1,5 @@
+import { getTitleFromUrl } from '../utils/unfurl.js';
+import type { Message } from 'discord.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
 
@@ -46,13 +48,29 @@ export default event({
 			message.channel.type == 'GUILD_TEXT'
 		) {
 			try {
-				message.channel.threads.create({
-					name: 'Discussion',
+				const thread = await message.channel.threads.create({
+					name: 'Loading Name...',
 					startMessage: message,
 				});
+
+				// Generate the thread name after so that the thread creates faster
+				await thread.setName(await getThreadName(message));
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
 			}
 		}
 	},
 });
+
+async function getThreadName(message: Message): Promise<string> {
+	const url = message.content.match(urlRegex());
+
+	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
+	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
+		return `Q - ${message.content.slice(0, 32)}`;
+
+	const urlName = await getTitleFromUrl(url[0]);
+
+	// Return the urlname and fallback to discussion
+	return urlName || 'Discussion';
+}
