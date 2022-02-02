@@ -62,15 +62,12 @@ export default event({
 	},
 });
 
-async function getThreadName(message: Message): Promise<string> {
+function getThreadName(message: Message): string | Promise<string> {
 	const url = message.content.match(urlRegex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
 	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
 		return `Q - ${message.content.slice(0, 22)}`;
 
-	const urlName = await getTitleFromUrl(url[0]);
-
-	// Return the urlname and fallback to discussion
-	return urlName || 'Discussion';
+	return getTitleFromUrl(url[0]);
 }
