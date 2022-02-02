@@ -67,7 +67,7 @@ async function getThreadName(message: Message): Promise<string> {
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
 	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
-		return `Q - ${message.content.slice(0, 32)}`;
+		return `Q - ${message.content.slice(0, 22)}`;
 
 	const urlName = await getTitleFromUrl(url[0]);
 
