@@ -1,10 +1,10 @@
 import { MessageEmbed, User } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
-export function listOfLinks(links: string[], title?: string) {
+export function list_embed_builder(list_items: string[], title?: string) {
 	return new MessageEmbed({
 		color: SVELTE_ORANGE,
-		description: links.join('\n'),
+		description: list_items.join('\n'),
 		title,
 	});
 }

@@ -2,7 +2,10 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config.js';
-import { listOfLinks, tags_embed_builder } from '../../utils/embedBuilder.js';
+import {
+	list_embed_builder,
+	tags_embed_builder,
+} from '../../utils/embed_helpers.js';
 import { Tag } from './_common.js';
 
 export default command({
@@ -51,7 +54,7 @@ export default command({
 					}`,
 					embeds: close_matches?.length
 						? [
-								listOfLinks(
+								list_embed_builder(
 									close_matches.map(
 										(t) => `\`${t.tag_name}\``,
 									),

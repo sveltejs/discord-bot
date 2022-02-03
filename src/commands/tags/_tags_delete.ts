@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CommandInteraction, GuildMember } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
-import { tags_embed_builder } from '../../utils/embedBuilder.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { has_any_role_or_id } from '../../utils/snowflake.js';
 import { Tag } from './_common.js';
 

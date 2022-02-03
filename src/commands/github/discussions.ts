@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { Repos } from '../../utils/repositories.js';
-import { githubCommandHandler, GithubResultType } from './_common.js';
+import { github_command_handler, GithubResultType } from './_common.js';
 
 export default command({
 	name: 'discussion',
@@ -29,6 +29,6 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		await githubCommandHandler(interaction, GithubResultType.DISCUSSION);
+		await github_command_handler(interaction, GithubResultType.DISCUSSION);
 	},
 });

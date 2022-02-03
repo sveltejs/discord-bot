@@ -3,7 +3,7 @@ import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
-import { listOfLinks } from '../../utils/embedBuilder.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'mdn',
@@ -36,7 +36,7 @@ export default command({
 
 			if (results)
 				return interaction.reply({
-					embeds: [listOfLinks(results, 'MDN Docs')],
+					embeds: [list_embed_builder(results, 'MDN Docs')],
 				});
 
 			await interaction.reply({

@@ -1,7 +1,7 @@
 import { CommandInteraction } from 'discord.js';
 import fetch, { Headers } from 'node-fetch';
 import { GITHUB_TOKEN } from '../../config.js';
-import { listOfLinks } from '../../utils/embedBuilder.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 const query =
@@ -36,7 +36,7 @@ const query =
  * @returns `null` if there was an error or if there were 0 results
  * otherwise a `string[]` of formatted links to the results.
  */
-async function githubSearch(
+async function search_github(
 	search_string: string,
 	type: 'DISCUSSION' | 'ISSUE', // The API doesn't distinguish between issues and PRs here.
 	/**
@@ -75,18 +75,18 @@ async function githubSearch(
 		: null;
 }
 
-export async function githubCommandHandler(
+export async function github_command_handler(
 	interaction: CommandInteraction,
 	type: GithubResultType,
 ) {
-	const repoName =
+	const repo_name =
 		RepositoryDetails[
 			interaction.options.getInteger('repository', true) as Repos
 		].REPOSITORY_NAME;
 
 	const topic = interaction.options.getString('topic');
 
-	const search_string = `repo:${repoName} ${topic ?? ''} ${
+	const search_string = `repo:${repo_name} ${topic ?? ''} ${
 		type === GithubResultType.ISSUE
 			? 'is:issue'
 			: type === GithubResultType.PULL_REQUEST
@@ -95,7 +95,7 @@ export async function githubCommandHandler(
 	}`;
 
 	try {
-		const results = await githubSearch(
+		const results = await search_github(
 			search_string,
 			type === GithubResultType.DISCUSSION ? 'DISCUSSION' : 'ISSUE',
 		);
@@ -103,7 +103,7 @@ export async function githubCommandHandler(
 		await interaction.reply(
 			results
 				? {
-						embeds: [listOfLinks(results)],
+						embeds: [list_embed_builder(results)],
 				  }
 				: {
 						content: 'No results found.',

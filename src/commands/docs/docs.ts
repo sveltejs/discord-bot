@@ -3,7 +3,7 @@ import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
 import fetch from 'node-fetch';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
-import { listOfLinks } from '../../utils/embedBuilder.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 export default command({
@@ -69,7 +69,7 @@ export default command({
 
 			await interaction.reply({
 				embeds: [
-					listOfLinks(
+					list_embed_builder(
 						results.map(
 							(result) =>
 								`[${result.target}](${
