@@ -1,6 +1,6 @@
 import { unfurl } from 'unfurl.js';
 
-export async function getTitleFromUrl(url: string): Promise<string> {
+export async function get_title_from_url(url: string): Promise<string> {
 	try {
 		const data = await unfurl(url, {
 			compress: true,

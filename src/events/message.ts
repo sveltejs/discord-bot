@@ -1,4 +1,4 @@
-import { getTitleFromUrl } from '../utils/unfurl.js';
+import { get_title_from_url } from '../utils/unfurl.js';
 import type { Message } from 'discord.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
@@ -54,7 +54,7 @@ export default event({
 				});
 
 				// Generate the thread name after so that the thread creates faster
-				await thread.setName(await getThreadName(message));
+				await thread.setName(await get_thread_name(message));
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
 			}
@@ -62,12 +62,12 @@ export default event({
 	},
 });
 
-function getThreadName(message: Message): string | Promise<string> {
+function get_thread_name(message: Message): string | Promise<string> {
 	const url = message.content.match(urlRegex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
 	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
 		return `Q - ${message.content.slice(0, 22)}`;
 
-	return getTitleFromUrl(url[0]);
+	return get_title_from_url(url[0]);
 }
