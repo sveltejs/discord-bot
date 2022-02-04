@@ -31,7 +31,6 @@ export const RepositoryDetails: Record<Repos, RepoInfo> = {
 interface RepoInfo {
 	NAME: string;
 	REPOSITORY_NAME: string;
-	DOCS_CACHE?: Record<string, string>;
 	DOCS_URL?: string;
 	DOCS_API_URL?: string;
 }

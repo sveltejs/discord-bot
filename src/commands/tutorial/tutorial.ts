@@ -1,36 +1,8 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import fetch from 'node-fetch';
 import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
-
-let tutorialsCache: Record<string, string>;
-
-interface Tutorial {
-	name: string;
-	slug: string;
-}
-
-interface TutorialSection {
-	name: string;
-	tutorials: Tutorial[];
-}
-
-async function buildTutorialsCache() {
-	const res = await fetch('https://api.svelte.dev/docs/svelte/tutorial');
-	console.log('Fetching tutorials');
-	if (res.ok) {
-		const data = (await res.json()) as Array<TutorialSection>;
-		tutorialsCache = {};
-
-		for (let tutSection of data) {
-			for (let tutorial of tutSection.tutorials) {
-				const title = `${tutSection.name}: ${tutorial.name}`;
-				tutorialsCache[title] = tutorial.slug;
-			}
-		}
-	}
-}
+import { get_tutorials } from './_tutorials_cache.js';
 
 export default command({
 	name: 'tutorial',
@@ -61,10 +33,9 @@ export default command({
 				});
 				return;
 			}
-			if (!tutorialsCache) {
-				await buildTutorialsCache();
-			}
-			let results = trgm_search(topic, Object.keys(tutorialsCache), {
+
+			const cached_tutorials = await get_tutorials();
+			let results = trgm_search(topic, Object.keys(cached_tutorials), {
 				limit: 1,
 			});
 
@@ -76,14 +47,14 @@ export default command({
 				return;
 			}
 
-			const topResult = results[0];
+			const top_result = results[0];
 			interaction.reply({
 				embeds: [
 					{
 						description: `Have you gone through the tutorial page on [${
-							topResult.target
+							top_result.target
 						}](https://svelte.dev/tutorial/${
-							tutorialsCache[topResult.target]
+							cached_tutorials[top_result.target]
 						})?`,
 						color: SVELTE_ORANGE,
 					},
