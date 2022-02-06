@@ -65,6 +65,7 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
  * List of roles/user IDs allowed to delete tags even if they're not the author.
  */
 export const TAG_DEL_PERMITTED_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
+
 /**
  * List of roles/user IDs allowed to create tags.
  */
