@@ -35,23 +35,18 @@ export default command({
 	dev: true,
 
 	run: async ({ interaction }) => {
-		const invalidInteraction =
-			!interaction.inGuild() ||
-			!interaction.guild ||
-			!interaction.channel;
-
-		if (invalidInteraction)
-			return void interaction.followUp({
-				content: 'Not in guild',
-				ephemeral: true,
-			});
-
 		const subcommand = interaction.options.getSubcommand(true);
-		const thread = await interaction.channel.fetch();
+		const thread = await interaction.channel?.fetch();
 
-		const member = await interaction.guild.members.fetch(
+		const member = await interaction.guild?.members.fetch(
 			interaction.user.id,
 		);
+
+		if (!member)
+			return void interaction.followUp({
+				content: 'Unable to find you',
+				ephemeral: true,
+			});
 
 		if (!thread || !thread.isThread())
 			return void interaction.followUp({
