@@ -48,7 +48,7 @@ export default command({
 				ephemeral: true,
 			});
 
-		if (!thread || !thread.isThread())
+		if (!thread?.isThread())
 			return void interaction.followUp({
 				content: 'This channel is not a thread',
 				ephemeral: true,
