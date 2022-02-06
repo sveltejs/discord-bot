@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
+import { build_embed } from '../../utils/embed_helpers.js';
+import { get_tutorials } from './_tutorials_cache.js';
+import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
-import { get_tutorials } from './_tutorials_cache.js';
 
 export default command({
 	name: 'tutorial',
@@ -24,11 +25,10 @@ export default command({
 			if (!topic) {
 				interaction.reply({
 					embeds: [
-						{
+						build_embed({
 							description:
 								'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
-							color: SVELTE_ORANGE,
-						},
+						}),
 					],
 				});
 				return;
@@ -50,14 +50,13 @@ export default command({
 			const top_result = results[0];
 			interaction.reply({
 				embeds: [
-					{
+					build_embed({
 						description: `Have you gone through the tutorial page on [${
 							top_result.target
 						}](https://svelte.dev/tutorial/${
 							cached_tutorials[top_result.target]
 						})?`,
-						color: SVELTE_ORANGE,
-					},
+					}),
 				],
 			});
 		} catch {

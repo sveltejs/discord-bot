@@ -1,9 +1,11 @@
-import { MessageEmbed, User } from 'discord.js';
+import { MessageEmbed, MessageEmbedOptions, User } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
+export const build_embed = (options: MessageEmbedOptions) =>
+	new MessageEmbed({ color: SVELTE_ORANGE, ...options });
+
 export function list_embed_builder(list_items: string[], title?: string) {
-	return new MessageEmbed({
-		color: SVELTE_ORANGE,
+	return build_embed({
 		description: list_items.join('\n'),
 		title,
 	});
@@ -18,7 +20,7 @@ export function tags_embed_builder({
 	tag_content: string;
 	author?: User;
 }) {
-	return new MessageEmbed({
+	return build_embed({
 		title: tag_name,
 		description: tag_content,
 		author: author
@@ -29,6 +31,5 @@ export function tags_embed_builder({
 					}),
 			  }
 			: undefined,
-		color: SVELTE_ORANGE,
 	});
 }

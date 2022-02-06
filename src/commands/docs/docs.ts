@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
+import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import { get_docs } from './_docs_cache.js';
+import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import { DEV_MODE, SVELTE_ORANGE } from '../../config.js';
-import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { get_docs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',
@@ -45,10 +45,9 @@ export default command({
 			if (!topic)
 				return interaction.reply({
 					embeds: [
-						{
+						build_embed({
 							description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
-							color: SVELTE_ORANGE,
-						},
+						}),
 					],
 				});
 
