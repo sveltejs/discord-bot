@@ -65,6 +65,10 @@ export default command({
 		const startMessage = await thread.fetchStarterMessage();
 		if (startMessage) allowedIds.push(startMessage.author.id);
 
+		// Thread owners can also archive/rename threads
+		const threadOwner = await thread.fetchOwner();
+		if (threadOwner) allowedIds.push(threadOwner.id);
+
 		if (!has_any_role_or_id(member, allowedIds))
 			return void interaction.followUp({
 				content: "You don't have the permissions to manage this thread",
