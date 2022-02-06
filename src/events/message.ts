@@ -12,9 +12,9 @@ export default event({
 		if (message.author.bot) return;
 
 		if (LINK_ONLY_CHANNELS.includes(message.channel.id)) {
-			const hasLink = urlRegex().test(message.content);
+			const has_link = urlRegex().test(message.content);
 
-			if (!hasLink) {
+			if (!has_link) {
 				try {
 					if (message.deletable) await message.delete();
 

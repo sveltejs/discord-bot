@@ -38,7 +38,7 @@ export default command({
 	run: async ({ interaction }) => {
 		const repo: Repos.SVELTE | Repos.SVELTE_KIT =
 			interaction.options.getInteger('project', true);
-		const thisRepoDetails = RepositoryDetails[repo];
+		const repo_details = RepositoryDetails[repo];
 		const topic = interaction.options.getString('topic');
 
 		try {
@@ -46,7 +46,7 @@ export default command({
 				return interaction.reply({
 					embeds: [
 						build_embed({
-							description: `[${thisRepoDetails.NAME} Docs](${thisRepoDetails.DOCS_URL})`,
+							description: `[${repo_details.NAME} Docs](${repo_details.DOCS_URL})`,
 						}),
 					],
 				});
@@ -69,9 +69,9 @@ export default command({
 					list_embed_builder(
 						results.map(
 							(result) =>
-								`[${result.target}](${
-									thisRepoDetails.DOCS_URL
-								}#${cached_docs[result.target]})`,
+								`[${result.target}](${repo_details.DOCS_URL}#${
+									cached_docs[result.target]
+								})`,
 						),
 					),
 				],

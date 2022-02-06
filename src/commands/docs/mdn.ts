@@ -31,7 +31,7 @@ export default command({
 					],
 				});
 
-			let results = await mdnSearch(searchTopic);
+			let results = await mdn_search(searchTopic);
 
 			if (results)
 				return interaction.reply({
@@ -49,15 +49,15 @@ export default command({
 	},
 });
 
-async function mdnSearch(
+async function mdn_search(
 	query: string,
 	maxResults: number = 5,
 ): Promise<null | string[]> {
-	const reqUrl = new URL('https://developer.mozilla.org/api/v1/search');
-	reqUrl.searchParams.set('q', query);
-	reqUrl.searchParams.set('size', maxResults.toString());
+	const req_url = new URL('https://developer.mozilla.org/api/v1/search');
+	req_url.searchParams.set('q', query);
+	req_url.searchParams.set('size', maxResults.toString());
 
-	const res = await fetch(reqUrl.toString());
+	const res = await fetch(req_url.toString());
 
 	if (res.ok) {
 		let results: any = await res.json();
