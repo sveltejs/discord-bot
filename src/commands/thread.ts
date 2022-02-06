@@ -34,7 +34,7 @@ export default command({
 	defer: true,
 	dev: true,
 
-	run: async ({ interaction }) => {
+	run: async ({ interaction }): Promise<void> => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
