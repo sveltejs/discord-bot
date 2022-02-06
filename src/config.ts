@@ -1,5 +1,19 @@
 import 'dotenv/config';
 
+const ADMIN_ROLES = [
+	// Moderators role in main server
+	'919214972557484073',
+
+	// Maintainers role
+	'571775211431526410',
+
+	// Admins role
+	'476141440091815947',
+];
+
+// For use in dev server
+const TEST_ADMIN_ROLES = ['918888136581476402'];
+
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
 export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '918887934822858802';
@@ -43,43 +57,20 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 
 			// svelte-help
 			'939867760492703744',
-		
+
 			// kit-help
 			'939868205869072444',
 	  ];
 /**
  * List of roles/user IDs allowed to delete tags even if they're not the author.
  */
-export const TAG_DEL_PERMITTED_IDS = DEV_MODE
-	? [
-			// Perms role in test server
-			'918888136581476402',
-	  ]
-	: [
-			// Moderators role in main server
-			'919214972557484073',
+export const TAG_DEL_PERMITTED_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
 
-			// Maintainers role
-			'571775211431526410',
-
-			// Admins role
-			'476141440091815947',
-	  ];
 /**
  * List of roles/user IDs allowed to create tags.
  */
 export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
-	? [
-			// Perms role in test server
-			'918888136581476402',
-	  ]
-	: [
-			// Moderators role in main server
-			'919214972557484073',
+	? TEST_ADMIN_ROLES
+	: ADMIN_ROLES;
 
-			// Maintainers role
-			'571775211431526410',
-
-			// Admins role
-			'476141440091815947',
-	  ];
+export const THREAD_ADMIN_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;

@@ -1,13 +1,9 @@
+import { AUTO_THREAD_CHANNELS, LINK_ONLY_CHANNELS } from '../config.js';
 import { get_title_from_url } from '../utils/unfurl.js';
+import { build_embed } from '../utils/embed_helpers.js';
 import type { Message } from 'discord.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
-
-import {
-	AUTO_THREAD_CHANNELS,
-	LINK_ONLY_CHANNELS,
-	SVELTE_ORANGE,
-} from '../config.js';
 
 export default event({
 	name: 'messageCreate',
@@ -24,10 +20,9 @@ export default event({
 
 					await message.author.send({
 						embeds: [
-							{
+							build_embed({
 								description: `Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
-								color: SVELTE_ORANGE,
-							},
+							}),
 						],
 					});
 

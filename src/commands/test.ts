@@ -1,4 +1,4 @@
-import { SVELTE_ORANGE } from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
 import { command } from 'jellycommands';
 
 export default command({
@@ -10,7 +10,7 @@ export default command({
 
 	run: ({ interaction, client }) => {
 		interaction.reply({
-			embeds: [{ description: 'Hello World!', color: SVELTE_ORANGE }],
+			embeds: [build_embed({ description: 'Hello World!' })],
 		});
 	},
 });
