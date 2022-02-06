@@ -40,6 +40,12 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 
 			// Resources
 			'837012201444999248',
+
+			// svelte-help
+			'939867760492703744',
+		
+			// kit-help
+			'939868205869072444',
 	  ];
 /**
  * List of roles/user IDs allowed to delete tags even if they're not the author.
