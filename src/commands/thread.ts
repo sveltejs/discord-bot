@@ -84,13 +84,13 @@ export default command({
 				break;
 
 			case 'rename':
-				const newName = interaction.options.getString('name', true);
-				await thread.setName(newName);
+				const new_name = interaction.options.getString('name', true);
+				await thread.setName(new_name);
 
 				interaction.followUp({
 					embeds: [
 						build_embed({
-							description: `Thread renamed to ${newName}`,
+							description: `Thread renamed to ${new_name}`,
 						}),
 					],
 				});
