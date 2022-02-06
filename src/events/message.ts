@@ -67,7 +67,7 @@ function get_thread_name(message: Message): string | Promise<string> {
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
 	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
-		return `Q - ${message.content.slice(0, 22)}`;
+		return `Q - ${message.content.replace(urlRegex(), '')}`.slice(0, 32);
 
 	return get_title_from_url(url[0]);
 }
