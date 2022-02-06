@@ -54,17 +54,17 @@ export default command({
 				ephemeral: true,
 			});
 
-		const allowedIds = [...THREAD_ADMIN_IDS];
+		const allowed_ids = [...THREAD_ADMIN_IDS];
 
 		// We assume this thread was auto threadded so the thread owner is the person who sent the start message
-		const startMessage = await thread.fetchStarterMessage();
-		if (startMessage) allowedIds.push(startMessage.author.id);
+		const start_message = await thread.fetchStarterMessage();
+		if (start_message) allowed_ids.push(start_message.author.id);
 
 		// Thread owners can also archive/rename threads
-		const threadOwner = await thread.fetchOwner();
-		if (threadOwner) allowedIds.push(threadOwner.id);
+		const thread_owner = await thread.fetchOwner();
+		if (thread_owner) allowed_ids.push(thread_owner.id);
 
-		if (!has_any_role_or_id(member, allowedIds))
+		if (!has_any_role_or_id(member, allowed_ids))
 			return void interaction.followUp({
 				content: "You don't have the permissions to manage this thread",
 				ephemeral: true,
