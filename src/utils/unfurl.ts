@@ -1,5 +1,7 @@
 import { unfurl } from 'unfurl.js';
 
+const get_url_host = (url: string): string => new URL(url).host;
+
 export async function get_title_from_url(url: string): Promise<string> {
 	try {
 		const data = await unfurl(url, {
@@ -9,12 +11,12 @@ export async function get_title_from_url(url: string): Promise<string> {
 		});
 
 		return (
-			data.open_graph.title ||
-			data.twitter_card.title ||
+			data.open_graph?.title ||
+			data.twitter_card?.title ||
 			data.title ||
-			url
+			get_url_host(url)
 		);
 	} catch {
-		return url;
+		return get_url_host(url);
 	}
 }
