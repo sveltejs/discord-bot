@@ -103,9 +103,8 @@ export default command({
 				const new_name = interaction.options.getString('name', true);
 
 				try {
-					await rename_thread(thread, new_name, {
-						prefixes_to_keep: ['❔ - ', '✅ - '],
-					});
+					await rename_thread(thread, new_name);
+
 					interaction.followUp({
 						content: 'Thread renamed',
 					});
