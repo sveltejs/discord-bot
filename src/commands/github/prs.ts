@@ -1,4 +1,3 @@
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { Repos } from '../../utils/repositories.js';
 import { github_command_handler, GithubResultType } from './_common.js';
@@ -12,7 +11,7 @@ export default command({
 		{
 			name: 'repository',
 			description: 'The repository to search within',
-			type: ApplicationCommandOptionTypes.INTEGER,
+			type: 'INTEGER',
 			choices: [
 				{
 					name: 'Svelte',
@@ -36,7 +35,7 @@ export default command({
 		{
 			name: 'topic',
 			description: 'What to search for',
-			type: ApplicationCommandOptionTypes.STRING,
+			type: 'STRING',
 		},
 	],
 

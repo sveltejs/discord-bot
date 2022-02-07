@@ -1,4 +1,3 @@
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { has_any_role_or_id } from '../utils/snowflake.js';
 import { build_embed } from '../utils/embed_helpers.js';
 import { THREAD_ADMIN_IDS } from '../config.js';
@@ -13,18 +12,18 @@ export default command({
 		{
 			name: 'archive',
 			description: 'Archive a thread',
-			type: ApplicationCommandOptionTypes['SUB_COMMAND'],
+			type: 'SUB_COMMAND',
 		},
 		{
 			name: 'rename',
 			description: 'Rename a thread',
-			type: ApplicationCommandOptionTypes['SUB_COMMAND'],
+			type: 'SUB_COMMAND',
 
 			options: [
 				{
 					name: 'name',
 					description: 'The new name of the thread',
-					type: ApplicationCommandOptionTypes['STRING'],
+					type: 'STRING',
 					required: true,
 				},
 			],

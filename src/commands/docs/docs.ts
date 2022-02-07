@@ -1,4 +1,3 @@
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 import { get_docs } from './_docs_cache.js';
@@ -14,7 +13,7 @@ export default command({
 	options: [
 		{
 			name: 'project',
-			type: ApplicationCommandOptionTypes.INTEGER,
+			type: 'INTEGER',
 			description: 'Which project to search the docs of',
 			choices: [
 				{
@@ -30,7 +29,7 @@ export default command({
 		},
 		{
 			name: 'topic',
-			type: ApplicationCommandOptionTypes.STRING,
+			type: 'STRING',
 			description: 'The topic to search for in the docs.',
 		},
 	],

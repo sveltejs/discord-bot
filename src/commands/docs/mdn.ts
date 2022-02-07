@@ -1,5 +1,4 @@
 import { list_embed_builder, build_embed } from '../../utils/embed_helpers.js';
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
@@ -14,7 +13,7 @@ export default command({
 		{
 			name: 'topic',
 			description: 'What to search MDN for',
-			type: ApplicationCommandOptionTypes.STRING,
+			type: 'STRING',
 			required: false,
 		},
 	],

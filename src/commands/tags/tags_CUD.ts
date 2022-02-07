@@ -1,5 +1,4 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config.js';
 import { Tag } from './_common.js';
@@ -21,39 +20,39 @@ export default command({
 	options: [
 		{
 			name: Actions.CREATE,
-			type: ApplicationCommandOptionTypes.SUB_COMMAND,
+			type: 'SUB_COMMAND',
 			description: 'Create a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The name of the tag to create',
-					type: ApplicationCommandOptionTypes.STRING,
+					type: 'STRING',
 					required: true,
 				},
 			],
 		},
 		{
 			name: Actions.UPDATE,
-			type: ApplicationCommandOptionTypes.SUB_COMMAND,
+			type: 'SUB_COMMAND',
 			description: 'Update a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The exact name of the tag to edit',
-					type: ApplicationCommandOptionTypes.STRING,
+					type: 'STRING',
 					required: true,
 				},
 			],
 		},
 		{
 			name: Actions.DELETE,
-			type: ApplicationCommandOptionTypes.SUB_COMMAND,
+			type: 'SUB_COMMAND',
 			description: 'Delete a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The exact name of the tag to delete',
-					type: ApplicationCommandOptionTypes.STRING,
+					type: 'STRING',
 					required: true,
 				},
 			],

@@ -1,5 +1,4 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../../config.js';
 import {
@@ -17,7 +16,7 @@ export default command({
 		{
 			name: 'name',
 			description: 'The exact name of the tag to view',
-			type: ApplicationCommandOptionTypes.STRING,
+			type: 'STRING',
 			required: true,
 		},
 	],

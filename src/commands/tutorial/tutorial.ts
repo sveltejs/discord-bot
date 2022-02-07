@@ -1,4 +1,3 @@
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { build_embed } from '../../utils/embed_helpers.js';
 import { get_tutorials } from './_tutorials_cache.js';
 import { DEV_MODE } from '../../config.js';
@@ -10,7 +9,7 @@ export default command({
 	description: 'Send a link to a svelte tutorial topic.',
 	options: [
 		{
-			type: ApplicationCommandOptionTypes.STRING,
+			type: 'STRING',
 			description: 'The name of the tutorial.',
 			name: 'topic',
 			required: false,
