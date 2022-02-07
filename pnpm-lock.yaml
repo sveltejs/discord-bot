@@ -1,12 +1,12 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@supabase/supabase-js': ^1.29.4
+  '@supabase/supabase-js': ^1.30.0
   '@types/nice-try': ^2.1.0
   '@types/node': ^16.11.22
   discord.js: ^13.6.0
   dotenv: ^10.0.0
-  jellycommands: 1.0.0-next.18
+  jellycommands: 1.0.0-next.19
   js-trgm: ^1.0.2
   node-fetch: ^3.2.0
   nodemon: ^2.0.15
@@ -18,12 +18,12 @@ specifiers:
   url-regex: ^5.0.0
 
 dependencies:
-  '@supabase/supabase-js': 1.29.4
+  '@supabase/supabase-js': 1.30.0
   '@types/nice-try': 2.1.0
   '@types/node': 16.11.22
   discord.js: 13.6.0
   dotenv: 10.0.0
-  jellycommands: 1.0.0-next.18
+  jellycommands: 1.0.0-next.19
   js-trgm: 1.0.2
   node-fetch: 3.2.0
   rimraf: 3.0.2
@@ -124,8 +124,8 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/supabase-js/1.29.4:
-    resolution: {integrity: sha512-RR3/Ji6o6GPO1/pXbG9sHoNynWIc3MnBnwgbC0UFc10kQfYcPaRgQCfI66V7O4Gesa0qGGYpcYq6/IUg8Qmh0A==}
+  /@supabase/supabase-js/1.30.0:
+    resolution: {integrity: sha512-6KqbxnfSjL3BHVaYasMs2UCZvbUAYlGHPEFi9Mndq0iBgjtxpLOG/z6WroT2gHjXSx6KQxGewgSLZqTqfI0Grw==}
     dependencies:
       '@supabase/gotrue-js': 1.22.0
       '@supabase/postgrest-js': 0.36.0
@@ -472,7 +472,7 @@ packages:
       discord-api-types: 0.26.1
       form-data: 4.0.0
       node-fetch: 2.6.7
-      ws: 8.4.2
+      ws: 8.5.0
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -618,7 +618,7 @@ packages:
   /ext/1.6.0:
     resolution: {integrity: sha512-sdBImtzkq2HpkdRLtlLWDa6w4DX22ijZLKx8BMPUuKe1c5lbN6xwQDQCxSfxBQnHZ13ls/FH0MQZx/q/gr6FQg==}
     dependencies:
-      type: 2.5.0
+      type: 2.6.0
     dev: false
 
   /fetch-blob/3.1.4:
@@ -734,7 +734,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.0.5
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -1034,8 +1034,8 @@ packages:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=}
     dev: true
 
-  /jellycommands/1.0.0-next.18:
-    resolution: {integrity: sha512-VtUkchX/OrJxpSIFqGxCuoYsK0uDVNIyoBDfAg/oZa+ZPM+1K2M/g7lgMqswWeRZLfWZD/6YP9JTZ7/rbzUxkg==}
+  /jellycommands/1.0.0-next.19:
+    resolution: {integrity: sha512-3y380ZsIyDdTkAwEG5/TAZ39q5mckeNGGRIlMKFxEQBM/AzRlzv1v/urMseg6y6BOV4cbE/3+oR8pet2vAe2VQ==}
     dependencies:
       axios: 0.24.0
       discord-api-types: 0.26.1
@@ -1142,8 +1142,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /minimatch/3.0.4:
-    resolution: {integrity: sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==}
+  /minimatch/3.0.5:
+    resolution: {integrity: sha512-tUpxzX0VAzJHjLu0xUfFv1gwVp9ba3IOuRAVH2EGuRW8a5emA2FlACLqiT/lDVtS1W+TGNwqz3sWaNyLgDJWuw==}
     dependencies:
       brace-expansion: 1.1.11
 
@@ -1206,7 +1206,7 @@ packages:
       chokidar: 3.5.3
       debug: 3.2.7
       ignore-by-default: 1.0.1
-      minimatch: 3.0.4
+      minimatch: 3.0.5
       pstree.remy: 1.1.8
       semver: 5.7.1
       supports-color: 5.5.0
@@ -1250,7 +1250,7 @@ packages:
       chalk: 2.4.2
       cross-spawn: 6.0.5
       memorystream: 0.3.1
-      minimatch: 3.0.4
+      minimatch: 3.0.5
       pidtree: 0.3.1
       read-pkg: 3.0.0
       shell-quote: 1.7.3
@@ -1498,8 +1498,8 @@ packages:
       object-inspect: 1.12.0
     dev: true
 
-  /signal-exit/3.0.6:
-    resolution: {integrity: sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==}
+  /signal-exit/3.0.7:
+    resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
 
   /source-map-support/0.5.21:
@@ -1610,8 +1610,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /tlds/1.228.0:
-    resolution: {integrity: sha512-Q0TU9zh5hDs2CpRFNM7SOW3K7OSgUgJC/cMrq9t44ei4tu+G3KV8BZyIJuYVvryJHH96mKgc9WXdhgKVvGD7jg==}
+  /tlds/1.229.0:
+    resolution: {integrity: sha512-yZCodKInN+BPGUyYgKHsodJ2FVWRjW/fYx6rKCAT/e24BBJd8FcxWgKD0aBgk+7uQ/88h/fmRTd4Nvzxf3313A==}
     hasBin: true
     dev: false
 
@@ -1655,8 +1655,8 @@ packages:
     resolution: {integrity: sha512-+5nt5AAniqsCnu2cEQQdpzCAh33kVx8n0VoFidKpB1dVVLAN/F+bgVOqOJqOnEnrhp222clB5p3vUlD+1QAnfg==}
     dev: false
 
-  /type/2.5.0:
-    resolution: {integrity: sha512-180WMDQaIMm3+7hGXWf12GtdniDEy7nYcyFMKJn/eZz/6tSLXrUN9V0wKSbMjej0I1WHWbpREDEKHtqPQa9NNw==}
+  /type/2.6.0:
+    resolution: {integrity: sha512-eiDBDOmkih5pMbo9OqsqPRGMljLodLcwd5XD5JbtNB0o89xZAwynY9EdCDsJU7LtcVCClu9DvM7/0Ep1hYX3EQ==}
     dev: false
 
   /typedarray-to-buffer/3.1.5:
@@ -1736,7 +1736,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ip-regex: 4.3.0
-      tlds: 1.228.0
+      tlds: 1.229.0
     dev: false
 
   /utf-8-validate/5.0.8:
@@ -1827,12 +1827,12 @@ packages:
     dependencies:
       imurmurhash: 0.1.4
       is-typedarray: 1.0.0
-      signal-exit: 3.0.6
+      signal-exit: 3.0.7
       typedarray-to-buffer: 3.1.5
     dev: true
 
-  /ws/8.4.2:
-    resolution: {integrity: sha512-Kbk4Nxyq7/ZWqr/tarI9yIt/+iNNFOjBXEWgTb4ydaNHBNGgvf2QHbS9fdfsndfjFlFwEd4Al+mw83YkaD10ZA==}
+  /ws/8.5.0:
+    resolution: {integrity: sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
