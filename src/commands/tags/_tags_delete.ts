@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, GuildMember } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';

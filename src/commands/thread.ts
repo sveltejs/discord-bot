@@ -1,7 +1,10 @@
-import { THREAD_ADMIN_IDS, LINK_ONLY_CHANNELS } from '../config.js';
+import {
+	THREAD_ADMIN_IDS,
+	LINK_ONLY_CHANNELS,
+	AUTO_THREAD_CHANNELS,
+} from '../config.js';
 import { has_any_role_or_id } from '../utils/snowflake.js';
 import { build_embed } from '../utils/embed_helpers.js';
-import { AUTO_THREAD_CHANNELS } from '../config.js';
 import { rename_thread } from '../utils/threads.js';
 import { command } from 'jellycommands';
 
