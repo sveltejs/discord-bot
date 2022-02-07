@@ -90,10 +90,12 @@ export default command({
 					await rename_thread(thread, new_name, {
 						prefixes_to_keep: ['❔ - ', '✅ - '],
 					});
+					interaction.followUp({
+						content: 'Thread renamed',
+					});
 				} catch (error) {
 					interaction.followUp({
 						content: (error as Error).message,
-						ephemeral: true,
 					});
 				}
 				break;

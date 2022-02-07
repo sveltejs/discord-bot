@@ -23,6 +23,7 @@ export async function rename_thread(
 	);
 
 	try {
+		/** Something's going wrong here, might be rate limit idk */
 		await thread.setName(_new_name);
 	} catch {
 		throw new Error('API Error: Failed to rename thread');
