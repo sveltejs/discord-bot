@@ -4,6 +4,14 @@ import { THREAD_ADMIN_IDS } from '../config.js';
 import { command } from 'jellycommands';
 import { rename_thread } from '../utils/threads.js';
 
+const undefined_on_error = async <T>(promise: Promise<T>) => {
+	try {
+		return await promise;
+	} catch {
+		return undefined;
+	}
+};
+
 export default command({
 	name: 'thread',
 	description: 'Manage a thread',
@@ -37,6 +45,12 @@ export default command({
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
+		if (thread?.isThread() && thread.archived)
+			return void interaction.followUp({
+				content: 'This thread is archived.',
+				ephemeral: true,
+			});
+
 		const member = await interaction.guild?.members.fetch(
 			interaction.user.id,
 		);
@@ -56,11 +70,14 @@ export default command({
 		const allowed_ids = [...THREAD_ADMIN_IDS];
 
 		// We assume this thread was auto threadded so the thread owner is the person who sent the start message
-		const start_message = await thread.fetchStarterMessage();
+		const start_message = await undefined_on_error(
+			thread.fetchStarterMessage(),
+		);
+
 		if (start_message) allowed_ids.push(start_message.author.id);
 
 		// Thread owners can also archive/rename threads
-		const thread_owner = await thread.fetchOwner();
+		const thread_owner = await undefined_on_error(thread.fetchOwner());
 		if (thread_owner) allowed_ids.push(thread_owner.id);
 
 		if (!has_any_role_or_id(member, allowed_ids))
@@ -71,9 +88,7 @@ export default command({
 
 		switch (subcommand) {
 			case 'archive':
-				if (!thread.archived) {
-					await thread.setArchived(true);
-				}
+				await thread.setArchived(true);
 
 				interaction.followUp({
 					embeds: [
