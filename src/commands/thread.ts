@@ -3,6 +3,7 @@ import { has_any_role_or_id } from '../utils/snowflake.js';
 import { build_embed } from '../utils/embed_helpers.js';
 import { THREAD_ADMIN_IDS } from '../config.js';
 import { command } from 'jellycommands';
+import { rename_thread } from '../utils/threads.js';
 
 export default command({
 	name: 'thread',
@@ -84,15 +85,17 @@ export default command({
 
 			case 'rename':
 				const new_name = interaction.options.getString('name', true);
-				await thread.setName(new_name);
 
-				interaction.followUp({
-					embeds: [
-						build_embed({
-							description: `Thread renamed to ${new_name}`,
-						}),
-					],
-				});
+				try {
+					await rename_thread(thread, new_name, {
+						prefixes_to_keep: ['❔ - ', '✅ - '],
+					});
+				} catch (error) {
+					interaction.followUp({
+						content: (error as Error).message,
+						ephemeral: true,
+					});
+				}
 				break;
 		}
 	},
