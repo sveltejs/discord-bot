@@ -72,7 +72,9 @@ export default command({
 
 		switch (subcommand) {
 			case 'archive':
-				await thread.setArchived(true);
+				if (!thread.archived) {
+					await thread.setArchived(true);
+				}
 
 				interaction.followUp({
 					embeds: [
