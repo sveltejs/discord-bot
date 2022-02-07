@@ -32,7 +32,7 @@ export default event({
 				await rename_thread(
 					thread,
 					await get_thread_name(message),
-					!LINK_ONLY_CHANNELS.includes(message.channelId),
+					HELP_CHANNELS.includes(message.channelId),
 				);
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
