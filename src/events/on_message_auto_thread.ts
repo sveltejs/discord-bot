@@ -1,14 +1,20 @@
-import { AUTO_THREAD_CHANNELS, LINK_ONLY_CHANNELS } from '../config.js';
-import { get_title_from_url } from '../utils/unfurl.js';
-import { build_embed } from '../utils/embed_helpers.js';
-import { rename_thread } from '../utils/threads.js';
-import type { Message } from 'discord.js';
+import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
+import {
+	AUTO_THREAD_CHANNELS,
+	HELP_CHANNELS,
+	LINK_ONLY_CHANNELS,
+} from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
+import { rename_thread } from '../utils/threads.js';
+import { get_title_from_url } from '../utils/unfurl.js';
 
 export default event({
 	name: 'messageCreate',
 	run: async ({}, message) => {
+		if (message.author.bot) return;
+
 		if (
 			AUTO_THREAD_CHANNELS.includes(message.channel.id) &&
 			!message.hasThread &&
@@ -19,6 +25,8 @@ export default event({
 					name: 'Loading Name...',
 					startMessage: message,
 				});
+
+				thread.send(instruction_message(thread)).catch(() => {});
 
 				// Generate the thread name after so that the thread creates faster
 				await rename_thread(
@@ -41,4 +49,18 @@ function get_thread_name(message: Message): string | Promise<string> {
 		return `${message.content.replace(urlRegex(), '')}`;
 
 	return get_title_from_url(url[0]);
+}
+
+function instruction_message(thread: ThreadChannel): MessageOptions {
+	return {
+		embeds: [
+			build_embed({
+				description: `I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the \`/thread rename\` command if I failed to set a proper name for it.${
+					HELP_CHANNELS.includes(thread.parentId!)
+						? '\nWhen your problem is solved you can archive it with `/thread archive`'
+						: ''
+				}`,
+			}),
+		],
+	};
 }

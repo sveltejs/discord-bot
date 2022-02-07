@@ -45,7 +45,7 @@ export const THREAD_ADMIN_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
 // #endregion
 
 // #region channels
-const HELP_CHANNELS = [
+export const HELP_CHANNELS = [
 	// svelte-help
 	'939867760492703744',
 
