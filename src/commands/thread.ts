@@ -1,6 +1,6 @@
+import { THREAD_ADMIN_IDS, AUTO_THREAD_CHANNELS } from '../config.js';
 import { has_any_role_or_id } from '../utils/snowflake.js';
 import { build_embed } from '../utils/embed_helpers.js';
-import { THREAD_ADMIN_IDS } from '../config.js';
 import { command } from 'jellycommands';
 import { rename_thread } from '../utils/threads.js';
 
@@ -103,7 +103,11 @@ export default command({
 				const new_name = interaction.options.getString('name', true);
 
 				try {
-					await rename_thread(thread, new_name);
+					await rename_thread(
+						thread,
+						new_name,
+						AUTO_THREAD_CHANNELS.includes(thread.parentId || ''),
+					);
 
 					interaction.followUp({
 						embeds: [
