@@ -45,13 +45,15 @@ export const THREAD_ADMIN_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
 // #endregion
 
 // #region channels
-export const HELP_CHANNELS = [
-	// svelte-help
-	'939867760492703744',
+export const HELP_CHANNELS = DEV_MODE
+	? ['935524190008770610']
+	: [
+			// svelte-help
+			'939867760492703744',
 
-	// kit-help
-	'939868205869072444',
-];
+			// kit-help
+			'939868205869072444',
+	  ];
 
 const COMMUNITY_CHANNELS = [
 	// Showcase
