@@ -1,9 +1,8 @@
-import { THREAD_ADMIN_IDS, LINK_ONLY_CHANNELS } from '../config.js';
-import { has_any_role_or_id } from '../utils/snowflake.js';
-import { build_embed } from '../utils/embed_helpers.js';
-import { AUTO_THREAD_CHANNELS } from '../config.js';
-import { rename_thread } from '../utils/threads.js';
 import { command } from 'jellycommands';
+import { HELP_CHANNELS, THREAD_ADMIN_IDS } from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
+import { has_any_role_or_id } from '../utils/snowflake.js';
+import { rename_thread } from '../utils/threads.js';
 
 const undefined_on_error = async <T>(promise: Promise<T>) => {
 	try {
@@ -108,8 +107,7 @@ export default command({
 					await rename_thread(
 						thread,
 						new_name,
-						AUTO_THREAD_CHANNELS.includes(parent_id) &&
-							!LINK_ONLY_CHANNELS.includes(parent_id),
+						HELP_CHANNELS.includes(parent_id),
 					);
 
 					interaction.followUp({
