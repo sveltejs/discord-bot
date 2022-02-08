@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS thread_solves (
+	user_id VARCHAR(18) PRIMARY KEY,
+	count BIGINT NOT NULL DEFAULT 0
+);

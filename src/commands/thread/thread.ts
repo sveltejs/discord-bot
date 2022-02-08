@@ -1,8 +1,8 @@
-import { command } from 'jellycommands';
+import { rename_thread, solve_thread } from '../../utils/threads.js';
 import { HELP_CHANNELS, THREAD_ADMIN_IDS } from '../../config.js';
-import { build_embed } from '../../utils/embed_helpers.js';
 import { has_any_role_or_id } from '../../utils/snowflake.js';
-import { rename_thread } from '../../utils/threads.js';
+import { build_embed } from '../../utils/embed_helpers.js';
+import { command } from 'jellycommands';
 
 const undefined_on_error = async <T>(promise: Promise<T>) => {
 	try {
@@ -45,7 +45,7 @@ export default command({
 				{
 					name: 'user',
 					description: 'Who helped you solve this thread?',
-					type: 'STRING',
+					type: 'USER',
 				},
 			],
 		},
@@ -54,7 +54,7 @@ export default command({
 	global: true,
 	defer: true,
 
-	run: async ({ interaction }): Promise<void> => {
+	run: async ({ interaction, client }): Promise<void> => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
@@ -138,6 +138,38 @@ export default command({
 				break;
 
 			case 'solve':
+				// todo check if thread is solved
+				// todo check if thread is a auto thread
+
+				const solver = interaction.options.getUser('user') || member;
+
+				try {
+					if (thread.name.startsWith('✅'))
+						throw new Error('Thread already marked as solved');
+
+					if (!HELP_CHANNELS.includes(thread.parentId || ''))
+						throw new Error(
+							'This command only works in a auto thread',
+						);
+
+					await solve_thread(thread, client, solver);
+
+					interaction.followUp({
+						embeds: [
+							build_embed({
+								description: `Thread marked as solved! Thanks to ${solver.toString()} for solving this issue.`,
+							}),
+						],
+					});
+				} catch (e) {
+					interaction.followUp({
+						embeds: [
+							build_embed({
+								description: (e as Error).message,
+							}),
+						],
+					});
+				}
 				break;
 		}
 	},
