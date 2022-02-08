@@ -50,6 +50,18 @@ function get_thread_name(message: Message): string | Promise<string> {
 }
 
 function instruction_message(thread: ThreadChannel): MessageOptions {
+	const base_description =
+		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
+
+	if (!HELP_CHANNELS.includes(thread.parentId!))
+		return {
+			embeds: [
+				build_embed({
+					description: base_description,
+				}),
+			],
+		};
+
 	const archiveButton = new MessageButton({
 		label: 'Archive',
 		customId: 'thread-archive',
@@ -73,11 +85,7 @@ function instruction_message(thread: ThreadChannel): MessageOptions {
 
 		embeds: [
 			build_embed({
-				description: `I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the \`/thread rename\` command if I failed to set a proper name for it.${
-					HELP_CHANNELS.includes(thread.parentId!)
-						? '\nWhen your problem is solved you can archive it with `/thread archive`'
-						: ''
-				}\n\nWhen your problem is solved run \`/thread solve\`, don't forget to credit the person that helped you!`,
+				description: `${base_description}\n\nWhen your problem is solved you can archive it with \`/thread archive\`\n\nWhen your problem is solved run \`/thread solve\`, don't forget to credit the person that helped you!`,
 			}),
 		],
 	};
