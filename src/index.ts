@@ -21,6 +21,8 @@ const client = new JellyCommands({
 	},
 
 	dev: {
+		global: DEV_MODE,
+
 		// If we set dev to true in a command it disabled global and adds it to the guilds bellow
 		guilds: [TEST_GUILD_ID],
 	},
