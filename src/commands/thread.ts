@@ -106,7 +106,11 @@ export default command({
 					await rename_thread(thread, new_name);
 
 					interaction.followUp({
-						content: 'Thread renamed',
+						embeds: [
+							build_embed({
+								description: 'Thread renamed',
+							}),
+						],
 					});
 				} catch (error) {
 					interaction.followUp({
