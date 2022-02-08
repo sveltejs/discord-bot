@@ -1,5 +1,5 @@
-import { build_embed } from '../utils/embed_helpers.js';
 import { command } from 'jellycommands';
+import { build_embed } from '../utils/embed_helpers.js';
 
 export default command({
 	name: 'test',

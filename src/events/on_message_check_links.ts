@@ -1,7 +1,7 @@
-import { build_embed } from '../utils/embed_helpers.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
 import { LINK_ONLY_CHANNELS } from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
 
 export default event({
 	name: 'messageCreate',

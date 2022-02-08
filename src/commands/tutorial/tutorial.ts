@@ -1,8 +1,8 @@
-import { build_embed } from '../../utils/embed_helpers.js';
-import { get_tutorials } from './_tutorials_cache.js';
-import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
+import { DEV_MODE } from '../../config.js';
+import { build_embed } from '../../utils/embed_helpers.js';
+import { get_tutorials } from './_tutorials_cache.js';
 
 export default command({
 	name: 'tutorial',

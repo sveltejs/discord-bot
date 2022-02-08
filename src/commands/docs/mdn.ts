@@ -1,8 +1,8 @@
-import { list_embed_builder, build_embed } from '../../utils/embed_helpers.js';
-import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
+import { DEV_MODE } from '../../config.js';
+import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'mdn',
@@ -19,9 +19,9 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		const searchTopic = interaction.options.getString('topic');
+		const search_topic = interaction.options.getString('topic');
 		try {
-			if (!searchTopic)
+			if (!search_topic)
 				return interaction.reply({
 					embeds: [
 						build_embed({
@@ -30,7 +30,7 @@ export default command({
 					],
 				});
 
-			let results = await mdn_search(searchTopic);
+			let results = await mdn_search(search_topic);
 
 			if (results)
 				return interaction.reply({

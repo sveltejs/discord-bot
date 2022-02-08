@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { Repos } from '../../utils/repositories.js';
-import { github_command_handler, GithubResultType } from './_common.js';
+import { GithubResultType, github_command_handler } from './_common.js';
 
 export default command({
 	name: 'pr',

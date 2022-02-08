@@ -1,9 +1,9 @@
-import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
-import { get_docs } from './_docs_cache.js';
-import { DEV_MODE } from '../../config.js';
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
+import { DEV_MODE } from '../../config.js';
+import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { get_docs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',

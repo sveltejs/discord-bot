@@ -1,7 +1,7 @@
-import { TEST_GUILD_ID, DEV_MODE } from './config.js';
 import { createClient } from '@supabase/supabase-js';
-import { JellyCommands } from 'jellycommands';
 import { Intents } from 'discord.js';
+import { JellyCommands } from 'jellycommands';
+import { DEV_MODE, TEST_GUILD_ID } from './config.js';
 
 const supabase = createClient(
 	process.env['SUPABASE_URL']!,
