@@ -36,6 +36,19 @@ export default command({
 				},
 			],
 		},
+		{
+			name: 'solve',
+			description: 'Mark a thread as solved',
+			type: 'SUB_COMMAND',
+
+			options: [
+				{
+					name: 'user',
+					description: 'Who helped you solve this thread?',
+					type: 'STRING',
+				},
+			],
+		},
 	],
 
 	global: true,
@@ -122,6 +135,9 @@ export default command({
 						content: (error as Error).message,
 					});
 				}
+				break;
+
+			case 'solve':
 				break;
 		}
 	},
