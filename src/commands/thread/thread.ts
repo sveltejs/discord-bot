@@ -1,16 +1,8 @@
+import { check_autothread_permissions } from '../../utils/threads.js';
 import { rename_thread, solve_thread } from '../../utils/threads.js';
-import { HELP_CHANNELS, THREAD_ADMIN_IDS } from '../../config.js';
-import { has_any_role_or_id } from '../../utils/snowflake.js';
 import { build_embed } from '../../utils/embed_helpers.js';
+import { HELP_CHANNELS } from '../../config.js';
 import { command } from 'jellycommands';
-
-const undefined_on_error = async <T>(promise: Promise<T>) => {
-	try {
-		return await promise;
-	} catch {
-		return undefined;
-	}
-};
 
 export default command({
 	name: 'thread',
@@ -80,20 +72,12 @@ export default command({
 				ephemeral: true,
 			});
 
-		const allowed_ids = [...THREAD_ADMIN_IDS];
-
-		// We assume this thread was auto threadded so the thread owner is the person who sent the start message
-		const start_message = await undefined_on_error(
-			thread.fetchStarterMessage(),
+		const has_permission = await check_autothread_permissions(
+			thread,
+			member,
 		);
 
-		if (start_message) allowed_ids.push(start_message.author.id);
-
-		// Thread owners can also archive/rename threads
-		const thread_owner = await undefined_on_error(thread.fetchOwner());
-		if (thread_owner) allowed_ids.push(thread_owner.id);
-
-		if (!has_any_role_or_id(member, allowed_ids))
+		if (!has_permission)
 			return void interaction.followUp({
 				content: "You don't have the permissions to manage this thread",
 				ephemeral: true,

@@ -1,6 +1,9 @@
 import type { GuildMember, ThreadChannel, User } from 'discord.js';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { has_any_role_or_id } from './snowflake.js';
 import type { JellyCommands } from 'jellycommands';
+import { undefined_on_error } from './promise.js';
+import { THREAD_ADMIN_IDS } from '../config.js';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} - `;
@@ -54,4 +57,22 @@ export async function solve_thread(
 	if (!thread.archived) {
 		thread.setArchived(true).catch(() => {});
 	}
+}
+
+export async function check_autothread_permissions(
+	thread: ThreadChannel,
+	member: GuildMember,
+): Promise<boolean> {
+	const allowed_ids = [...THREAD_ADMIN_IDS];
+
+	const start_message = await undefined_on_error(
+		thread.fetchStarterMessage(),
+	);
+
+	if (start_message) allowed_ids.push(start_message.author.id);
+
+	const thread_owner = await undefined_on_error(thread.fetchOwner());
+	if (thread_owner) allowed_ids.push(thread_owner.id);
+
+	return has_any_role_or_id(member!, allowed_ids);
 }

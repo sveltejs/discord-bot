@@ -1,3 +1,4 @@
+import { check_autothread_permissions } from '../utils/threads.js';
 import { build_embed } from '../utils/embed_helpers.js';
 import { solve_thread } from '../utils/threads.js';
 import { event } from 'jellycommands';
@@ -5,13 +6,28 @@ import { event } from 'jellycommands';
 export default event({
 	name: 'interactionCreate',
 
-	run: async ({ client }, interaction) => {
+	run: async ({ client }, interaction): Promise<void> => {
 		if (!interaction.isButton()) return;
 		if (!interaction.channel?.isThread()) return;
 
 		await interaction.deferReply();
 
 		const thread = await interaction.channel.fetch();
+
+		const member = await interaction.guild?.members.fetch(
+			interaction.user.id,
+		);
+
+		const has_permission = await check_autothread_permissions(
+			thread,
+			member!,
+		);
+
+		if (!has_permission)
+			return void interaction.followUp({
+				content: "You don't have the permissions to manage this thread",
+				ephemeral: true,
+			});
 
 		switch (interaction.customId) {
 			case 'thread-solved':
