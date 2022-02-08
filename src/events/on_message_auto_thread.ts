@@ -1,5 +1,6 @@
 import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config.js';
+import { MessageActionRow, MessageButton } from 'discord.js';
 import { get_title_from_url } from '../utils/unfurl.js';
 import { add_thread_prefix } from '../utils/threads.js';
 import { build_embed } from '../utils/embed_helpers.js';
@@ -49,7 +50,27 @@ function get_thread_name(message: Message): string | Promise<string> {
 }
 
 function instruction_message(thread: ThreadChannel): MessageOptions {
+	const archiveButton = new MessageButton({
+		label: 'Archive',
+		customId: 'thread-archive',
+		emoji: '🔒',
+		style: 'SECONDARY',
+	});
+
+	const solveButton = new MessageButton({
+		label: 'Solved',
+		customId: 'thread-solved',
+		emoji: '✅',
+		style: 'PRIMARY',
+	});
+
+	const row = new MessageActionRow({
+		components: [solveButton, archiveButton],
+	});
+
 	return {
+		components: [row],
+
 		embeds: [
 			build_embed({
 				description: `I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the \`/thread rename\` command if I failed to set a proper name for it.${
