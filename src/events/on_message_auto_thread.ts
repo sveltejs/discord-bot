@@ -59,7 +59,7 @@ function instruction_message(thread: ThreadChannel): MessageOptions {
 					HELP_CHANNELS.includes(thread.parentId!)
 						? '\nWhen your problem is solved you can archive it with `/thread archive`'
 						: ''
-				}`,
+				}\n\nWhen your problem is solved run \`/thread solve\`, don't forget to credit the person that helped you!`,
 			}),
 		],
 	};
