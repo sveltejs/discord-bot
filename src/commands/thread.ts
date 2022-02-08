@@ -1,13 +1,8 @@
-import {
-	THREAD_ADMIN_IDS,
-	LINK_ONLY_CHANNELS,
-	AUTO_THREAD_CHANNELS,
-	HELP_CHANNELS,
-} from '../config.js';
-import { has_any_role_or_id } from '../utils/snowflake.js';
-import { build_embed } from '../utils/embed_helpers.js';
-import { rename_thread } from '../utils/threads.js';
 import { command } from 'jellycommands';
+import { HELP_CHANNELS, THREAD_ADMIN_IDS } from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
+import { has_any_role_or_id } from '../utils/snowflake.js';
+import { rename_thread } from '../utils/threads.js';
 
 const undefined_on_error = async <T>(promise: Promise<T>) => {
 	try {
