@@ -2,6 +2,7 @@ import {
 	THREAD_ADMIN_IDS,
 	LINK_ONLY_CHANNELS,
 	AUTO_THREAD_CHANNELS,
+	HELP_CHANNELS,
 } from '../config.js';
 import { has_any_role_or_id } from '../utils/snowflake.js';
 import { build_embed } from '../utils/embed_helpers.js';
@@ -111,8 +112,7 @@ export default command({
 					await rename_thread(
 						thread,
 						new_name,
-						AUTO_THREAD_CHANNELS.includes(parent_id) &&
-							!LINK_ONLY_CHANNELS.includes(parent_id),
+						HELP_CHANNELS.includes(parent_id),
 					);
 
 					interaction.followUp({
