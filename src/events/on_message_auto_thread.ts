@@ -7,7 +7,7 @@ import {
 	LINK_ONLY_CHANNELS,
 } from '../config.js';
 import { build_embed } from '../utils/embed_helpers.js';
-import { rename_thread } from '../utils/threads.js';
+import { add_thread_prefix } from '../utils/threads.js';
 import { get_title_from_url } from '../utils/unfurl.js';
 
 export default event({
@@ -21,19 +21,19 @@ export default event({
 			message.channel.type == 'GUILD_TEXT'
 		) {
 			try {
+				const raw_name = await get_thread_name(message);
+				const prefixed = add_thread_prefix(raw_name, false);
+
+				const name = HELP_CHANNELS.includes(message.channelId)
+					? prefixed
+					: raw_name;
+
 				const thread = await message.channel.threads.create({
-					name: 'Loading Name...',
+					name: name.slice(0, 100),
 					startMessage: message,
 				});
 
 				thread.send(instruction_message(thread)).catch(() => {});
-
-				// Generate the thread name after so that the thread creates faster
-				await rename_thread(
-					thread,
-					await get_thread_name(message),
-					HELP_CHANNELS.includes(message.channelId),
-				);
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
 			}

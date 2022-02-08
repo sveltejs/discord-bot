@@ -2,17 +2,22 @@ import type { GuildMember, ThreadChannel, User } from 'discord.js';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { JellyCommands } from 'jellycommands';
 
+export const add_thread_prefix = (name: string, solved: boolean) => {
+	const prefix = `${solved ? '✅' : '❔'} - `;
+
+	if (name.startsWith('✅ - ') || name.startsWith('❔ - '))
+		return `${prefix}${name.slice(4)}`;
+
+	return `${prefix}${name}`;
+};
+
 export async function rename_thread(
 	thread: ThreadChannel,
 	new_name: string,
 	use_prefix: boolean = true,
 ) {
-	const solved = thread.name.startsWith('✅ - ');
-	const prefix = `${solved ? '✅' : '❔'} - `;
-
-	await thread.setName(
-		`${use_prefix ? prefix : ''}${new_name}`.slice(0, 100),
-	);
+	const prefixed = add_thread_prefix(new_name, thread.name.startsWith('✅'));
+	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
 interface ThreadSolvesTable {
@@ -44,7 +49,7 @@ export async function solve_thread(
 
 	if (error) throw new Error(error.message);
 
-	await thread.setName(`✅${thread.name.slice(1)}`);
+	await thread.setName(add_thread_prefix(thread.name, true));
 
 	if (!thread.archived) {
 		thread.setArchived(true).catch(() => {});
