@@ -138,9 +138,6 @@ export default command({
 				break;
 
 			case 'solve':
-				// todo check if thread is solved
-				// todo check if thread is a auto thread
-
 				const solver = interaction.options.getUser('user') || member;
 
 				try {
