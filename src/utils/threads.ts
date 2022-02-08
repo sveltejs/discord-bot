@@ -1,31 +1,14 @@
-import { TextBasedChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 
 export async function rename_thread(
-	thread: TextBasedChannel,
+	thread: ThreadChannel,
 	new_name: string,
-	{
-		prefix,
-		prefixes_to_keep,
-	}: {
-		prefix?: string;
-		prefixes_to_keep?: string[];
-	} = {},
+	use_prefix: boolean = true,
 ) {
-	if (!thread.isThread()) throw new Error('This is not a thread channel');
+	const solved = thread.name.startsWith('✅ - ');
+	const prefix = `${solved ? '✅' : '❔'} - `;
 
-	const existing_prefix = prefixes_to_keep?.find((p) =>
-		thread.name.startsWith(p),
+	await thread.setName(
+		`${use_prefix ? prefix : ''}${new_name}`.slice(0, 100),
 	);
-
-	const _new_name = `${prefix || existing_prefix || ''}${new_name}`.slice(
-		0,
-		100,
-	);
-
-	try {
-		/** Something's going wrong here, might be rate limit idk */
-		await thread.setName(_new_name);
-	} catch {
-		throw new Error('API Error: Failed to rename thread');
-	}
 }
