@@ -122,7 +122,7 @@ export default command({
 				break;
 
 			case 'solve':
-				const solver = interaction.options.getUser('user') || member;
+				const solver = interaction.options.getUser('user') || undefined;
 
 				try {
 					if (thread.name.startsWith('✅'))
@@ -138,7 +138,11 @@ export default command({
 					interaction.followUp({
 						embeds: [
 							build_embed({
-								description: `Thread marked as solved! Thanks to ${solver.toString()} for solving this issue.`,
+								description: `Thread marked as solved! ${
+									solver
+										? `Thanks to ${solver.toString()} for solving this issue.`
+										: ''
+								}`,
 							}),
 						],
 					});

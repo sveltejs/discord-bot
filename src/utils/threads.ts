@@ -31,26 +31,28 @@ interface ThreadSolvesTable {
 export async function solve_thread(
 	thread: ThreadChannel,
 	client: JellyCommands,
-	solver: GuildMember | User,
+	solver?: GuildMember | User,
 ) {
-	const supabase = client.props.get<SupabaseClient>('supabase');
+	if (solver) {
+		const supabase = client.props.get<SupabaseClient>('supabase');
 
-	const { data } = await supabase
-		.from<ThreadSolvesTable>('thread_solves')
-		.select('count')
-		.eq('user_id', solver.id)
-		.limit(1);
+		const { data } = await supabase
+			.from<ThreadSolvesTable>('thread_solves')
+			.select('count')
+			.eq('user_id', solver.id)
+			.limit(1);
 
-	if (!data) throw new Error('Error in getting solves from database');
+		if (!data) throw new Error('Error in getting solves from database');
 
-	const count = data[0]?.count || 0;
+		const count = data[0]?.count || 0;
 
-	const { error } = await supabase.from('thread_solves').upsert({
-		user_id: solver.id,
-		count: count + 1,
-	});
+		const { error } = await supabase.from('thread_solves').upsert({
+			user_id: solver.id,
+			count: count + 1,
+		});
 
-	if (error) throw new Error(error.message);
+		if (error) throw new Error(error.message);
+	}
 
 	await thread.setName(add_thread_prefix(thread.name, true));
 
