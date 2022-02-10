@@ -24,7 +24,9 @@ export async function get_matching_tag_names(tag_name: string) {
 			to_search: tag_name,
 		})
 		.then(({ data, error }) => {
-			return error || !data?.length ? null : data.map((t) => t.tag_name);
+			return error || !data?.length
+				? null
+				: data.map((t) => `\`${t.tag_name}\``);
 		});
 }
 
