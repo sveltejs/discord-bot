@@ -2,7 +2,7 @@ import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { get_docs } from './_docs_cache.js';
+import { get_docs, ReposWithDocs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',
@@ -34,8 +34,11 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		const repo: Repos.SVELTE | Repos.SVELTE_KIT =
-			interaction.options.getInteger('project', true);
+		const repo: ReposWithDocs = interaction.options.getInteger(
+			'project',
+			true,
+		);
+
 		const repo_details = RepositoryDetails[repo];
 		const topic = interaction.options.getString('topic');
 
