@@ -1,24 +1,15 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction } from 'discord.js';
-import { JellyCommands } from 'jellycommands';
 import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
+import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { has_any_role_or_id } from '../../utils/snowflake.js';
-import { Tag } from './_common.js';
+import { get_member, get_tag, Tag, TagCUDHandler } from './_common.js';
 
-export async function tag_delete_command_handler({
-	tag,
-	interaction,
-	supabase,
+export const tag_delete_handler: TagCUDHandler = async ({
 	tag_name,
-	client,
-}: {
-	tag: Tag | undefined;
-	interaction: CommandInteraction;
-	supabase: SupabaseClient;
-	tag_name: string;
-	client: JellyCommands;
-}) {
+	interaction,
+}) => {
+	const tag = await get_tag(tag_name);
+
 	if (!tag) {
 		return interaction.reply({
 			content: 'No tag with that name exists.',
@@ -26,7 +17,7 @@ export async function tag_delete_command_handler({
 		});
 	}
 
-	const member = await interaction.guild?.members.fetch(interaction.user.id)!;
+	const member = (await get_member(interaction, interaction.user.id))!;
 	if (
 		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {
@@ -50,9 +41,9 @@ export async function tag_delete_command_handler({
 			tags_embed_builder({
 				tag_name,
 				tag_content: tag.tag_content,
-				author: client.users.cache.get(tag.author_id),
+				author: await get_member(interaction, tag.author_id),
 			}),
 		],
 		ephemeral: true,
 	});
-}
+};

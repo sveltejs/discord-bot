@@ -1,22 +1,14 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { CommandInteraction, Message } from 'discord.js';
-import { JellyCommands } from 'jellycommands';
+import { Message } from 'discord.js';
+import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { Tag } from './_common.js';
+import { get_member, get_tag, Tag, TagCUDHandler } from './_common.js';
 
-export async function tag_update_command_handler({
-	tag,
+export const tag_update_handler: TagCUDHandler = async ({
 	interaction,
 	tag_name,
-	client,
-	supabase,
-}: {
-	tag: Tag | undefined;
-	interaction: CommandInteraction;
-	tag_name: string;
-	client: JellyCommands;
-	supabase: SupabaseClient;
-}) {
+}) => {
+	const tag = await get_tag(tag_name);
+
 	if (!tag) {
 		return interaction.reply({
 			content:
@@ -33,6 +25,7 @@ export async function tag_update_command_handler({
 		});
 	}
 
+	/** @todo replace this jank with the modal thingy */
 	await interaction.reply({
 		content: `Editing tag "${tag_name}". Send the new contents for the tag in this channel within the next 60 seconds.`,
 		ephemeral: true,
@@ -40,18 +33,19 @@ export async function tag_update_command_handler({
 			tags_embed_builder({
 				tag_name,
 				tag_content: tag.tag_content,
-				author: client.users.cache.get(tag.author_id),
+				author: await get_member(interaction, tag.author_id),
 			}),
 		],
 	});
 
-	let messageColl = await interaction.channel?.awaitMessages({
-		time: 60000,
-		filter: (message: Message) => message.author === interaction.user,
-		max: 1,
-	});
+	let message = await interaction.channel
+		?.awaitMessages({
+			time: 60000,
+			filter: (message: Message) => message.author === interaction.user,
+			max: 1,
+		})
+		.then((coll) => coll.first());
 
-	const message = messageColl?.first();
 	if (!message) {
 		return interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
@@ -76,8 +70,8 @@ export async function tag_update_command_handler({
 			tags_embed_builder({
 				tag_name,
 				tag_content: message.content,
-				author: client.users.cache.get(tag.author_id),
+				author: await get_member(interaction, tag.author_id),
 			}),
 		],
 	});
-}
+};

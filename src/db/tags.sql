@@ -10,20 +10,15 @@ CREATE UNIQUE INDEX tag_name_idx on tags(tag_name);
 CREATE EXTENSION pg_trgm;
 
 CREATE OR REPLACE FUNCTION matching_tags(to_search VARCHAR) RETURNS TABLE (
-		id BIGINT,
-		tag_name VARCHAR(255),
-		tag_content TEXT,
-		author_id TEXT
+		tag_name VARCHAR(255)
 	) AS $$
 	BEGIN 
 		RETURN QUERY
-		SELECT tags.id,
-			tags.tag_name,
-			tags.tag_content,
-			tags.author_id
+		SELECT 
+			tags.tag_name
 		FROM tags
 		WHERE tags.tag_name % to_search
 		ORDER BY similarity(tags.tag_name, to_search)
-		LIMIT 3;
+		LIMIT 5;
 	END;
 $$ LANGUAGE PLPGSQL;
