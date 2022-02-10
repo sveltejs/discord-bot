@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { GuildMember, ThreadChannel, User } from 'discord.js';
 import type { JellyCommands } from 'jellycommands';
 import { THREAD_ADMIN_IDS } from '../config.js';
+import { supabase } from '../db/index.js';
 import { undefined_on_error } from './promise.js';
 import { has_any_role_or_id } from './snowflake.js';
 
@@ -25,12 +26,9 @@ export async function rename_thread(
 
 export async function solve_thread(
 	thread: ThreadChannel,
-	client: JellyCommands,
 	solver?: GuildMember | User,
 ) {
 	if (solver) {
-		const supabase = client.props.get<SupabaseClient>('supabase');
-
 		const { error } = await supabase.rpc('increment_solve_count', {
 			solver_id: solver.id,
 		});

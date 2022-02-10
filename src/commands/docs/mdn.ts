@@ -1,14 +1,13 @@
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { DEV_MODE } from '../../config.js';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'mdn',
 	description: 'Search the mdn docs',
 	global: true,
-	dev: DEV_MODE,
+
 	options: [
 		{
 			name: 'topic',

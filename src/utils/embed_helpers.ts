@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageEmbedOptions, User } from 'discord.js';
+import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export const build_embed = (options: MessageEmbedOptions) =>
@@ -18,14 +18,14 @@ export function tags_embed_builder({
 }: {
 	tag_name: string;
 	tag_content: string;
-	author?: User;
+	author?: GuildMember;
 }) {
 	return build_embed({
-		title: tag_name,
+		title: `\`${tag_name}\``,
 		description: tag_content,
 		author: author
 			? {
-					name: author.tag,
+					name: author.displayName,
 					icon_url: author.displayAvatarURL({
 						size: 64,
 					}),

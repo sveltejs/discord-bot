@@ -1,10 +1,7 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
 import { command } from 'jellycommands';
-import { DEV_MODE } from '../../config.js';
-import { Tag } from './_common.js';
-import { tag_create_command_handler } from './_tags_create.js';
-import { tag_delete_command_handler } from './_tags_delete.js';
-import { tag_update_command_handler } from './_tags_update.js';
+import { tag_create_handler } from './_tags_create.js';
+import { tag_delete_handler } from './_tags_delete.js';
+import { tag_update_handler } from './_tags_update.js';
 
 const enum Actions {
 	CREATE = 'create',
@@ -12,11 +9,16 @@ const enum Actions {
 	DELETE = 'delete',
 }
 
+const handlers = {
+	[Actions.CREATE]: tag_create_handler,
+	[Actions.UPDATE]: tag_update_handler,
+	[Actions.DELETE]: tag_delete_handler,
+};
+
 export default command({
 	name: 'tags',
 	description: 'Create, edit or delete tags',
 	global: true,
-	dev: DEV_MODE,
 	options: [
 		{
 			name: Actions.CREATE,
@@ -59,57 +61,14 @@ export default command({
 		},
 	],
 
-	run: async ({ interaction, client }) => {
+	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
 		const tag_name = interaction.options
 			.getString('name', true)
-			.toLowerCase();
-		const supabase: SupabaseClient = client.props.get('supabase');
-
-		const { data: tags, error } = await supabase
-			.from<Tag>('tags')
-			.select('*')
-			.eq('tag_name', tag_name)
-			.limit(1);
-
-		if (error) return;
-
-		const tag = tags?.[0];
+			.toLowerCase(); // Make tag names case insensitive to disallow similar names and avoid confusion
 
 		try {
-			switch (subcommand) {
-				case Actions.CREATE: {
-					await tag_create_command_handler({
-						tag,
-						interaction,
-						tag_name,
-						supabase,
-					});
-					break;
-				}
-
-				case Actions.DELETE: {
-					await tag_delete_command_handler({
-						tag,
-						interaction,
-						supabase,
-						tag_name,
-						client,
-					});
-					break;
-				}
-
-				case Actions.UPDATE: {
-					await tag_update_command_handler({
-						tag,
-						interaction,
-						tag_name,
-						client,
-						supabase,
-					});
-					break;
-				}
-			}
+			await handlers[subcommand]({ interaction, tag_name });
 		} catch {
 			// Do something with the errors
 		}

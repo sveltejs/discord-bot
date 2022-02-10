@@ -1,12 +1,14 @@
 import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
-const cache = new Map<Repos, Record<string, string>>();
+export type ReposWithDocs = Repos.SVELTE | Repos.SVELTE_KIT;
+
+const cache = new Map<ReposWithDocs, Record<string, string>>();
 
 /**
  * Get a `title: slug` record of sections of the Svelte or SvelteKit docs.
  */
-export async function get_docs(project: Repos.SVELTE | Repos.SVELTE_KIT) {
+export async function get_docs(project: ReposWithDocs) {
 	{
 		const cached = cache.get(project);
 		if (cached) return cached;
