@@ -1,9 +1,9 @@
-import type { GuildMember, ThreadChannel, User } from 'discord.js';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { has_any_role_or_id } from './snowflake.js';
+import type { GuildMember, ThreadChannel, User } from 'discord.js';
 import type { JellyCommands } from 'jellycommands';
-import { undefined_on_error } from './promise.js';
 import { THREAD_ADMIN_IDS } from '../config.js';
+import { undefined_on_error } from './promise.js';
+import { has_any_role_or_id } from './snowflake.js';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} - `;

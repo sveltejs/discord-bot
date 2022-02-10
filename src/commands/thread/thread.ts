@@ -1,8 +1,11 @@
-import { check_autothread_permissions } from '../../utils/threads.js';
-import { rename_thread, solve_thread } from '../../utils/threads.js';
-import { build_embed } from '../../utils/embed_helpers.js';
-import { HELP_CHANNELS } from '../../config.js';
 import { command } from 'jellycommands';
+import { HELP_CHANNELS } from '../../config.js';
+import { build_embed } from '../../utils/embed_helpers.js';
+import {
+	check_autothread_permissions,
+	rename_thread,
+	solve_thread,
+} from '../../utils/threads.js';
 
 export default command({
 	name: 'thread',
@@ -44,7 +47,9 @@ export default command({
 	],
 
 	global: true,
-	defer: true,
+	defer: {
+		ephemeral: true,
+	},
 
 	run: async ({ interaction, client }): Promise<void> => {
 		const subcommand = interaction.options.getSubcommand(true);

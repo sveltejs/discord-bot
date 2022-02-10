@@ -1,11 +1,14 @@
 import { Message, MessageOptions, ThreadChannel } from 'discord.js';
-import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config.js';
-import { get_title_from_url } from '../utils/unfurl.js';
-import { add_thread_prefix } from '../utils/threads.js';
-import { build_embed } from '../utils/embed_helpers.js';
-import { LINK_ONLY_CHANNELS } from '../config.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
+import {
+	AUTO_THREAD_CHANNELS,
+	HELP_CHANNELS,
+	LINK_ONLY_CHANNELS,
+} from '../config.js';
+import { build_embed } from '../utils/embed_helpers.js';
+import { add_thread_prefix } from '../utils/threads.js';
+import { get_title_from_url } from '../utils/unfurl.js';
 
 export default event({
 	name: 'messageCreate',
