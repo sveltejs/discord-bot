@@ -50,7 +50,12 @@ export default command({
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
-		if (thread?.isThread() && thread.archived)
+		if (!thread?.isThread())
+			return void interaction.followUp({
+				content: 'This channel is not a thread',
+			});
+
+		if (thread.archived)
 			return void interaction.followUp({
 				content: 'This thread is archived.',
 				ephemeral: true,
@@ -63,12 +68,6 @@ export default command({
 		if (!member)
 			return void interaction.followUp({
 				content: 'Unable to find you',
-				ephemeral: true,
-			});
-
-		if (!thread?.isThread())
-			return void interaction.followUp({
-				content: 'This channel is not a thread',
 				ephemeral: true,
 			});
 
