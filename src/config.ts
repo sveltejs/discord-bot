@@ -80,6 +80,9 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 
 			// #both-both-is-good
 			'919196322303725568',
+
+			// emulated help channel
+			'935524190008770610',
 	  ]
 	: [...COMMUNITY_CHANNELS, ...HELP_CHANNELS];
 // #endregion

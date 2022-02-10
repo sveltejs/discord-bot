@@ -8,7 +8,7 @@ export async function get_title_from_url(url: string): Promise<string> {
 		const data = await unfurl(url, {
 			compress: true,
 			oembed: false,
-			timeout: 3500,
+			timeout: 2000,
 		});
 
 		return (
