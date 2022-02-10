@@ -43,11 +43,7 @@ export async function solve_thread(
 		if (error) throw new Error(error.message);
 	}
 
-	await thread.setName(add_thread_prefix(thread.name, true));
-
-	if (!thread.archived) {
-		thread.setArchived(true).catch(() => {});
-	}
+	await thread.setName(add_thread_prefix(thread.name, true).slice(0, 100));
 }
 
 export async function check_autothread_permissions(

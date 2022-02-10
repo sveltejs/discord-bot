@@ -139,17 +139,23 @@ export default command({
 
 					await solve_thread(thread, client, solver);
 
-					interaction.followUp({
-						embeds: [
-							build_embed({
-								description: `Thread marked as solved! ${
-									solver
-										? `Thanks to ${solver.toString()} for solving this issue.`
-										: ''
-								}`,
-							}),
-						],
-					});
+					interaction.channel
+						?.send({
+							embeds: [
+								build_embed({
+									description: `Thread marked as solved!${
+										solver
+											? ` Thank you ${solver.toString()} and everyone else who participated for your help.`
+											: ''
+									}`,
+								}),
+							],
+						})
+						// Have to do this outside of solve_thread.
+						.finally(() => thread.setArchived(true));
+
+					// Avoid a dangling defer
+					interaction.followUp('Thread marked as solved!');
 				} catch (e) {
 					interaction.followUp({
 						embeds: [

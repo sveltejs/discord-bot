@@ -33,7 +33,7 @@ export default event({
 					startMessage: message,
 				});
 
-				thread.send(instruction_message(thread)).catch(() => {});
+				thread.send(instruction_message(thread));
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
 			}
