@@ -23,11 +23,6 @@ export async function rename_thread(
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
-interface ThreadSolvesTable {
-	user_id: string;
-	count: number;
-}
-
 export async function solve_thread(
 	thread: ThreadChannel,
 	client: JellyCommands,

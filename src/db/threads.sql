@@ -3,6 +3,10 @@ CREATE TABLE IF NOT EXISTS thread_solves (
 	count BIGINT NOT NULL DEFAULT 0
 );
 
+CREATE VIEW leaderboard AS (
+	SELECT * FROM thread_solves ORDER BY count DESC LIMIT 10
+);
+
 DROP FUNCTION increment_solve_count(solver_id VARCHAR(18));
 
 CREATE OR replace FUNCTION increment_solve_count(solver_id VARCHAR(18)) RETURNS void LANGUAGE plpgsql AS $$
