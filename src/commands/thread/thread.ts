@@ -137,7 +137,7 @@ export default command({
 							'This command only works in a auto thread',
 						);
 
-					await solve_thread(thread, client, solver);
+					await solve_thread(thread, solver);
 
 					interaction.channel
 						?.send({

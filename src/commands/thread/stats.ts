@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { command } from 'jellycommands';
+import { supabase } from '../../db/index.js';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 
 export default command({
@@ -31,8 +32,7 @@ export default command({
 	defer: true,
 
 	// @ts-expect-error
-	run: async ({ interaction, client }) => {
-		const supabase = client.props.get<SupabaseClient>('supabase');
+	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 
 		switch (subcommand) {
