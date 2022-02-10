@@ -1,4 +1,3 @@
-import { SupabaseClient } from '@supabase/supabase-js';
 import { command } from 'jellycommands';
 import { supabase } from '../../db/index.js';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
