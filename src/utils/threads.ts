@@ -36,19 +36,8 @@ export async function solve_thread(
 	if (solver) {
 		const supabase = client.props.get<SupabaseClient>('supabase');
 
-		const { data } = await supabase
-			.from<ThreadSolvesTable>('thread_solves')
-			.select('count')
-			.eq('user_id', solver.id)
-			.limit(1);
-
-		if (!data) throw new Error('Error in getting solves from database');
-
-		const count = data[0]?.count || 0;
-
-		const { error } = await supabase.from('thread_solves').upsert({
-			user_id: solver.id,
-			count: count + 1,
+		const { error } = await supabase.rpc('increment_solve_count', {
+			solver_id: solver.id,
 		});
 
 		if (error) throw new Error(error.message);
