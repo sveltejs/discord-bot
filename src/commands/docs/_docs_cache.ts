@@ -33,7 +33,7 @@ function flatten_section(section: DocsSection) {
 
 	subsections[section.title] = section.slug;
 
-	for (let subsection of section.sections) {
+	for (let subsection of section.sections ?? []) {
 		subsections = { ...subsections, ...flatten_section(subsection) };
 	}
 

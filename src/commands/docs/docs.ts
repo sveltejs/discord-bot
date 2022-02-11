@@ -65,15 +65,15 @@ export default command({
 					ephemeral: true,
 				});
 
+			/** @todo Flexsearch (waiting for the svelte docs to move from api.svelte.dev) */
 			await interaction.reply({
 				embeds: [
 					list_embed_builder(
 						results.map(
-							(result) =>
-								`[${result.target}](${repo_details.DOCS_URL}#${
-									cached_docs[result.target]
-								})`,
+							// prettier-ignore
+							(result) => `[${result.target}](${repo_details.DOCS_URL}${repo === Repos.SVELTE ? '#' : '/'}${cached_docs[result.target]})`,
 						),
+						`${repo_details.NAME} Docs`,
 					),
 				],
 			});

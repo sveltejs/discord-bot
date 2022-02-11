@@ -14,7 +14,7 @@ export const RepositoryDetails: Record<Repos, RepoInfo> = {
 	},
 	2: {
 		NAME: 'SvelteKit',
-		DOCS_API_URL: 'https://api.svelte.dev/docs/kit/docs',
+		DOCS_API_URL: 'https://kit.svelte.dev/docs.json',
 		DOCS_URL: 'https://kit.svelte.dev/docs',
 		REPOSITORY_NAME: 'sveltejs/kit',
 	},
