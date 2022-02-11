@@ -8,7 +8,7 @@ const cache = new Map<
 	ReposWithDocs,
 	{
 		index: flexsearch.Index;
-		lookup: Map<Block['href'], Block['breadcrumbs']>;
+		lookup: Map<Block['href'], string>;
 	}
 >();
 
@@ -30,11 +30,11 @@ async function build_cache(repo: ReposWithDocs) {
 	const index = new flexsearch.Index({
 		tokenize: 'forward',
 	});
-	const lookup = new Map<Block['href'], Block['breadcrumbs']>();
+	const lookup = new Map<Block['href'], string>();
 
 	for (const block of blocks) {
 		const title = block.breadcrumbs.at(-1);
-		lookup.set(block.href, [...block.breadcrumbs]);
+		lookup.set(block.href, block.breadcrumbs.join('/'));
 		index.add(block.href, `${title} ${block.content}`);
 	}
 
@@ -51,7 +51,7 @@ export async function search_docs(query: string, repo: ReposWithDocs) {
 	});
 
 	return results.map((href) => {
-		const link_text = lookup.get(href.toString())?.join('/');
+		const link_text = lookup.get(href.toString());
 		// prettier-ignore
 		const link = `${RepositoryDetails[repo].HOMEPAGE}${href.toString()}`;
 
