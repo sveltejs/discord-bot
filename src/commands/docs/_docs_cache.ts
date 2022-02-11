@@ -1,58 +1,64 @@
-import { trgm_search } from 'js-trgm';
+import flexsearch from 'flexsearch';
 import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 export type ReposWithDocs = Repos.SVELTE | Repos.SVELTE_KIT;
 
-const cache = new Map<ReposWithDocs, Record<string, string>>();
+const cache = new Map<
+	ReposWithDocs,
+	{
+		index: flexsearch.Index;
+		lookup: Map<Block['href'], Block['breadcrumbs']>;
+	}
+>();
+
+async function build_cache(repo: ReposWithDocs) {
+	let blocks: Block[];
+
+	if (repo === Repos.SVELTE) {
+		const response = await fetch('https://api.svelte.dev/docs/svelte/docs');
+		blocks = transform_svelte_docs(
+			(await response.json()) as DocsSection[],
+		);
+	} else {
+		const response = await fetch('https://kit.svelte.dev/content.json');
+
+		blocks = ((await response.json()) as { blocks: Block[] }).blocks;
+		console.log(blocks);
+	}
+
+	// Build the index using the same settings as the site
+	// Adapted from: https://github.com/sveltejs/kit/blob/fdbd9d5d1a4146b3184273ecfad47da9c0261986/sites/kit.svelte.dev/src/lib/search/SearchBox.svelte#L21
+	const index = new flexsearch.Index({
+		tokenize: 'forward',
+	});
+	const lookup = new Map<Block['href'], Block['breadcrumbs']>();
+
+	for (const block of blocks) {
+		const title = block.breadcrumbs.at(-1);
+		lookup.set(block.href, [...block.breadcrumbs]);
+		index.add(block.href, `${title} ${block.content}`);
+	}
+
+	const cache_entry = { index, lookup };
+	cache.set(repo, cache_entry);
+	return cache_entry;
+}
 
 export async function search_docs(query: string, repo: ReposWithDocs) {
-	const cached_docs = await get_docs(repo);
-	const repo_details = RepositoryDetails[repo];
+	const { index, lookup } = cache.get(repo) ?? (await build_cache(repo));
 
-	const results = trgm_search(query, Object.keys(cached_docs), {
+	const results = await index.searchAsync(query, {
 		limit: 5,
 	});
 
-	return results.map(
+	return results.map((href) => {
+		const link_text = lookup.get(href.toString())?.join('/');
 		// prettier-ignore
-		(result) => `[${result.target}](${repo_details.DOCS_URL}${repo === Repos.SVELTE ? '#' : '/'}${cached_docs[result.target]})`,
-	);
-}
+		const link = `${RepositoryDetails[repo].HOMEPAGE}${href.toString()}`;
 
-/**
- * Get a `title: slug` record of sections of the Svelte or SvelteKit docs.
- */
-export async function get_docs(project: ReposWithDocs) {
-	{
-		const cached = cache.get(project);
-		if (cached) return cached;
-	}
-
-	const res = await fetch(RepositoryDetails[project].DOCS_API_URL!);
-
-	const data = (await res.json()) as DocsSection[];
-
-	let flattened: Record<string, string> = {};
-
-	for (let section of data) {
-		flattened = { ...flattened, ...flatten_section(section) };
-	}
-
-	cache.set(project, flattened);
-	return flattened;
-}
-
-function flatten_section(section: DocsSection) {
-	let subsections: Record<string, string> = {};
-
-	subsections[section.title] = section.slug;
-
-	for (let subsection of section.sections ?? []) {
-		subsections = { ...subsections, ...flatten_section(subsection) };
-	}
-
-	return subsections;
+		return `[${link_text}](${link})`;
+	});
 }
 
 type DocsSection = {
@@ -60,3 +66,30 @@ type DocsSection = {
 	title: string;
 	sections: Array<DocsSection>;
 };
+
+type Block = {
+	breadcrumbs: string[];
+	href: string;
+	content: string;
+};
+
+/**
+ * Transform the results of the Svelte docs API into a compatible format
+ *
+ * @todo This is a temporary solution until the API is fixed
+ */
+function transform_svelte_docs(docs: Array<DocsSection>, parent_block?: Block) {
+	let blocks: Block[] = [];
+
+	for (const section of docs) {
+		const block: Block = {
+			breadcrumbs: [...(parent_block?.breadcrumbs ?? []), section.title],
+			href: `/docs#${section.slug}`,
+			content: '',
+		};
+		blocks.push(block);
+		blocks = blocks.concat(transform_svelte_docs(section.sections, block));
+	}
+
+	return blocks;
+}

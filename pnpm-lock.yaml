@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@supabase/supabase-js': ^1.30.0
+  '@types/flexsearch': ^0.7.2
   '@types/nice-try': ^2.1.0
   '@types/node': ^16.11.22
   discord.js: ^13.6.0
@@ -34,6 +35,7 @@ dependencies:
   url-regex: 5.0.0
 
 devDependencies:
+  '@types/flexsearch': 0.7.2
   nodemon: 2.0.15
   npm-run-all: 4.1.5
   prettier: 2.5.1
@@ -142,6 +144,10 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       defer-to-connect: 1.1.3
+    dev: true
+
+  /@types/flexsearch/0.7.2:
+    resolution: {integrity: sha512-Nq0CSpOCyUhaF7tAXSvMtoyBMPGlhNyF+uElhIrrgSiXDmX/bnn9jUX7Us3l81Hzowb9rcgNISke0Nj+3xhd3g==}
     dev: true
 
   /@types/nice-try/2.1.0:
