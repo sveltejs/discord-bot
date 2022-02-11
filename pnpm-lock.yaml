@@ -6,6 +6,7 @@ specifiers:
   '@types/node': ^16.11.22
   discord.js: ^13.6.0
   dotenv: ^10.0.0
+  flexsearch: ^0.7.21
   jellycommands: 1.0.0-next.19
   js-trgm: ^1.0.2
   node-fetch: ^3.2.0
@@ -23,6 +24,7 @@ dependencies:
   '@types/node': 16.11.22
   discord.js: 13.6.0
   dotenv: 10.0.0
+  flexsearch: 0.7.21
   jellycommands: 1.0.0-next.19
   js-trgm: 1.0.2
   node-fetch: 3.2.0
@@ -635,6 +637,10 @@ packages:
     dependencies:
       to-regex-range: 5.0.1
     dev: true
+
+  /flexsearch/0.7.21:
+    resolution: {integrity: sha512-W7cHV7Hrwjid6lWmy0IhsWDFQboWSng25U3VVywpHOTJnnAZNPScog67G+cVpeX9f7yDD21ih0WDrMMT+JoaYg==}
+    dev: false
 
   /follow-redirects/1.14.7:
     resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
