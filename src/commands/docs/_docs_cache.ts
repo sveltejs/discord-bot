@@ -22,9 +22,7 @@ async function build_cache(repo: ReposWithDocs) {
 		);
 	} else {
 		const response = await fetch('https://kit.svelte.dev/content.json');
-
 		blocks = ((await response.json()) as { blocks: Block[] }).blocks;
-		console.log(blocks);
 	}
 
 	// Build the index using the same settings as the site
