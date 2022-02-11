@@ -1,6 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
 import type { GuildMember, ThreadChannel, User } from 'discord.js';
-import type { JellyCommands } from 'jellycommands';
 import { THREAD_ADMIN_IDS } from '../config.js';
 import { supabase } from '../db/index.js';
 import { undefined_on_error } from './promise.js';

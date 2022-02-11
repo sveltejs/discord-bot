@@ -61,7 +61,8 @@ export default command({
 				return void interaction.followUp({
 					embeds: [
 						build_embed({
-							description: `<@${user_id}> has solved ${data.count} threads. Thank you for your contribution.`,
+							// prettier-ignore
+							description: `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`,
 						}),
 					],
 				});
