@@ -2,7 +2,7 @@ import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { get_docs, ReposWithDocs } from './_docs_cache.js';
+import { get_docs, ReposWithDocs, search_docs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',
@@ -52,11 +52,7 @@ export default command({
 					],
 				});
 
-			const cached_docs = await get_docs(repo);
-
-			const results = trgm_search(topic, Object.keys(cached_docs), {
-				limit: 5,
-			});
+			const results = await search_docs(topic, repo);
 
 			if (results.length === 0)
 				return interaction.reply({
@@ -68,13 +64,7 @@ export default command({
 			/** @todo Flexsearch (waiting for the svelte docs to move from api.svelte.dev) */
 			await interaction.reply({
 				embeds: [
-					list_embed_builder(
-						results.map(
-							// prettier-ignore
-							(result) => `[${result.target}](${repo_details.DOCS_URL}${repo === Repos.SVELTE ? '#' : '/'}${cached_docs[result.target]})`,
-						),
-						`${repo_details.NAME} Docs`,
-					),
+					list_embed_builder(results, `${repo_details.NAME} Docs`),
 				],
 			});
 		} catch {

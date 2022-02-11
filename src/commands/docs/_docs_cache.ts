@@ -1,9 +1,24 @@
+import { trgm_search } from 'js-trgm';
 import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
 export type ReposWithDocs = Repos.SVELTE | Repos.SVELTE_KIT;
 
 const cache = new Map<ReposWithDocs, Record<string, string>>();
+
+export async function search_docs(query: string, repo: ReposWithDocs) {
+	const cached_docs = await get_docs(repo);
+	const repo_details = RepositoryDetails[repo];
+
+	const results = trgm_search(query, Object.keys(cached_docs), {
+		limit: 5,
+	});
+
+	return results.map(
+		// prettier-ignore
+		(result) => `[${result.target}](${repo_details.DOCS_URL}${repo === Repos.SVELTE ? '#' : '/'}${cached_docs[result.target]})`,
+	);
+}
 
 /**
  * Get a `title: slug` record of sections of the Svelte or SvelteKit docs.
