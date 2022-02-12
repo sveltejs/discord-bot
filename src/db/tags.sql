@@ -22,3 +22,24 @@ CREATE OR REPLACE FUNCTION matching_tags(to_search VARCHAR) RETURNS TABLE (
 		LIMIT 5;
 	END;
 $$ LANGUAGE PLPGSQL;
+
+-- A plpgsql function to return all tags as a paginated list
+-- TODO: Read somewhere that this is a slow way of doing pagination
+-- Hopefully won't be a big deal for us, if it does blame copilot
+CREATE OR REPLACE FUNCTION get_tags(
+		page_number INTEGER
+	) RETURNS TABLE (
+		tag_name VARCHAR(255),
+		author_id TEXT
+	) AS $$
+	BEGIN 
+		RETURN QUERY
+		SELECT 
+			tags.tag_name,
+			tags.author_id
+		FROM tags
+		ORDER BY tags.tag_name
+		LIMIT 10
+		OFFSET (page_number - 1) * 10;
+	END;
+$$ LANGUAGE PLPGSQL;
