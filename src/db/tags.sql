@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS tags (
 	author_id TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX tag_name_idx on tags(tag_name);
+CREATE UNIQUE INDEX tag_name_idx ON tags(tag_name);
 
 CREATE EXTENSION pg_trgm;
 
@@ -26,7 +26,7 @@ $$ LANGUAGE PLPGSQL;
 -- A plpgsql function to return all tags as a paginated list
 -- TODO: Read somewhere that this is a slow way of doing pagination
 -- Hopefully won't be a big deal for us, if it does blame copilot
-CREATE OR REPLACE FUNCTION get_tags(
+CREATE OR REPLACE FUNCTION get_tags_list(
 		page_number INTEGER
 	) RETURNS TABLE (
 		tag_name VARCHAR(255),
