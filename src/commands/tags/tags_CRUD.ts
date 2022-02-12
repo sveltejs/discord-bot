@@ -2,17 +2,20 @@ import { command } from 'jellycommands';
 import { tag_create_handler } from './_tags_create.js';
 import { tag_delete_handler } from './_tags_delete.js';
 import { tag_update_handler } from './_tags_update.js';
+import { tag_list_handler } from './_tags_list.js';
 
 const enum Actions {
 	CREATE = 'create',
 	UPDATE = 'update',
 	DELETE = 'delete',
+	LIST = 'list',
 }
 
 const handlers = {
 	[Actions.CREATE]: tag_create_handler,
 	[Actions.UPDATE]: tag_update_handler,
 	[Actions.DELETE]: tag_delete_handler,
+	[Actions.LIST]: tag_list_handler,
 };
 
 export default command({
@@ -59,13 +62,18 @@ export default command({
 				},
 			],
 		},
+		{
+			name: Actions.LIST,
+			type: 'SUB_COMMAND',
+			description: 'List all tags',
+		},
 	],
 
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
-		const tag_name = interaction.options
-			.getString('name', true)
-			.toLowerCase(); // Make tag names case insensitive to disallow similar names and avoid confusion
+		const tag_name = (
+			interaction.options.getString('name') as string
+		)?.toLowerCase(); // Make tag names case insensitive to disallow similar names and avoid confusion
 
 		try {
 			await handlers[subcommand]({ interaction, tag_name });
