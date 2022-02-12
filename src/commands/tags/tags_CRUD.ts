@@ -71,9 +71,10 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
-		const tag_name = (
-			interaction.options.getString('name') as string
-		)?.toLowerCase(); // Make tag names case insensitive to disallow similar names and avoid confusion
+		// Make tag names case insensitive to disallow similar names and avoid confusion
+		// !? because it won't be null if the subcommand is create, update or delete
+		// and we don't care about tag_name in list
+		const tag_name = interaction.options.getString('name')!?.toLowerCase();
 
 		try {
 			await handlers[subcommand]({ interaction, tag_name });
