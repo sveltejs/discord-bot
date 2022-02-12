@@ -6,7 +6,7 @@ const validator = /^tags_page_\d+$/;
 export default event({
 	name: 'interactionCreate',
 	run: async ({}, interaction) => {
-		if (!interaction.isButton() || !interaction.customId.match(validator))
+		if (!interaction.isButton() || !validator.test(interaction.customId))
 			return;
 
 		const page = parseInt(interaction.customId.split('_')[2], 10);
