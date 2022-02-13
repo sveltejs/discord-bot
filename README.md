@@ -1,4 +1,4 @@
-# Svelte Bot
+# Svelte Bot - Cybernetically enhanced discord servers
 
 Welcome to the repo for the official Svelte Discord bot!
 
