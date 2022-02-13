@@ -50,27 +50,18 @@ export default command({
 		const thread = await interaction.channel?.fetch();
 
 		if (!thread?.isThread())
-			return void interaction.followUp({
-				content: 'This channel is not a thread',
-			});
+			return void interaction.followUp('This channel is not a thread');
 
 		/**
 		 * @todo This doesn't seem to work, creating an interaction
 		 * in an archived thread probably unarchives it.
 		 */
 		if (thread.archived)
-			return void interaction.followUp({
-				content: 'This thread is archived.',
-				ephemeral: true,
-			});
+			return void interaction.followUp('This thread is archived.');
 
 		const member = await get_member(interaction, interaction.user.id);
 
-		if (!member)
-			return void interaction.followUp({
-				content: 'Unable to find you',
-				ephemeral: true,
-			});
+		if (!member) return void interaction.followUp('Unable to find you');
 
 		const has_permission = await check_autothread_permissions(
 			thread,
@@ -78,22 +69,15 @@ export default command({
 		);
 
 		if (!has_permission)
-			return void interaction.followUp({
-				content: "You don't have the permissions to manage this thread",
-				ephemeral: true,
-			});
+			return void interaction.followUp(
+				"You don't have the permissions to manage this thread",
+			);
 
 		switch (subcommand) {
 			case 'archive':
 				await thread.setArchived(true);
 
-				interaction.followUp({
-					embeds: [
-						build_embed({
-							description: 'Thread archived',
-						}),
-					],
-				});
+				interaction.followUp('Thread archived');
 				break;
 
 			case 'rename':
@@ -107,17 +91,9 @@ export default command({
 						HELP_CHANNELS.includes(parent_id),
 					);
 
-					interaction.followUp({
-						embeds: [
-							build_embed({
-								description: 'Thread renamed',
-							}),
-						],
-					});
+					interaction.followUp('Thread renamed');
 				} catch (error) {
-					interaction.followUp({
-						content: (error as Error).message,
-					});
+					interaction.followUp((error as Error).message);
 				}
 				break;
 
@@ -137,7 +113,7 @@ export default command({
 						embeds: [
 							build_embed({
 								description:
-									'Thread solved. Thank you everyone!',
+									'Thread solved. Thank you everyone.',
 							}),
 						],
 					});
@@ -146,13 +122,7 @@ export default command({
 						await get_ending_message(thread, interaction.user.id),
 					);
 				} catch (e) {
-					interaction.followUp({
-						embeds: [
-							build_embed({
-								description: (e as Error).message,
-							}),
-						],
-					});
+					interaction.followUp((e as Error).message);
 				}
 				break;
 		}
