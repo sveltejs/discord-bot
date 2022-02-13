@@ -3,6 +3,7 @@ import { HELP_CHANNELS } from '../../config.js';
 import { build_embed } from '../../utils/embed_helpers.js';
 import {
 	check_autothread_permissions,
+	get_ending_message,
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
@@ -132,20 +133,18 @@ export default command({
 
 					await solve_thread(thread);
 
-					interaction.channel
-						?.send({
-							embeds: [
-								build_embed({
-									description:
-										'Thread solved. Thank you everyone!',
-								}),
-							],
-						})
-						// Have to do this outside of solve_thread.
-						.finally(() => thread.setArchived(true));
+					interaction.channel?.send({
+						embeds: [
+							build_embed({
+								description:
+									'Thread solved. Thank you everyone!',
+							}),
+						],
+					});
 
-					// Avoid a dangling defer
-					interaction.followUp('Thread marked as solved!');
+					interaction.followUp(
+						await get_ending_message(thread, interaction.user.id),
+					);
 				} catch (e) {
 					interaction.followUp({
 						embeds: [
