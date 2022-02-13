@@ -21,6 +21,7 @@ export default event({
 		row.setComponents(
 			row.components.filter((c) => c.customId !== interaction.customId),
 		);
+
 		interaction.update(
 			// Need to do this because the API gets mad when ActionRow is empty.
 			row.components.length ? { components: [row] } : { components: [] },
