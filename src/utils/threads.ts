@@ -22,19 +22,16 @@ export async function rename_thread(
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
-export async function solve_thread(
-	thread: ThreadChannel,
-	solver?: GuildMember | User,
-) {
-	if (solver) {
-		const { error } = await supabase.rpc('increment_solve_count', {
-			solver_id: solver.id,
-		});
-
-		if (error) throw new Error(error.message);
-	}
-
+export async function solve_thread(thread: ThreadChannel) {
 	await thread.setName(add_thread_prefix(thread.name, true).slice(0, 100));
+}
+
+export async function increment_solve_count(id: Snowflake) {
+	const { error } = await supabase.rpc('increment_solve_count', {
+		solver_id: id,
+	});
+
+	if (error) throw new Error(error.message);
 }
 
 export async function check_autothread_permissions(

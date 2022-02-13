@@ -6,6 +6,7 @@ import {
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
+import { get_member } from '../tags/_common.js';
 
 export default command({
 	name: 'thread',
@@ -35,14 +36,6 @@ export default command({
 			name: 'solve',
 			description: 'Mark a thread as solved',
 			type: 'SUB_COMMAND',
-
-			options: [
-				{
-					name: 'user',
-					description: 'Who helped you solve this thread?',
-					type: 'USER',
-				},
-			],
 		},
 	],
 
@@ -51,7 +44,7 @@ export default command({
 		ephemeral: true,
 	},
 
-	run: async ({ interaction, client }): Promise<void> => {
+	run: async ({ interaction }): Promise<void> => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
@@ -60,15 +53,17 @@ export default command({
 				content: 'This channel is not a thread',
 			});
 
+		/**
+		 * @todo This doesn't seem to work, creating an interaction
+		 * in an archived thread probably unarchives it.
+		 */
 		if (thread.archived)
 			return void interaction.followUp({
 				content: 'This thread is archived.',
 				ephemeral: true,
 			});
 
-		const member = await interaction.guild?.members.fetch(
-			interaction.user.id,
-		);
+		const member = await get_member(interaction, interaction.user.id);
 
 		if (!member)
 			return void interaction.followUp({
@@ -126,8 +121,6 @@ export default command({
 				break;
 
 			case 'solve':
-				const solver = interaction.options.getUser('user') || undefined;
-
 				try {
 					if (thread.name.startsWith('✅'))
 						throw new Error('Thread already marked as solved');
@@ -137,17 +130,14 @@ export default command({
 							'This command only works in a auto thread',
 						);
 
-					await solve_thread(thread, solver);
+					await solve_thread(thread);
 
 					interaction.channel
 						?.send({
 							embeds: [
 								build_embed({
-									description: `Thread marked as solved!${
-										solver
-											? ` Thank you ${solver.toString()} and everyone else who participated for your help.`
-											: ''
-									}`,
+									description:
+										'Thread solved. Thank you everyone!',
 								}),
 							],
 						})
