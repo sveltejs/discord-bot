@@ -1,13 +1,13 @@
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
 import { build_embed } from '../../utils/embed_helpers.js';
+import { get_member } from '../../utils/snowflake.js';
 import {
 	check_autothread_permissions,
 	get_ending_message,
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
-import { get_member } from '../tags/_common.js';
 
 export default command({
 	name: 'thread',

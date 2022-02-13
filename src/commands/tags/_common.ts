@@ -30,23 +30,7 @@ export async function get_matching_tag_names(tag_name: string) {
 		});
 }
 
-/**
- * Get the member having the `id` in the guild where the interaction was created.
- *
- * @todo this could be reused elsewhere so should be moved to utils
- * but I can't think of a filename
- */
-export async function get_member(
-	interaction: CommandInteraction,
-	id: Snowflake,
-) {
-	return interaction.guild?.members.fetch(id);
-}
-
-export type TagCUDHandler = ({
-	interaction,
-	tag_name,
-}: {
+export type TagCUDHandler = ({}: {
 	interaction: CommandInteraction;
 	tag_name: string;
 }) => any | void;

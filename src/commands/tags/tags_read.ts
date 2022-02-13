@@ -3,7 +3,8 @@ import {
 	list_embed_builder,
 	tags_embed_builder,
 } from '../../utils/embed_helpers.js';
-import { get_matching_tag_names, get_member, get_tag } from './_common.js';
+import { get_member } from '../../utils/snowflake.js';
+import { get_matching_tag_names, get_tag } from './_common.js';
 
 export default command({
 	name: 'tag',
