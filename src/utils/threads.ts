@@ -36,7 +36,7 @@ export async function solve_thread(thread: ThreadChannel) {
 			.setName(add_thread_prefix(thread.name, true).slice(0, 100))
 			// Archiving immediately won't let users click the buttons.
 			// This should also help with people unarchiving the thread
-			// for saying `you're welcome` and what not.
+			// by messaging after solving it.
 			.then((t) => t.setAutoArchiveDuration(60))
 	);
 }
