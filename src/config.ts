@@ -12,8 +12,7 @@ export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export const SVELTE_COIN_EMOJI = DEV_MODE
 	? '<:sveltecoin:942620393359966229>'
-	: /** @todo Replace with emote's id on the main server */
-	  '<:sveltecoin:942620393359966229>';
+	: '<:sveltecoin:942765779038920785>';
 
 // #region people
 const ADMIN_ROLES = [
