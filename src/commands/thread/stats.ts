@@ -1,6 +1,7 @@
 import { command } from 'jellycommands';
+import { SVELTE_COIN_EMOJI } from '../../config.js';
 import { supabase } from '../../db/index.js';
-import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import { build_embed } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'stats',
@@ -76,14 +77,24 @@ export default command({
 				if (error || !data?.length)
 					return void interaction.followUp('Could not fetch data');
 
-				const leaderboard = data.map(
-					({ user_id, count }) => `<@${user_id}>: ${count}`,
-				);
+				const leaderboard = build_embed({
+					title: 'Server Leaderboard',
+				})
+					.addField(
+						'Member',
+						data.map(({ user_id }) => `<@${user_id}>`).join('\n'),
+						true,
+					)
+					.addField(
+						'Solves',
+						data
+							.map(({ count }) => `${count} ${SVELTE_COIN_EMOJI}`)
+							.join('\n'),
+						true,
+					);
 
 				return void interaction.followUp({
-					embeds: [
-						list_embed_builder(leaderboard, 'Server leaderboard'),
-					],
+					embeds: [leaderboard],
 				});
 			}
 		}
