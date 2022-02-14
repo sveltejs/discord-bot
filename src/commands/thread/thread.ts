@@ -59,7 +59,7 @@ export default command({
 		if (thread.archived)
 			return void interaction.followUp('This thread is archived.');
 
-		const member = await get_member(interaction, interaction.user.id);
+		const member = await get_member(interaction);
 
 		if (!member) return void interaction.followUp('Unable to find you');
 

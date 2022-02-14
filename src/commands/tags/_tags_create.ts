@@ -11,7 +11,7 @@ export const tag_create_handler: TagCUDHandler = async ({
 	interaction,
 	tag_name,
 }) => {
-	const member = (await get_member(interaction, interaction.user.id))!;
+	const member = (await get_member(interaction))!;
 
 	if (!has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)) {
 		return interaction.reply({

@@ -17,7 +17,7 @@ export const tag_delete_handler: TagCUDHandler = async ({
 		});
 	}
 
-	const member = (await get_member(interaction, interaction.user.id))!;
+	const member = (await get_member(interaction))!;
 	if (
 		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {

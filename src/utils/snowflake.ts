@@ -20,10 +20,11 @@ export function has_any_role_or_id(
 
 /**
  * Get the member having the `id` in the guild where the interaction was created.
+ * @default {id} interaction.user.id
  */
 export async function get_member(
 	interaction: CommandInteraction,
-	id: Snowflake,
+	id: Snowflake = interaction.user.id,
 ) {
 	return interaction.guild?.members.fetch(id);
 }

@@ -1,4 +1,4 @@
-import { CommandInteraction, Snowflake } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { supabase } from '../../db/index.js';
 
 export interface Tag {
