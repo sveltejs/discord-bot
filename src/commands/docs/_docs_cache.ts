@@ -2,17 +2,15 @@ import flexsearch from 'flexsearch';
 import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 
-export type ReposWithDocs = Repos.SVELTE | Repos.SVELTE_KIT;
-
 const cache = new Map<
-	ReposWithDocs,
+	Repos,
 	{
 		index: flexsearch.Index;
 		lookup: Map<Block['href'], string>;
 	}
 >();
 
-async function build_cache(repo: ReposWithDocs) {
+async function build_cache(repo: Repos) {
 	let blocks: Block[];
 
 	if (repo === Repos.SVELTE) {
@@ -43,7 +41,7 @@ async function build_cache(repo: ReposWithDocs) {
 	return cache_entry;
 }
 
-export async function search_docs(query: string, repo: ReposWithDocs) {
+export async function search_docs(query: string, repo: Repos) {
 	const { index, lookup } = cache.get(repo) ?? (await build_cache(repo));
 
 	const results = await index.searchAsync(query, {

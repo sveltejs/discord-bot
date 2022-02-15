@@ -2,7 +2,12 @@ import { command } from 'jellycommands';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
 import { no_op } from '../../utils/promise.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { ReposWithDocs, search_docs } from './_docs_cache.js';
+import { search_docs } from './_docs_cache.js';
+
+const sc_map = {
+	svelte: Repos.SVELTE,
+	sveltekit: Repos.SVELTE_KIT,
+};
 
 export default command({
 	name: 'docs',
@@ -11,33 +16,38 @@ export default command({
 
 	options: [
 		{
-			name: 'project',
-			type: 'INTEGER',
-			description: 'Which project to search the docs of',
-			choices: [
+			name: 'svelte',
+			type: 'SUB_COMMAND',
+			description: 'Search svelte docs',
+			options: [
 				{
-					name: 'Svelte',
-					value: Repos.SVELTE,
-				},
-				{
-					name: 'SvelteKit',
-					value: Repos.SVELTE_KIT,
+					name: 'query',
+					type: 'STRING',
+					description: 'The string to search for in the docs.',
 				},
 			],
-			required: true,
 		},
 		{
-			name: 'query',
-			type: 'STRING',
-			description: 'The string to search for in the docs.',
+			name: 'sveltekit',
+			type: 'SUB_COMMAND',
+			description: 'Search sveltekit docs',
+			options: [
+				{
+					name: 'query',
+					type: 'STRING',
+					description: 'The string to search for in the docs.',
+				},
+			],
 		},
 	],
 
 	run: async ({ interaction }) => {
-		const repo: ReposWithDocs = interaction.options.getInteger(
-			'project',
-			true,
-		);
+		const repo =
+			sc_map[
+				interaction.options.getSubcommand(true) as
+					| 'svelte'
+					| 'sveltekit'
+			];
 
 		const repo_details = RepositoryDetails[repo];
 		const query = interaction.options.getString('query');
