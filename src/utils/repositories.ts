@@ -9,13 +9,13 @@ export const RepositoryDetails: Record<Repos, RepoInfo> = {
 	1: {
 		NAME: 'Svelte',
 		DOCS_API_URL: 'https://api.svelte.dev/docs/svelte/docs',
-		DOCS_URL: 'https://svelte.dev/docs',
+		HOMEPAGE: 'https://svelte.dev',
 		REPOSITORY_NAME: 'sveltejs/svelte',
 	},
 	2: {
 		NAME: 'SvelteKit',
 		DOCS_API_URL: 'https://kit.svelte.dev/docs.json',
-		DOCS_URL: 'https://kit.svelte.dev/docs',
+		HOMEPAGE: 'https://kit.svelte.dev',
 		REPOSITORY_NAME: 'sveltejs/kit',
 	},
 	3: {
@@ -31,6 +31,6 @@ export const RepositoryDetails: Record<Repos, RepoInfo> = {
 interface RepoInfo {
 	NAME: string;
 	REPOSITORY_NAME: string;
-	DOCS_URL?: string;
+	HOMEPAGE?: string;
 	DOCS_API_URL?: string;
 }

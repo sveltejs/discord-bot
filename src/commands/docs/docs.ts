@@ -1,8 +1,8 @@
 import { command } from 'jellycommands';
-import { trgm_search } from 'js-trgm';
 import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import { no_op } from '../../utils/promise.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { get_docs, ReposWithDocs } from './_docs_cache.js';
+import { ReposWithDocs, search_docs } from './_docs_cache.js';
 
 export default command({
 	name: 'docs',
@@ -27,9 +27,9 @@ export default command({
 			required: true,
 		},
 		{
-			name: 'topic',
+			name: 'query',
 			type: 'STRING',
-			description: 'The topic to search for in the docs.',
+			description: 'The string to search for in the docs.',
 		},
 	],
 
@@ -40,45 +40,39 @@ export default command({
 		);
 
 		const repo_details = RepositoryDetails[repo];
-		const topic = interaction.options.getString('topic');
+		const query = interaction.options.getString('query');
 
 		try {
-			if (!topic)
+			if (!query)
 				return interaction.reply({
 					embeds: [
 						build_embed({
-							description: `[${repo_details.NAME} Docs](${repo_details.DOCS_URL})`,
+							description: `[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
 						}),
 					],
 				});
 
-			const cached_docs = await get_docs(repo);
+			const results = await search_docs(query, repo);
 
-			const results = trgm_search(topic, Object.keys(cached_docs), {
-				limit: 5,
-			});
-
-			if (results.length === 0)
+			if (!results.length)
 				return interaction.reply({
 					content:
 						'No matching result found. Try again with a different search term.',
 					ephemeral: true,
 				});
 
-			/** @todo Flexsearch (waiting for the svelte docs to move from api.svelte.dev) */
 			await interaction.reply({
 				embeds: [
-					list_embed_builder(
-						results.map(
-							// prettier-ignore
-							(result) => `[${result.target}](${repo_details.DOCS_URL}${repo === Repos.SVELTE ? '#' : '/'}${cached_docs[result.target]})`,
-						),
-						`${repo_details.NAME} Docs`,
-					),
+					list_embed_builder(results, `${repo_details.NAME} Docs`),
 				],
 			});
 		} catch {
-			// Do something with the errors
+			interaction
+				.reply({
+					content: 'An error occurred while searching the docs.',
+					ephemeral: true,
+				})
+				.catch(no_op);
 		}
 	},
 });
