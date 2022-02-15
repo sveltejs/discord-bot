@@ -50,7 +50,7 @@ export async function search_docs(query: string, repo: ReposWithDocs) {
 		limit: 5,
 	});
 
-	return results.map((href: flexsearch.Id) => {
+	return results.map((href) => {
 		const link_text = lookup.get(href.toString());
 		// prettier-ignore
 		const link = `${RepositoryDetails[repo].HOMEPAGE}${href.toString()}`;
