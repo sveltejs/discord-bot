@@ -30,6 +30,7 @@ export default command({
 
 	global: true,
 	defer: true,
+	disabled: true,
 
 	// @ts-expect-error
 	run: async ({ interaction }) => {
