@@ -1,7 +1,8 @@
 import { Message } from 'discord.js';
 import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { get_member, get_tag, Tag, TagCUDHandler } from './_common.js';
+import { get_member } from '../../utils/snowflake.js';
+import { get_tag, Tag, TagCUDHandler } from './_common.js';
 
 export const tag_update_handler: TagCUDHandler = async ({
 	interaction,

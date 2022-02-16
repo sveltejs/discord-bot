@@ -1,8 +1,8 @@
 import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { has_any_role_or_id } from '../../utils/snowflake.js';
-import { get_member, get_tag, Tag, TagCUDHandler } from './_common.js';
+import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
+import { get_tag, Tag, TagCUDHandler } from './_common.js';
 
 export const tag_delete_handler: TagCUDHandler = async ({
 	tag_name,
@@ -17,7 +17,7 @@ export const tag_delete_handler: TagCUDHandler = async ({
 		});
 	}
 
-	const member = (await get_member(interaction, interaction.user.id))!;
+	const member = (await get_member(interaction))!;
 	if (
 		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
 	) {

@@ -1,8 +1,10 @@
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
 import { build_embed } from '../../utils/embed_helpers.js';
+import { get_member } from '../../utils/snowflake.js';
 import {
 	check_autothread_permissions,
+	get_ending_message,
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
@@ -35,14 +37,6 @@ export default command({
 			name: 'solve',
 			description: 'Mark a thread as solved',
 			type: 'SUB_COMMAND',
-
-			options: [
-				{
-					name: 'user',
-					description: 'Who helped you solve this thread?',
-					type: 'USER',
-				},
-			],
 		},
 	],
 
@@ -51,30 +45,23 @@ export default command({
 		ephemeral: true,
 	},
 
-	run: async ({ interaction, client }): Promise<void> => {
+	run: async ({ interaction }): Promise<void> => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
 		if (!thread?.isThread())
-			return void interaction.followUp({
-				content: 'This channel is not a thread',
-			});
+			return void interaction.followUp('This channel is not a thread');
 
+		/**
+		 * @todo This doesn't seem to work, creating an interaction
+		 * in an archived thread probably unarchives it.
+		 */
 		if (thread.archived)
-			return void interaction.followUp({
-				content: 'This thread is archived.',
-				ephemeral: true,
-			});
+			return void interaction.followUp('This thread is archived.');
 
-		const member = await interaction.guild?.members.fetch(
-			interaction.user.id,
-		);
+		const member = await get_member(interaction);
 
-		if (!member)
-			return void interaction.followUp({
-				content: 'Unable to find you',
-				ephemeral: true,
-			});
+		if (!member) return void interaction.followUp('Unable to find you');
 
 		const has_permission = await check_autothread_permissions(
 			thread,
@@ -82,22 +69,15 @@ export default command({
 		);
 
 		if (!has_permission)
-			return void interaction.followUp({
-				content: "You don't have the permissions to manage this thread",
-				ephemeral: true,
-			});
+			return void interaction.followUp(
+				"You don't have the permissions to manage this thread",
+			);
 
 		switch (subcommand) {
 			case 'archive':
 				await thread.setArchived(true);
 
-				interaction.followUp({
-					embeds: [
-						build_embed({
-							description: 'Thread archived',
-						}),
-					],
-				});
+				interaction.followUp('Thread archived');
 				break;
 
 			case 'rename':
@@ -111,23 +91,13 @@ export default command({
 						HELP_CHANNELS.includes(parent_id),
 					);
 
-					interaction.followUp({
-						embeds: [
-							build_embed({
-								description: 'Thread renamed',
-							}),
-						],
-					});
+					interaction.followUp('Thread renamed');
 				} catch (error) {
-					interaction.followUp({
-						content: (error as Error).message,
-					});
+					interaction.followUp((error as Error).message);
 				}
 				break;
 
 			case 'solve':
-				const solver = interaction.options.getUser('user') || undefined;
-
 				try {
 					if (thread.name.startsWith('✅'))
 						throw new Error('Thread already marked as solved');
@@ -137,33 +107,22 @@ export default command({
 							'This command only works in a auto thread',
 						);
 
-					await solve_thread(thread, solver);
+					await solve_thread(thread);
 
-					interaction.channel
-						?.send({
-							embeds: [
-								build_embed({
-									description: `Thread marked as solved!${
-										solver
-											? ` Thank you ${solver.toString()} and everyone else who participated for your help.`
-											: ''
-									}`,
-								}),
-							],
-						})
-						// Have to do this outside of solve_thread.
-						.finally(() => thread.setArchived(true));
-
-					// Avoid a dangling defer
-					interaction.followUp('Thread marked as solved!');
-				} catch (e) {
-					interaction.followUp({
+					interaction.channel?.send({
 						embeds: [
 							build_embed({
-								description: (e as Error).message,
+								description:
+									'Thread solved. Thank you everyone.',
 							}),
 						],
 					});
+
+					interaction.followUp(
+						await get_ending_message(thread, interaction.user.id),
+					);
+				} catch (e) {
+					interaction.followUp((e as Error).message);
 				}
 				break;
 		}

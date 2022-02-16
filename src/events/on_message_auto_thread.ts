@@ -56,7 +56,7 @@ function instruction_message(thread: ThreadChannel): MessageOptions {
 		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
 
 	const description = HELP_CHANNELS.includes(thread.parentId!)
-		? `${base_description}\n\nWhen your problem is solved run \`/thread solve\`, don't forget to credit the person that helped you!`
+		? `${base_description}\n\nWhen your problem is solved **run \`/thread solve\`**, don't forget to credit the people that helped you!`
 		: base_description;
 
 	return {
