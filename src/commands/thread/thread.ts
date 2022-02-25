@@ -1,6 +1,7 @@
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
 import { build_embed } from '../../utils/embed_helpers.js';
+import { RateLimitStore } from '../../utils/ratelimit.js';
 import { get_member } from '../../utils/snowflake.js';
 import {
 	check_autothread_permissions,
@@ -8,6 +9,12 @@ import {
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
+
+/**
+ * Discord allows 2 renames every 10 minutes. We need one always available 
+ * for the solve command, so only one rename per 10 minutes is allowed for users.
+ */
+const rename_limit = new RateLimitStore(1, 10 * 60 * 1000);
 
 export default command({
 	name: 'thread',
@@ -85,6 +92,11 @@ export default command({
 				const parent_id = thread.parentId || '';
 
 				try {
+					if (rename_limit.is_limited(thread.id, true))
+						return void interaction.followUp(
+							'You can only rename a thread once every 10 minutes',
+						);
+
 					await rename_thread(
 						thread,
 						new_name,
