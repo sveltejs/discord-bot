@@ -6,7 +6,7 @@ import {
 	HELP_CHANNELS,
 	LINK_ONLY_CHANNELS,
 } from '../config.js';
-import { build_embed } from '../utils/embed_helpers.js';
+import { wrap_in_embed } from '../utils/embed_helpers.js';
 import { add_thread_prefix } from '../utils/threads.js';
 import { get_title_from_url } from '../utils/unfurl.js';
 
@@ -65,11 +65,5 @@ function instruction_message(thread: ThreadChannel): MessageOptions {
 		? `${base_description}\n\nWhen your problem is solved **run \`/thread solve\`**, don't forget to credit the people that helped you!`
 		: base_description;
 
-	return {
-		embeds: [
-			build_embed({
-				description,
-			}),
-		],
-	};
+	return wrap_in_embed(description);
 }

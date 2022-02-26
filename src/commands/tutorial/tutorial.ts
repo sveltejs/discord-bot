@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import { build_embed } from '../../utils/embed_helpers.js';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
 import { get_tutorials } from './_tutorials_cache.js';
 
 export default command({
@@ -45,17 +45,12 @@ export default command({
 			}
 
 			const top_result = results[0];
-			interaction.reply({
-				embeds: [
-					build_embed({
-						description: `Have you gone through the tutorial page on [${
-							top_result.target
-						}](https://svelte.dev/tutorial/${
-							cached_tutorials[top_result.target]
-						})?`,
-					}),
-				],
-			});
+			interaction.reply(
+				wrap_in_embed(
+					// prettier-ignore
+					`Have you gone through the tutorial page on [${top_result.target}](https://svelte.dev/tutorial/${cached_tutorials[top_result.target]})?`,
+				),
+			);
 		} catch {
 			// Do something or nothing
 		}

@@ -1,5 +1,8 @@
 import { command } from 'jellycommands';
-import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import {
+	list_embed_builder,
+	wrap_in_embed,
+} from '../../utils/embed_helpers.js';
 import { no_op } from '../../utils/promise.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 import { search_docs } from './_docs_cache.js';
@@ -54,14 +57,11 @@ export default command({
 
 		try {
 			if (!query)
-				return interaction.reply({
-					embeds: [
-						build_embed({
-							description: `[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
-						}),
-					],
-				});
-
+				return interaction.reply(
+					wrap_in_embed(
+						`[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
+					),
+				);
 			const results = await search_docs(query, repo);
 
 			if (!results.length)

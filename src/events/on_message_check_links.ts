@@ -1,7 +1,7 @@
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
 import { LINK_ONLY_CHANNELS } from '../config.js';
-import { build_embed } from '../utils/embed_helpers.js';
+import { build_embed, wrap_in_embed } from '../utils/embed_helpers.js';
 
 export default event({
 	name: 'messageCreate',
@@ -16,13 +16,11 @@ export default event({
 				try {
 					if (message.deletable) await message.delete();
 
-					await message.author.send({
-						embeds: [
-							build_embed({
-								description: `Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
-							}),
-						],
-					});
+					await message.author.send(
+						wrap_in_embed(
+							`Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
+						),
+					);
 
 					await message.author.send({
 						content: message.content,

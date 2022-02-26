@@ -1,8 +1,8 @@
 import {
 	GuildMember,
+	InteractionReplyOptions,
 	MessageEmbed,
 	MessageEmbedOptions,
-	MessageOptions,
 } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
@@ -11,11 +11,10 @@ export const build_embed = (options: MessageEmbedOptions) =>
 
 export function wrap_in_embed(
 	content: string,
-	embed_options?: MessageEmbedOptions,
-): MessageOptions {
-	const embed = build_embed(embed_options!);
-	embed.setDescription(content);
-	return { embeds: [embed] };
+	ephemeral?: boolean,
+): InteractionReplyOptions {
+	const embed = build_embed({ description: content });
+	return { embeds: [embed], ephemeral };
 }
 
 export function list_embed_builder(list_items: string[], title?: string) {

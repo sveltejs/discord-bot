@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { DEV_MODE } from '../config.js';
-import { build_embed } from '../utils/embed_helpers.js';
+import { wrap_in_embed } from '../utils/embed_helpers.js';
 
 export default command({
 	name: 'test',
@@ -10,9 +10,7 @@ export default command({
 	dev: true,
 	disabled: !DEV_MODE,
 
-	run: ({ interaction, client }) => {
-		interaction.reply({
-			embeds: [build_embed({ description: 'Hello World!' })],
-		});
+	run: ({ interaction }) => {
+		interaction.reply(wrap_in_embed('Hello world!'));
 	},
 });

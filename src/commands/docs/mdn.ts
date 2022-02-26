@@ -1,7 +1,10 @@
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { build_embed, list_embed_builder } from '../../utils/embed_helpers.js';
+import {
+	list_embed_builder,
+	wrap_in_embed,
+} from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'mdn',
@@ -21,13 +24,11 @@ export default command({
 		const search_topic = interaction.options.getString('topic');
 		try {
 			if (!search_topic)
-				return interaction.reply({
-					embeds: [
-						build_embed({
-							description: `Have a HTML, CSS or JS question? Check the [MDN docs](https://developer.mozilla.org/en-US/docs/Web)`,
-						}),
-					],
-				});
+				return interaction.reply(
+					wrap_in_embed(
+						`Have a HTML, CSS or JS question? Check the [MDN docs](https://developer.mozilla.org/en-US/docs/Web)`,
+					),
+				);
 
 			let results = await mdn_search(search_topic);
 
