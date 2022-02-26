@@ -1,7 +1,7 @@
 export class RateLimitStore {
-	count: number;
-	time_period: number;
-	available_uses: Map<string, number>;
+	private count: number;
+	private time_period: number;
+	private available_uses: Map<string, number>;
 
 	constructor(count: number, time_period: number) {
 		this.count = count;
