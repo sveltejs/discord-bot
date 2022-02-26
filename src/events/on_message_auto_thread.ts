@@ -13,7 +13,13 @@ import { get_title_from_url } from '../utils/unfurl.js';
 export default event({
 	name: 'messageCreate',
 	run: async ({}, message) => {
-		if (message.author.bot) return;
+		const should_ignore =
+			message.author.bot ||
+			// It's going to be deleted in this case, which could cause an orphan thread
+			(LINK_ONLY_CHANNELS.includes(message.channel.id) &&
+				!urlRegex().test(message.content));
+
+		if (should_ignore) return;
 
 		if (
 			AUTO_THREAD_CHANNELS.includes(message.channel.id) &&
