@@ -15,17 +15,14 @@ export default event({
 	run: async ({}, message) => {
 		const should_ignore =
 			message.author.bot ||
-			// It's going to be deleted in this case, which could cause an orphan thread
-			(LINK_ONLY_CHANNELS.includes(message.channel.id) &&
+			message.hasThread ||
+			message.channel.type != 'GUILD_TEXT' ||
+			(LINK_ONLY_CHANNELS.includes(message.channel.id) && // It's going to be deleted in this case, which could cause an orphan thread
 				!urlRegex().test(message.content));
 
 		if (should_ignore) return;
 
-		if (
-			AUTO_THREAD_CHANNELS.includes(message.channel.id) &&
-			!message.hasThread &&
-			message.channel.type == 'GUILD_TEXT'
-		) {
+		if (AUTO_THREAD_CHANNELS.includes(message.channel.id)) {
 			try {
 				const raw_name = await get_thread_name(message);
 				const prefixed = add_thread_prefix(raw_name, false);
