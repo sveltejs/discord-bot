@@ -54,8 +54,8 @@ export default command({
 					}),
 				],
 			});
-		} catch {
-			// Do something with the errors
+		} catch (error) {
+			console.error(`Command: tag\n${error}`);	
 		}
 	},
 });

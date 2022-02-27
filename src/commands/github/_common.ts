@@ -110,8 +110,8 @@ export async function github_command_handler(
 						ephemeral: true,
 				  },
 		);
-	} catch {
-		// TODO: Do nothing or log the error or something
+	} catch (error) {
+		console.error(`Command: github ${type}\n${error}`);
 	}
 }
 

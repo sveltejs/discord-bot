@@ -46,8 +46,8 @@ export default command({
 					`Have you gone through the tutorial page on [${top_result.target}](https://svelte.dev/tutorial/${cached_tutorials[top_result.target]})?`,
 				),
 			);
-		} catch {
-			// Do something or nothing
+		} catch (error) {
+			console.error(`Command: tutorial\n${error}`);
 		}
 	},
 });

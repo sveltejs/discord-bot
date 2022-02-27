@@ -43,8 +43,8 @@ export default command({
 							ephemeral: true,
 					  },
 			);
-		} catch {
-			// Do nothing
+		} catch (error) {
+			console.error(`Command: mdn\n${error}`);
 		}
 	},
 });

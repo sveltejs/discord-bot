@@ -78,8 +78,8 @@ export default command({
 
 		try {
 			await handlers[subcommand]({ interaction, tag_name });
-		} catch {
-			// Do something with the errors
+		} catch (error) {
+			console.error(`Command: tags ${subcommand}\n${error}`);
 		}
 	},
 });
