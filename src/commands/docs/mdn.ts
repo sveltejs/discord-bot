@@ -50,11 +50,11 @@ export default command({
 
 async function mdn_search(
 	query: string,
-	maxResults: number = 5,
+	max_results: number = 5,
 ): Promise<null | string[]> {
 	const req_url = new URL('https://developer.mozilla.org/api/v1/search');
 	req_url.searchParams.set('q', query);
-	req_url.searchParams.set('size', maxResults.toString());
+	req_url.searchParams.set('size', max_results.toString());
 
 	const res = await fetch(req_url.toString());
 
@@ -64,11 +64,15 @@ async function mdn_search(
 
 		return count === 0
 			? null
-			: results.documents.map(
-					(doc: Record<string, string>) =>
-						`[${doc.title}](https://developer.mozilla.org${doc.mdn_url})`,
-			  );
+			: results.documents.map(doc_to_formatted_link);
 	} else {
 		return null;
 	}
+}
+
+function doc_to_formatted_link(doc: {
+	title: string;
+	mdn_url: string;
+}): string {
+	return `[${doc.title}](https://developer.mozilla.org${doc.mdn_url})`;
 }
