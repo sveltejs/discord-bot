@@ -34,12 +34,12 @@ export default event({
 					? prefixed
 					: raw_name;
 
-				const thread = await message.channel.threads.create({
-					name: name.slice(0, 100),
-					startMessage: message,
-				});
-
-				thread.send(instruction_message(thread));
+				await message.channel.threads
+					.create({
+						name: name.slice(0, 100),
+						startMessage: message,
+					})
+					.then(send_instruction_message);
 			} catch {
 				// we can ignore this error since chances are it will be that thread already exists
 			}
@@ -57,7 +57,7 @@ function get_thread_name(message: Message): string | Promise<string> {
 	return get_title_from_url(url[0]);
 }
 
-function instruction_message(thread: ThreadChannel): MessageOptions {
+function send_instruction_message(thread: ThreadChannel) {
 	const base_description =
 		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
 
@@ -65,5 +65,5 @@ function instruction_message(thread: ThreadChannel): MessageOptions {
 		? `${base_description}\n\nWhen your problem is solved **run \`/thread solve\`**, don't forget to credit the people that helped you!`
 		: base_description;
 
-	return wrap_in_embed(description);
+	return thread.send(wrap_in_embed(description));
 }

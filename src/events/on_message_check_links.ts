@@ -22,14 +22,10 @@ export default event({
 						),
 					);
 
-					await message.author.send({
-						content: message.content,
-					});
+					await message.author.send(message.content);
 				} catch {
 					// this will fail if message is already deleted but we don't know or if the dm can't be sent - either way we don't need to do anything
 				}
-
-				return;
 			}
 		}
 	},
