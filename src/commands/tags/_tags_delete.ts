@@ -2,9 +2,9 @@ import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
-import { get_tag, Tag, TagCUDHandler } from './_common.js';
+import { get_tag, Tag, TagCRUDHandler } from './_common.js';
 
-export const tag_delete_handler: TagCUDHandler = async ({
+export const tag_delete_handler: TagCRUDHandler = async ({
 	tag_name,
 	interaction,
 }) => {

@@ -25,12 +25,12 @@ export async function get_matching_tag_names(tag_name: string) {
 		})
 		.then(({ data, error }) => {
 			return error || !data?.length
-				? null
+				? undefined
 				: data.map((t) => `\`${t.tag_name}\``);
 		});
 }
 
-export type TagCUDHandler = ({}: {
+export type TagCRUDHandler = ({}: {
 	interaction: CommandInteraction;
 	tag_name: string;
 }) => any | void;

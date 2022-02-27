@@ -10,6 +10,7 @@ export function has_any_role_or_id(
 	member: GuildMember,
 	snowflakes: Snowflake[],
 ): boolean {
+	if (!member) return false;
 	for (const snowflake of snowflakes) {
 		if (snowflake === member.id || member.roles.cache.has(snowflake))
 			return true;
@@ -26,5 +27,5 @@ export async function get_member(
 	interaction: CommandInteraction,
 	id: Snowflake = interaction.user.id,
 ) {
-	return interaction.guild?.members.fetch(id);
+	return interaction.guild?.members.fetch(id).catch(() => undefined);
 }

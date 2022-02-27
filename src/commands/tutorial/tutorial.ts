@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { trgm_search } from 'js-trgm';
-import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { get_tutorials } from './_tutorials_cache.js';
 
 export default command({
@@ -20,15 +20,11 @@ export default command({
 		const topic = interaction.options.getString('topic');
 		try {
 			if (!topic) {
-				interaction.reply({
-					embeds: [
-						build_embed({
-							description:
-								'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
-						}),
-					],
-				});
-				return;
+				return interaction.reply(
+					wrap_in_embed(
+						'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
+					),
+				);
 			}
 
 			const cached_tutorials = await get_tutorials();
@@ -36,15 +32,14 @@ export default command({
 				limit: 1,
 			});
 
-			if (results.length === 0) {
-				interaction.reply({
+			const top_result = results?.[0];
+			if (!top_result) {
+				return interaction.reply({
 					content: `No matching result found. Try again with a different search term.`,
 					ephemeral: true,
 				});
-				return;
 			}
 
-			const top_result = results[0];
 			interaction.reply(
 				wrap_in_embed(
 					// prettier-ignore

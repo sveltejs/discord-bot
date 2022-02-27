@@ -30,18 +30,19 @@ export default command({
 					),
 				);
 
-			let results = await mdn_search(search_topic);
+			const results = await mdn_search(search_topic);
 
-			if (results)
-				return interaction.reply({
-					embeds: [list_embed_builder(results, 'MDN Docs')],
-				});
-
-			await interaction.reply({
-				content:
-					'No results found. Try again with a different search term.',
-				ephemeral: true,
-			});
+			interaction.reply(
+				results
+					? {
+							embeds: [list_embed_builder(results, 'MDN Docs')],
+					  }
+					: {
+							content:
+								'No results found. Try again with a different search term.',
+							ephemeral: true,
+					  },
+			);
 		} catch {
 			// Do nothing
 		}
