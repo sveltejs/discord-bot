@@ -1,4 +1,4 @@
-import { Message, MessageOptions, ThreadChannel } from 'discord.js';
+import { Message, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import urlRegex from 'url-regex';
 import {
@@ -59,7 +59,7 @@ function send_instruction_message(thread: ThreadChannel) {
 		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
 
 	const description = HELP_CHANNELS.includes(thread.parentId!)
-		? `${base_description}\n\nWhen your problem is solved **run \`/thread solve\`**, don't forget to credit the people that helped you!`
+		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
 	return thread.send(wrap_in_embed(description));
