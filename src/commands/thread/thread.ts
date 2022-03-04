@@ -1,7 +1,6 @@
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
 import { RateLimitStore } from '../../utils/ratelimit.js';
 import { get_member } from '../../utils/snowflake.js';
 import {
@@ -150,36 +149,40 @@ export default command({
 				break;
 			}
 
-			case 'reopen': {
-				if (!thread.name.startsWith('✅'))
-					throw new Error("Thread's not marked as solved");
+			case 'reopen':
+				try {
+					if (!thread.name.startsWith('✅'))
+						throw new Error("Thread's not marked as solved");
 
-				if (!HELP_CHANNELS.includes(thread.parentId || ''))
-					throw new Error('This command only works in a auto thread');
+					if (!HELP_CHANNELS.includes(thread.parentId || ''))
+						throw new Error(
+							'This command only works in a auto thread',
+						);
 
-				if (rename_limit.is_limited(thread.id, true))
-					return void interaction.followUp(
-						"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
-					);
+					if (rename_limit.is_limited(thread.id, true))
+						throw new Error(
+							"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
+						);
 
-				if (reopen_limit.is_limited(thread.id, true))
-					return void interaction.followUp(
-						'You can only reopen a thread once every 24 hours',
-					);
+					if (reopen_limit.is_limited(thread.id, true))
+						throw new Error(
+							'You can only reopen a thread once every 24 hours',
+						);
 
-				await thread
-					.setName(
-						add_thread_prefix(thread.name, false).slice(0, 100),
-					)
-					.then((t) =>
-						Promise.allSettled([
-							t.setAutoArchiveDuration(1440),
-							interaction.followUp('Thread reopened'),
-						]),
-					)
-					.catch(no_op);
-				break;
-			}
+					await thread
+						.setName(
+							add_thread_prefix(thread.name, false).slice(0, 100),
+						)
+						.then((t) =>
+							Promise.allSettled([
+								t.setAutoArchiveDuration(1440),
+								interaction.followUp('Thread reopened'),
+							]),
+						);
+					break;
+				} catch (e) {
+					interaction.followUp((e as Error).message);
+				}
 		}
 	},
 });
