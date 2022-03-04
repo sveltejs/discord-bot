@@ -17,13 +17,16 @@ export const SVELTE_COIN_EMOJI = DEV_MODE
 // #region people
 const ADMIN_ROLES = [
 	// Moderators role in main server
-	'919214972557484073',
+	// '919214972557484073',
 
-	// Maintainers role
-	'571775211431526410',
+	// // Maintainers role
+	// '571775211431526410',
 
-	// Admins role
-	'476141440091815947',
+	// // Admins role
+	// '476141440091815947',
+
+	// Threadlords
+	'949258457352114176',
 ];
 
 // For use in dev server

@@ -1,9 +1,11 @@
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
-import { build_embed } from '../../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
+import { no_op } from '../../utils/promise.js';
 import { RateLimitStore } from '../../utils/ratelimit.js';
 import { get_member } from '../../utils/snowflake.js';
 import {
+	add_thread_prefix,
 	check_autothread_permissions,
 	get_ending_message,
 	rename_thread,
@@ -11,10 +13,17 @@ import {
 } from '../../utils/threads.js';
 
 /**
- * Discord allows 2 renames every 10 minutes. We need one always available 
+ * Discord allows 2 renames every 10 minutes. We need one always available
  * for the solve command, so only one rename per 10 minutes is allowed for users.
  */
 const rename_limit = new RateLimitStore(1, 10 * 60 * 1000);
+
+/*
+ * This is mostly just to prevent abuse. We could reuse the rename limit but
+ * highly unlikely it'll be legitimately closed and then reopened multiple
+ * times in the same day.
+ */
+const reopen_limit = new RateLimitStore(1, 1440 * 60 * 1000);
 
 export default command({
 	name: 'thread',
@@ -43,6 +52,11 @@ export default command({
 		{
 			name: 'solve',
 			description: 'Mark a thread as solved',
+			type: 'SUB_COMMAND',
+		},
+		{
+			name: 'reopen',
+			description: 'Reopen a solved thread',
 			type: 'SUB_COMMAND',
 		},
 	],
@@ -81,13 +95,14 @@ export default command({
 			);
 
 		switch (subcommand) {
-			case 'archive':
+			case 'archive': {
 				await thread.setArchived(true);
 
 				interaction.followUp('Thread archived');
 				break;
+			}
 
-			case 'rename':
+			case 'rename': {
 				const new_name = interaction.options.getString('name', true);
 				const parent_id = thread.parentId || '';
 
@@ -108,8 +123,9 @@ export default command({
 					interaction.followUp((error as Error).message);
 				}
 				break;
+			}
 
-			case 'solve':
+			case 'solve': {
 				try {
 					if (thread.name.startsWith('✅'))
 						throw new Error('Thread already marked as solved');
@@ -121,14 +137,9 @@ export default command({
 
 					await solve_thread(thread);
 
-					interaction.channel?.send({
-						embeds: [
-							build_embed({
-								description:
-									'Thread solved. Thank you everyone.',
-							}),
-						],
-					});
+					interaction.channel?.send(
+						wrap_in_embed('Thread solved. Thank you everyone.'),
+					);
 
 					interaction.followUp(
 						await get_ending_message(thread, interaction.user.id),
@@ -137,6 +148,38 @@ export default command({
 					interaction.followUp((e as Error).message);
 				}
 				break;
+			}
+
+			case 'reopen': {
+				if (!thread.name.startsWith('✅'))
+					throw new Error("Thread's not marked as solved");
+
+				if (!HELP_CHANNELS.includes(thread.parentId || ''))
+					throw new Error('This command only works in a auto thread');
+
+				if (rename_limit.is_limited(thread.id, true))
+					return void interaction.followUp(
+						"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
+					);
+
+				if (reopen_limit.is_limited(thread.id, true))
+					return void interaction.followUp(
+						'You can only reopen a thread once every 24 hours',
+					);
+
+				await thread
+					.setName(
+						add_thread_prefix(thread.name, false).slice(0, 100),
+					)
+					.then((t) =>
+						Promise.allSettled([
+							t.setAutoArchiveDuration(1440),
+							interaction.followUp('Thread reopened'),
+						]),
+					)
+					.catch(no_op);
+				break;
+			}
 		}
 	},
 });
