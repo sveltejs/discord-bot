@@ -9,7 +9,7 @@ import {
 import { THREAD_ADMIN_IDS } from '../config.js';
 import { supabase } from '../db/index.js';
 import { build_embed } from './embed_helpers.js';
-import { undefined_on_error } from './promise.js';
+import { no_op, undefined_on_error } from './promise.js';
 import { has_any_role_or_id } from './snowflake.js';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
@@ -31,14 +31,11 @@ export async function rename_thread(
 }
 
 export async function solve_thread(thread: ThreadChannel) {
-	return (
-		thread
-			.setName(add_thread_prefix(thread.name, true).slice(0, 100))
-			// Archiving immediately won't let users click the buttons.
-			// This should also help with people unarchiving the thread
-			// by messaging after solving it.
-			.then((t) => t.setAutoArchiveDuration(60))
-	);
+	return thread.edit({
+		name: add_thread_prefix(thread.name, true).slice(0, 100),
+		// Archiving immediately won't let users click the buttons.
+		autoArchiveDuration: 60,
+	});
 }
 
 export async function increment_solve_count(id: Snowflake) {
@@ -55,16 +52,17 @@ export async function check_autothread_permissions(
 ): Promise<boolean> {
 	const allowed_ids = [...THREAD_ADMIN_IDS];
 
-	const start_message = await undefined_on_error(
-		thread.fetchStarterMessage(),
-	);
+	await Promise.all([
+		thread.fetchStarterMessage().then((message) => {
+			allowed_ids.push(message.author.id);
+		}, no_op),
 
-	if (start_message) allowed_ids.push(start_message.author.id);
+		thread.fetchOwner().then((owner) => {
+			if (owner) allowed_ids.push(owner.id);
+		}, no_op),
+	]);
 
-	const thread_owner = await undefined_on_error(thread.fetchOwner());
-	if (thread_owner) allowed_ids.push(thread_owner.id);
-
-	return has_any_role_or_id(member!, allowed_ids);
+	return has_any_role_or_id(member, allowed_ids);
 }
 
 export async function get_ending_message(

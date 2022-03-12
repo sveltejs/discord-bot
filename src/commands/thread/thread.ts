@@ -72,13 +72,6 @@ export default command({
 		if (!thread?.isThread())
 			return void interaction.followUp('This channel is not a thread');
 
-		/**
-		 * @todo This doesn't seem to work, creating an interaction
-		 * in an archived thread probably unarchives it.
-		 */
-		if (thread.archived)
-			return void interaction.followUp('This thread is archived.');
-
 		const member = await get_member(interaction);
 
 		if (!member) return void interaction.followUp('Unable to find you');
@@ -136,7 +129,7 @@ export default command({
 
 					await solve_thread(thread);
 
-					interaction.channel?.send(
+					thread.send(
 						wrap_in_embed('Thread solved. Thank you everyone.'),
 					);
 
@@ -159,27 +152,24 @@ export default command({
 							'This command only works in a auto thread',
 						);
 
+					if (reopen_limit.is_limited(thread.id, true))
+						throw new Error(
+							'You can only reopen a thread once every 24 hours',
+						);
 					if (rename_limit.is_limited(thread.id, true))
 						throw new Error(
 							"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
 						);
 
-					if (reopen_limit.is_limited(thread.id, true))
-						throw new Error(
-							'You can only reopen a thread once every 24 hours',
-						);
+					await thread.edit({
+						name: add_thread_prefix(thread.name, false).slice(
+							0,
+							100,
+						),
+						autoArchiveDuration: 1440,
+					});
 
-					await thread
-						.setName(
-							add_thread_prefix(thread.name, false).slice(0, 100),
-						)
-						.then((t) =>
-							Promise.allSettled([
-								t.setAutoArchiveDuration(1440),
-								interaction.followUp('Thread reopened'),
-							]),
-						);
-					break;
+					interaction.followUp('Thread reopened.');
 				} catch (e) {
 					interaction.followUp((e as Error).message);
 				}
