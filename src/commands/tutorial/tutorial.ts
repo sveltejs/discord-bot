@@ -1,7 +1,6 @@
 import { command } from 'jellycommands';
-import { trgm_search } from 'js-trgm';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { get_tutorials } from './_tutorials_cache.js';
+import { search_tutorials } from './_tutorials_cache.js';
 
 export default command({
 	name: 'tutorial',
@@ -27,25 +26,20 @@ export default command({
 				);
 			}
 
-			const cached_tutorials = await get_tutorials();
-			let results = trgm_search(topic, Object.keys(cached_tutorials), {
-				limit: 1,
-			});
-
+			const results = await search_tutorials(topic);
 			const top_result = results?.[0];
-			if (!top_result) {
-				return interaction.reply({
-					content: `No matching result found. Try again with a different search term.`,
-					ephemeral: true,
-				});
-			}
 
-			interaction.reply(
-				wrap_in_embed(
-					// prettier-ignore
-					`Have you gone through the tutorial page on [${top_result.target}](https://svelte.dev/tutorial/${cached_tutorials[top_result.target]})?`,
-				),
-			);
+			if (top_result)
+				return interaction.reply(
+					wrap_in_embed(
+						`Have you gone through the tutorial page on ${top_result}?`,
+					),
+				);
+
+			interaction.reply({
+				content: `No matching result found. Try again with a different search term.`,
+				ephemeral: true,
+			});
 		} catch (error) {
 			console.error(`Command: tutorial\n${error}`);
 		}
