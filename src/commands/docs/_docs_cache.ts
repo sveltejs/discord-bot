@@ -41,19 +41,23 @@ async function build_cache(repo: Repos) {
 	return cache_entry;
 }
 
-export async function search_docs(query: string, repo: Repos) {
+export async function search_docs(
+	query: string,
+	repo: Repos,
+	{ limit = 5, as_link = true } = {},
+) {
 	const { index, lookup } = cache.get(repo) ?? (await build_cache(repo));
 
 	const results = await index.searchAsync(query, {
-		limit: 5,
+		limit,
 	});
 
 	return results.map((href) => {
-		const link_text = lookup.get(href.toString());
-		// prettier-ignore
+		const link_text = lookup.get(href.toString())!;
+
 		const link = `${RepositoryDetails[repo].HOMEPAGE}${href.toString()}`;
 
-		return `[${link_text}](${link})`;
+		return as_link ? `[${link_text}](${link})` : link_text;
 	});
 }
 
