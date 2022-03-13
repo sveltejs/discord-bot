@@ -27,7 +27,7 @@ export default command({
 			}
 
 			const results = await search_tutorials(topic);
-			const top_result = results?.[0];
+			const top_result = results[0];
 
 			if (top_result)
 				return interaction.reply(

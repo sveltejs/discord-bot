@@ -46,10 +46,9 @@ export async function search_tutorials(
 	const results = await index.searchAsync(query, {
 		limit,
 	});
-	if (!results.length) return null;
 
 	return results.map((slug) => {
-		const title = lookup.get(slug.toString());
+		const title = lookup.get(slug.toString())!;
 		return as_link
 			? `[${title}](https://svelte.dev/tutorial/${slug})`
 			: title;
