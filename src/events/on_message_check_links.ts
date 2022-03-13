@@ -1,5 +1,5 @@
 import { event } from 'jellycommands';
-import urlRegex from 'url-regex';
+import url_regex from 'url-regex';
 import { LINK_ONLY_CHANNELS } from '../config.js';
 import { wrap_in_embed } from '../utils/embed_helpers.js';
 
@@ -10,7 +10,7 @@ export default event({
 		if (message.author.bot) return;
 
 		if (LINK_ONLY_CHANNELS.includes(message.channel.id)) {
-			const has_link = urlRegex().test(message.content);
+			const has_link = url_regex().test(message.content);
 
 			if (!has_link) {
 				try {

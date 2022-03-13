@@ -1,6 +1,6 @@
 import { Message, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import urlRegex from 'url-regex';
+import url_regex from 'url-regex';
 import {
 	AUTO_THREAD_CHANNELS,
 	HELP_CHANNELS,
@@ -18,7 +18,7 @@ export default event({
 			message.hasThread ||
 			message.channel.type != 'GUILD_TEXT' ||
 			(LINK_ONLY_CHANNELS.includes(message.channel.id) && // It's going to be deleted in this case, which could cause an orphan thread
-				!urlRegex().test(message.content));
+				!url_regex().test(message.content));
 
 		if (should_ignore) return;
 
@@ -45,11 +45,11 @@ export default event({
 });
 
 function get_thread_name(message: Message): string | Promise<string> {
-	const url = message.content.match(urlRegex());
+	const url = message.content.match(url_regex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
 	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
-		return `${message.content.replace(urlRegex(), '')}`;
+		return `${message.content.replace(url_regex(), '')}`;
 
 	return get_title_from_url(url[0]);
 }
