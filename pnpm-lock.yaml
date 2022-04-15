@@ -6,7 +6,7 @@ specifiers:
   '@types/nice-try': ^2.1.0
   '@types/node': ^16.11.22
   discord.js: ^13.6.0
-  dotenv: ^10.0.0
+  dotenv: ^16.0.0
   flexsearch: ^0.7.21
   jellycommands: 1.0.0-next.19
   js-trgm: ^1.0.2
@@ -21,7 +21,7 @@ specifiers:
 
 dependencies:
   discord.js: 13.6.0
-  dotenv: 10.0.0
+  dotenv: 16.0.0
   flexsearch: 0.7.21
   jellycommands: 1.0.0-next.19
   js-trgm: 1.0.2
@@ -524,9 +524,9 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv/10.0.0:
-    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
-    engines: {node: '>=10'}
+  /dotenv/16.0.0:
+    resolution: {integrity: sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==}
+    engines: {node: '>=12'}
     dev: false
 
   /duplexer3/0.1.4:

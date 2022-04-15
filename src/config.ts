@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
 export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '918887934822858802';

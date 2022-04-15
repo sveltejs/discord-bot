@@ -1,6 +1,7 @@
-import { Intents } from 'discord.js';
-import { JellyCommands } from 'jellycommands';
+import 'dotenv/config';
 import { DEV_MODE, TEST_GUILD_ID } from './config.js';
+import { JellyCommands } from 'jellycommands';
+import { Intents } from 'discord.js';
 
 const client = new JellyCommands({
 	commands: 'src/commands',
