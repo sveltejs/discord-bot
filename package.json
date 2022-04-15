@@ -2,36 +2,35 @@
 	"name": "svelte-bot",
 	"private": true,
 	"version": "0.0.0",
-	"main": "dist/index.js",
+	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"build": "rimraf dist && tsc",
 		"dev": "rimraf dist && run-p dev:*",
-		"dev:tsc": "tsc -w --preserveWatchOutput",
+		"dev:tsc": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
 		"dev:nodemon": "nodemon .",
-		"start": "node ."
+		"start": "tsm ."
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@supabase/supabase-js": "^1.30.0",
-		"@types/nice-try": "^2.1.0",
-		"@types/node": "^16.11.22",
 		"discord.js": "^13.6.0",
 		"dotenv": "^10.0.0",
 		"flexsearch": "^0.7.21",
 		"jellycommands": "1.0.0-next.19",
 		"js-trgm": "^1.0.2",
 		"node-fetch": "^3.2.0",
-		"rimraf": "^3.0.2",
-		"typescript": "^4.5.5",
 		"unfurl.js": "^5.6.3",
-		"url-regex": "^5.0.0",
-		"@types/flexsearch": "^0.7.2"
+		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
+		"@supabase/supabase-js": "^1.30.0",
+		"@types/flexsearch": "^0.7.2",
+		"@types/nice-try": "^2.1.0",
+		"@types/node": "^16.11.22",
+		"typescript": "^4.5.5",
 		"nodemon": "^2.0.15",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^2.5.1"
+		"prettier": "^2.5.1",
+		"tsm": "^2.2.1"
 	}
 }

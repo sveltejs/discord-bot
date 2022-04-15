@@ -3,8 +3,8 @@ import { JellyCommands } from 'jellycommands';
 import { DEV_MODE, TEST_GUILD_ID } from './config.js';
 
 const client = new JellyCommands({
-	commands: 'dist/commands',
-	events: 'dist/events',
+	commands: 'src/commands',
+	events: 'src/events',
 
 	clientOptions: {
 		intents: [
