@@ -25,37 +25,33 @@ export default command({
 			.getString('name', true)
 			.toLowerCase(); // Make tag names case insensitive to disallow similar names and avoid confusion
 
-		try {
-			const tag = await get_tag(tag_name);
+		const tag = await get_tag(tag_name);
 
-			if (!tag) {
-				const defer = interaction.deferReply({
-					ephemeral: true,
-				});
-
-				const matching_tags = await get_matching_tag_names(tag_name);
-
-				return defer.then(() =>
-					interaction.followUp({
-						content: `No tag found with that name, remember tag names have to be exact.`,
-						embeds: matching_tags && [
-							list_embed_builder(matching_tags, 'Did you mean?'),
-						],
-					}),
-				);
-			}
-
-			await interaction.reply({
-				embeds: [
-					tags_embed_builder({
-						tag_name,
-						tag_content: tag.tag_content,
-						author: await get_member(interaction, tag.author_id),
-					}),
-				],
+		if (!tag) {
+			const defer = interaction.deferReply({
+				ephemeral: true,
 			});
-		} catch (error) {
-			console.error(`Command: tag\n${error}`);	
+
+			const matching_tags = await get_matching_tag_names(tag_name);
+
+			return await defer.then(() =>
+				interaction.followUp({
+					content: `No tag found with that name, remember tag names have to be exact.`,
+					embeds: matching_tags && [
+						list_embed_builder(matching_tags, 'Did you mean?'),
+					],
+				}),
+			);
 		}
+
+		await interaction.reply({
+			embeds: [
+				tags_embed_builder({
+					tag_name,
+					tag_content: tag.tag_content,
+					author: await get_member(interaction, tag.author_id),
+				}),
+			],
+		});
 	},
 });

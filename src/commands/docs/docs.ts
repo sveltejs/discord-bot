@@ -57,7 +57,7 @@ export default command({
 
 		try {
 			if (!query)
-				return interaction.reply(
+				return await interaction.reply(
 					wrap_in_embed(
 						`[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
 					),
@@ -65,7 +65,7 @@ export default command({
 			const results = await search_docs(query, repo);
 
 			if (!results.length)
-				return interaction.reply({
+				return await interaction.reply({
 					content:
 						'No matching result found. Try again with a different search term.',
 					ephemeral: true,
@@ -77,13 +77,10 @@ export default command({
 				],
 			});
 		} catch (error) {
-			interaction
-				.reply({
-					content: 'An error occurred while searching the docs.',
-					ephemeral: true,
-				})
-				.catch(no_op);
-			console.error(`Command: docs\n${error}`);
+			await interaction.reply({
+				content: 'An error occurred while searching the docs.',
+				ephemeral: true,
+			});
 		}
 	},
 });

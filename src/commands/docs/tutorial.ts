@@ -17,31 +17,28 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const topic = interaction.options.getString('topic');
-		try {
-			if (!topic) {
-				return interaction.reply(
-					wrap_in_embed(
-						'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
-					),
-				);
-			}
 
-			const results = await search_tutorials(topic);
-			const top_result = results[0];
-
-			if (top_result)
-				return interaction.reply(
-					wrap_in_embed(
-						`Have you gone through the tutorial page on ${top_result}?`,
-					),
-				);
-
-			interaction.reply({
-				content: `No matching result found. Try again with a different search term.`,
-				ephemeral: true,
-			});
-		} catch (error) {
-			console.error(`Command: tutorial\n${error}`);
+		if (!topic) {
+			return await interaction.reply(
+				wrap_in_embed(
+					'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
+				),
+			);
 		}
+
+		const results = await search_tutorials(topic);
+		const top_result = results[0];
+
+		if (top_result)
+			return await interaction.reply(
+				wrap_in_embed(
+					`Have you gone through the tutorial page on ${top_result}?`,
+				),
+			);
+
+		await interaction.reply({
+			content: `No matching result found. Try again with a different search term.`,
+			ephemeral: true,
+		});
 	},
 });

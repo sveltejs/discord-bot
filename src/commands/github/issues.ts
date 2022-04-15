@@ -35,7 +35,6 @@ export default command({
 		},
 	],
 
-	run: async ({ interaction }) => {
-		await github_command_handler(interaction, GithubResultType.ISSUE);
-	},
+	run: async ({ interaction }) =>
+		await github_command_handler(interaction, GithubResultType.ISSUE),
 });

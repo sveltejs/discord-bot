@@ -76,10 +76,6 @@ export default command({
 			.getString('name', subcommand !== Actions.LIST)!
 			?.toLowerCase();
 
-		try {
-			await handlers[subcommand]({ interaction, tag_name });
-		} catch (error) {
-			console.error(`Command: tags ${subcommand}\n${error}`);
-		}
+		await handlers[subcommand]({ interaction, tag_name });
 	},
 });

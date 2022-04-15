@@ -27,7 +27,6 @@ export default command({
 		},
 	],
 
-	run: async ({ interaction }) => {
-		await github_command_handler(interaction, GithubResultType.DISCUSSION);
-	},
+	run: async ({ interaction }) =>
+		await github_command_handler(interaction, GithubResultType.DISCUSSION),
 });

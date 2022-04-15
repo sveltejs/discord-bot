@@ -94,25 +94,21 @@ export async function github_command_handler(
 			: '' // Discussion ignores the `is:` filter
 	}`;
 
-	try {
-		const results = await search_github(
-			search_string,
-			type === GithubResultType.DISCUSSION ? 'DISCUSSION' : 'ISSUE',
-		);
+	const results = await search_github(
+		search_string,
+		type === GithubResultType.DISCUSSION ? 'DISCUSSION' : 'ISSUE',
+	);
 
-		await interaction.reply(
-			results
-				? {
-						embeds: [list_embed_builder(results)],
-				  }
-				: {
-						content: 'No results found.',
-						ephemeral: true,
-				  },
-		);
-	} catch (error) {
-		console.error(`Command: github ${type}\n${error}`);
-	}
+	await interaction.reply(
+		results
+			? {
+					embeds: [list_embed_builder(results)],
+			  }
+			: {
+					content: 'No results found.',
+					ephemeral: true,
+			  },
+	);
 }
 
 export const enum GithubResultType {

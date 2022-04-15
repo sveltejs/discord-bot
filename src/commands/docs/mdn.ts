@@ -22,30 +22,27 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const search_topic = interaction.options.getString('topic');
-		try {
-			if (!search_topic)
-				return interaction.reply(
-					wrap_in_embed(
-						`Have a HTML, CSS or JS question? Check the [MDN docs](https://developer.mozilla.org/en-US/docs/Web)`,
-					),
-				);
 
-			const results = await mdn_search(search_topic);
-
-			interaction.reply(
-				results
-					? {
-							embeds: [list_embed_builder(results, 'MDN Docs')],
-					  }
-					: {
-							content:
-								'No results found. Try again with a different search term.',
-							ephemeral: true,
-					  },
+		if (!search_topic)
+			return interaction.reply(
+				wrap_in_embed(
+					`Have a HTML, CSS or JS question? Check the [MDN docs](https://developer.mozilla.org/en-US/docs/Web)`,
+				),
 			);
-		} catch (error) {
-			console.error(`Command: mdn\n${error}`);
-		}
+
+		const results = await mdn_search(search_topic);
+
+		await interaction.reply(
+			results
+				? {
+						embeds: [list_embed_builder(results, 'MDN Docs')],
+				  }
+				: {
+						content:
+							'No results found. Try again with a different search term.',
+						ephemeral: true,
+				  },
+		);
 	},
 });
 
