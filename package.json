@@ -28,5 +28,11 @@
 		"prettier": "^2.6.2",
 		"tsm": "^2.2.1",
 		"typescript": "^4.6.3"
+	},
+	"nodemonConfig": {
+		"watch": [
+			"src"
+		],
+		"ext": "ts"
 	}
 }

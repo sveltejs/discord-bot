@@ -89,16 +89,12 @@ function transform_svelte_docs(
 	docs: Array<DocsSection>,
 	parent_block?: Block,
 ): Block[] {
-	return docs.reduce((acc, section) => {
+	return docs.flatMap((section) => {
 		const block: Block = {
 			breadcrumbs: [...(parent_block?.breadcrumbs ?? []), section.title],
 			href: `/docs#${section.slug}`,
 			content: '',
 		};
-		return [
-			...acc,
-			block,
-			...transform_svelte_docs(section.sections, block),
-		];
-	}, [] as Block[]);
+		return [block, ...transform_svelte_docs(section.sections, block)];
+	});
 }
