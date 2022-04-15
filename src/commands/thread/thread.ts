@@ -10,6 +10,7 @@ import {
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
+import { no_op } from '../../utils/promise.js';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
@@ -88,9 +89,7 @@ export default command({
 
 		switch (subcommand) {
 			case 'archive': {
-				try {
-					await thread.setArchived(true);
-				} catch {}
+				await thread.setArchived(true).catch(no_op);
 
 				interaction.followUp('Thread archived');
 				break;
