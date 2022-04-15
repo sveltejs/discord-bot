@@ -3,7 +3,6 @@ lockfileVersion: 5.3
 specifiers:
   '@supabase/supabase-js': ^1.33.3
   '@types/flexsearch': ^0.7.3
-  '@types/nice-try': ^2.1.0
   '@types/node': ^16.11.27
   discord.js: ^13.6.0
   dotenv: ^16.0.0
@@ -31,7 +30,6 @@ dependencies:
 devDependencies:
   '@supabase/supabase-js': 1.33.3
   '@types/flexsearch': 0.7.3
-  '@types/nice-try': 2.1.0
   '@types/node': 16.11.27
   nodemon: 2.0.15
   prettier: 2.6.2
@@ -155,10 +153,6 @@ packages:
 
   /@types/flexsearch/0.7.3:
     resolution: {integrity: sha512-HXwADeHEP4exXkCIwy2n1+i0f1ilP1ETQOH5KDOugjkTFZPntWo0Gr8stZOaebkxsdx+k0X/K6obU/+it07ocg==}
-    dev: true
-
-  /@types/nice-try/2.1.0:
-    resolution: {integrity: sha512-pJaR/8Ijp4SbMJfzNLc/BgvkfbYTIvDiaheb5yGrdF4AeqPPQJq2K/Gk2tL4WasRITUAWXSa6+MvB8yyjQQnlQ==}
     dev: true
 
   /@types/node-fetch/2.6.1:
