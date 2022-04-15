@@ -16,7 +16,7 @@ interface TutorialSection {
 	tutorials: Tutorial[];
 }
 
-async function build_cache() {
+export async function build_cache() {
 	const res = await fetch('https://api.svelte.dev/docs/svelte/tutorial');
 	if (!res.ok) throw new Error("Couldn't fetch tutorials.");
 	const data = (await res.json()) as TutorialSection[];

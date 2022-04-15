@@ -42,16 +42,18 @@ export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	? TEST_ADMIN_ROLES
 	: ADMIN_ROLES;
 
-/**
- * List of roles/user IDs other than the creator allowed to modify threads.
- */
-export const THREAD_ADMIN_IDS = [
+export const BOT_DEVS = [
 	// cirilla
 	'339731096793251854',
 
 	// GHOST
 	'282839711834177537',
-
+];
+/**
+ * List of roles/user IDs other than the creator allowed to modify threads.
+ */
+export const THREAD_ADMIN_IDS = [
+	...BOT_DEVS,
 	...(DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES),
 ];
 

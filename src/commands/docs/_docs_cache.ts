@@ -10,7 +10,7 @@ const cache = new Map<
 	}
 >();
 
-async function build_cache(repo: Repos) {
+export async function build_cache(repo: Repos) {
 	let blocks: Block[];
 
 	if (repo === Repos.SVELTE) {
