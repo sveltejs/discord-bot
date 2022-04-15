@@ -88,7 +88,9 @@ export default command({
 
 		switch (subcommand) {
 			case 'archive': {
-				await thread.setArchived(true);
+				try {
+					await thread.setArchived(true);
+				} catch {}
 
 				interaction.followUp('Thread archived');
 				break;
@@ -173,6 +175,7 @@ export default command({
 				} catch (e) {
 					interaction.followUp((e as Error).message);
 				}
+				break;
 		}
 	},
 });
