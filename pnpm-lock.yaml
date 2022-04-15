@@ -8,7 +8,7 @@ specifiers:
   discord.js: ^13.6.0
   dotenv: ^16.0.0
   flexsearch: ^0.7.21
-  jellycommands: 1.0.0-next.21
+  jellycommands: 1.0.0-next.22
   js-trgm: ^1.0.2
   node-fetch: ^3.2.3
   nodemon: ^2.0.15
@@ -22,7 +22,7 @@ dependencies:
   discord.js: 13.6.0
   dotenv: 16.0.0
   flexsearch: 0.7.21
-  jellycommands: 1.0.0-next.21
+  jellycommands: 1.0.0-next.22
   js-trgm: 1.0.2
   node-fetch: 3.2.3
   unfurl.js: 5.6.4
@@ -1005,8 +1005,8 @@ packages:
     resolution: {integrity: sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==}
     dev: true
 
-  /jellycommands/1.0.0-next.21:
-    resolution: {integrity: sha512-kbvRRPhf2K6MvCmRDLuHasvuM4iokW1OKZSIH7kEER8DbzTEDRgWwNi1p7qNw+ch1PeFCa7FtuVnXNxUjhWD/w==}
+  /jellycommands/1.0.0-next.22:
+    resolution: {integrity: sha512-1NMupHd45Tka7NH0CKqHx8XlUmobc0Tioy0SFTmzAyURTsOk6YOl9SUcK5kdAx/vkg7Qh40J49z9NPV8y0Q2Jg==}
     dependencies:
       axios: 0.24.0
       discord-api-types: 0.26.1
