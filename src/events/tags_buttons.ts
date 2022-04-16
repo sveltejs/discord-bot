@@ -11,10 +11,10 @@ export default event({
 
 		const page = parseInt(interaction.customId.split('_')[2], 10);
 
-		const res = await get_tags_list(page);
-
-		if (!res) return interaction.reply(NO_TAGS_FOUND);
-
-		interaction.update(res);
+		await get_tags_list(page).then((tags_message) =>
+			tags_message
+				? interaction.update(tags_message)
+				: interaction.reply(NO_TAGS_FOUND),
+		);
 	},
 });

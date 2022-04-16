@@ -15,7 +15,7 @@ export default messageCommand({
 			2000 - (link?.length ? link.length + 1 : 0),
 		);
 
-		await Promise.all([
+		await Promise.allSettled([
 			interaction.user.send(`${link}\n${content}`),
 			interaction.reply({
 				content: "I've sent this message to your DMs!",

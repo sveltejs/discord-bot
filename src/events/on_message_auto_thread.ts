@@ -23,23 +23,19 @@ export default event({
 		if (should_ignore) return;
 
 		if (AUTO_THREAD_CHANNELS.includes(message.channel.id)) {
-			try {
-				const raw_name = await get_thread_name(message);
-				const prefixed = add_thread_prefix(raw_name, false);
+			const raw_name = await get_thread_name(message);
+			const prefixed = add_thread_prefix(raw_name, false);
 
-				const name = HELP_CHANNELS.includes(message.channelId)
-					? prefixed
-					: raw_name;
+			const name = HELP_CHANNELS.includes(message.channelId)
+				? prefixed
+				: raw_name;
 
-				await message.channel.threads
-					.create({
-						name: name.slice(0, 100),
-						startMessage: message,
-					})
-					.then(send_instruction_message);
-			} catch {
-				// we can ignore this error since chances are it will be that thread already exists
-			}
+			await message.channel.threads
+				.create({
+					name: name.slice(0, 100),
+					startMessage: message,
+				})
+				.then(send_instruction_message);
 		}
 	},
 });

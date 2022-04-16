@@ -49,10 +49,10 @@ export default command({
 					.maybeSingle();
 
 				if (error)
-					return void interaction.followUp('Something went wrong');
+					return await interaction.followUp('Something went wrong');
 
 				if (!data)
-					return void interaction.followUp({
+					return await interaction.followUp({
 						embeds: [
 							build_embed({
 								description: `<@${user_id}> has not solved any threads yet.`,
@@ -60,7 +60,7 @@ export default command({
 						],
 					});
 
-				return void interaction.followUp({
+				return await interaction.followUp({
 					embeds: [
 						build_embed({
 							// prettier-ignore
@@ -76,7 +76,7 @@ export default command({
 					.select('*');
 
 				if (error || !data?.length)
-					return void interaction.followUp('Could not fetch data');
+					return await interaction.followUp('Could not fetch data');
 
 				const leaderboard = build_embed({
 					title: 'Server Leaderboard',
@@ -94,7 +94,7 @@ export default command({
 						true,
 					);
 
-				return void interaction.followUp({
+				return await interaction.followUp({
 					embeds: [leaderboard],
 				});
 			}

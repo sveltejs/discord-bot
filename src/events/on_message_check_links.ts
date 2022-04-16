@@ -13,19 +13,15 @@ export default event({
 			const has_link = url_regex().test(message.content);
 
 			if (!has_link) {
-				try {
-					if (message.deletable) await message.delete();
+				if (message.deletable) await message.delete();
 
-					await message.author.send(
-						wrap_in_embed(
-							`Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
-						),
-					);
+				await message.author.send(
+					wrap_in_embed(
+						`Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
+					),
+				);
 
-					await message.author.send(message.content);
-				} catch {
-					// this will fail if message is already deleted but we don't know or if the dm can't be sent - either way we don't need to do anything
-				}
+				await message.author.send(message.content);
 			}
 		}
 	},
