@@ -7,16 +7,16 @@ import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
  * @param {Snowflake[]} snowflakes - The list of snowflakes to compare the member's roles/id against
  */
 export function has_any_role_or_id(
-	member: GuildMember,
+	member: GuildMember | undefined,
 	snowflakes: Snowflake[],
-): boolean {
-	if (!member) return false;
-	for (const snowflake of snowflakes) {
-		if (snowflake === member.id || member.roles.cache.has(snowflake))
-			return true;
-	}
-
-	return false;
+) {
+	return !!(
+		member &&
+		snowflakes.find(
+			(snowflake) =>
+				snowflake === member.id || member.roles.cache.has(snowflake),
+		)
+	);
 }
 
 /**

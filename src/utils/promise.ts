@@ -6,4 +6,4 @@ export const undefined_on_error = async <T>(promise: Promise<T>) => {
 	}
 };
 
-export const no_op = () => {};
+export function no_op() {}

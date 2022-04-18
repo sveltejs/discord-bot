@@ -11,7 +11,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 	const tag = await get_tag(tag_name);
 
 	if (!tag) {
-		return interaction.reply({
+		return await interaction.reply({
 			content:
 				'No tag with that name exists. Did you mean to do `/tags create` instead?',
 			ephemeral: true,
@@ -19,7 +19,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 	}
 
 	if (interaction.user.id !== tag.author_id) {
-		return interaction.reply({
+		return await interaction.reply({
 			content:
 				"You don't have the permissions to edit that tag. You have to be the author of the tag.",
 			ephemeral: true,
@@ -48,7 +48,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 		.then((coll) => coll.first());
 
 	if (!message) {
-		return interaction.editReply({
+		return await interaction.editReply({
 			content: 'No content received for the tag. Aborting.',
 		});
 	}
@@ -60,7 +60,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 		.eq('id', tag.id);
 
 	if (tags_update.error) {
-		return interaction.editReply({
+		return await interaction.editReply({
 			content: `Failed to update tag "${tag_name}."`,
 		});
 	}

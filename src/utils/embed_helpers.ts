@@ -36,13 +36,11 @@ export function tags_embed_builder({
 	return build_embed({
 		title: `\`${tag_name}\``,
 		description: tag_content,
-		author: author
-			? {
-					name: author.displayName,
-					icon_url: author.displayAvatarURL({
-						size: 64,
-					}),
-			  }
-			: undefined,
+		author: author && {
+			name: author.displayName,
+			icon_url: author.displayAvatarURL({
+				size: 64,
+			}),
+		},
 	});
 }
