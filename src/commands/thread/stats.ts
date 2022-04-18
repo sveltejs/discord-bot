@@ -50,17 +50,12 @@ export default command({
 				if (error)
 					return await interaction.followUp('Something went wrong');
 
-				if (!data?.count)
-					return await interaction.followUp(
-						wrap_in_embed(
-							`<@${user_id}> has not solved any threads yet.`,
-						),
-					);
-
 				return await interaction.followUp(
 					wrap_in_embed(
-						// prettier-ignore
-						`<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`,
+						data?.count
+							? // prettier-ignore
+							  `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`
+							: `<@${user_id}> has not solved any threads yet.`,
 					),
 				);
 			}
