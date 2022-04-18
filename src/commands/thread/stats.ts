@@ -1,5 +1,4 @@
 import { command } from 'jellycommands';
-import { SVELTE_COIN_EMOJI } from '../../config.js';
 import { supabase } from '../../db/index.js';
 import { build_embed } from '../../utils/embed_helpers.js';
 
@@ -88,9 +87,7 @@ export default command({
 					)
 					.addField(
 						'Solves',
-						data
-							.map(({ count }) => `${count} ${SVELTE_COIN_EMOJI}`)
-							.join('\n'),
+						data.map(({ count }) => `${count} 🍪`).join('\n'),
 						true,
 					);
 
