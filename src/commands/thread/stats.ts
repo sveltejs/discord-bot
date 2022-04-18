@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { supabase } from '../../db/index.js';
-import { build_embed } from '../../utils/embed_helpers.js';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'stats',
@@ -50,23 +50,19 @@ export default command({
 				if (error)
 					return await interaction.followUp('Something went wrong');
 
-				if (!data)
-					return await interaction.followUp({
-						embeds: [
-							build_embed({
-								description: `<@${user_id}> has not solved any threads yet.`,
-							}),
-						],
-					});
+				if (!data?.count)
+					return await interaction.followUp(
+						wrap_in_embed(
+							`<@${user_id}> has not solved any threads yet.`,
+						),
+					);
 
-				return await interaction.followUp({
-					embeds: [
-						build_embed({
-							// prettier-ignore
-							description: `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`,
-						}),
-					],
-				});
+				return await interaction.followUp(
+					wrap_in_embed(
+						// prettier-ignore
+						`<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`,
+					),
+				);
 			}
 
 			case 'server': {
