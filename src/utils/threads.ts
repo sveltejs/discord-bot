@@ -15,10 +15,7 @@ import { has_any_role_or_id } from './snowflake.js';
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} - `;
 
-	if (name.startsWith('✅ - ') || name.startsWith('❔ - '))
-		return `${prefix}${name.slice(4)}`;
-
-	return `${prefix}${name}`;
+	return `${prefix}${name.replace(/^[✅❔] - /, '')}`;
 };
 
 export async function rename_thread(
