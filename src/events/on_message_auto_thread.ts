@@ -9,7 +9,7 @@ import {
 import { wrap_in_embed } from '../utils/embed_helpers.js';
 import { add_thread_prefix } from '../utils/threads.js';
 import { get_title_from_url } from '../utils/unfurl.js';
-import { fails_link_test } from './on_message_check_links.js';
+import { fails_link_test } from './_link_predicate.js';
 
 export default event({
 	name: 'messageCreate',

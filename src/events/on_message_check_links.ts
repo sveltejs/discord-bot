@@ -1,8 +1,6 @@
-import { Message } from 'discord.js';
 import { event } from 'jellycommands';
-import url_regex from 'url-regex';
-import { LINK_ONLY_CHANNELS } from '../config.js';
 import { wrap_in_embed } from '../utils/embed_helpers.js';
+import { fails_link_test } from './_link_predicate.js';
 
 export default event({
 	name: 'messageCreate',
@@ -23,10 +21,3 @@ export default event({
 		}
 	},
 });
-
-export function fails_link_test(message: Message) {
-	return (
-		LINK_ONLY_CHANNELS.includes(message.channelId) &&
-		!url_regex().test(message.content)
-	);
-}
