@@ -21,7 +21,6 @@ export default command({
 		},
 	],
 
-	// @ts-expect-error
 	run: async ({ interaction }) => {
 		const tag_name = interaction.options
 			.getString('name', true)
@@ -29,29 +28,29 @@ export default command({
 
 		const tag = await get_tag(tag_name);
 
-		if (!tag) {
-			const defer = interaction.deferReply({
-				ephemeral: true,
-			});
-
-			const matching_tags = await get_matching_tag_names(tag_name);
-
-			await defer;
-			return await interaction.followUp({
-				content: `No tag found with that name, remember tag names have to be exact.`,
-				embeds: matching_tags && [
-					list_embed_builder(matching_tags, 'Did you mean?'),
+		if (tag) {
+			return await interaction.reply({
+				embeds: [
+					tags_embed_builder({
+						tag_name,
+						tag_content: tag.tag_content,
+						author: await get_member(interaction, tag.author_id),
+					}),
 				],
 			});
 		}
 
-		await interaction.reply({
-			embeds: [
-				tags_embed_builder({
-					tag_name,
-					tag_content: tag.tag_content,
-					author: await get_member(interaction, tag.author_id),
-				}),
+		const defer = interaction.deferReply({
+			ephemeral: true,
+		});
+
+		const matching_tags = await get_matching_tag_names(tag_name);
+
+		await defer;
+		await interaction.followUp({
+			content: `No tag found with that name, remember tag names have to be exact.`,
+			embeds: matching_tags && [
+				list_embed_builder(matching_tags, 'Did you mean?'),
 			],
 		});
 	},
