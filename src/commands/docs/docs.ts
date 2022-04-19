@@ -1,4 +1,5 @@
 import { command } from 'jellycommands';
+import { into_name_value_pair } from '../../utils/autocomplete.js';
 import {
 	list_embed_builder,
 	wrap_in_embed,
@@ -103,12 +104,7 @@ export default command({
 			as_link: false,
 		});
 		await interaction
-			.respond(
-				results.map((r) => ({
-					name: r,
-					value: r,
-				})),
-			)
+			.respond(results.map(into_name_value_pair))
 			.catch(no_op);
 	},
 });

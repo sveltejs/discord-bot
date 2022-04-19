@@ -1,4 +1,5 @@
 import { command } from 'jellycommands';
+import { into_name_value_pair } from '../../utils/autocomplete.js';
 import {
 	list_embed_builder,
 	tags_embed_builder,
@@ -65,12 +66,7 @@ export default command({
 
 		const matching_tags = await get_matching_tag_names(name);
 		await interaction.respond(
-			matching_tags
-				? matching_tags.map((t) => ({
-						name: t,
-						value: t,
-				  }))
-				: [],
+			matching_tags ? matching_tags.map(into_name_value_pair) : [],
 		);
 	},
 });
