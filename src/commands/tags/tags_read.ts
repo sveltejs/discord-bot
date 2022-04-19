@@ -16,6 +16,7 @@ export default command({
 			description: 'The exact name of the tag to view',
 			type: 'STRING',
 			required: true,
+			autocomplete: true,
 		},
 	],
 
@@ -52,5 +53,24 @@ export default command({
 				}),
 			],
 		});
+	},
+
+	autocomplete: async ({ interaction }) => {
+		const focused = interaction.options.getFocused(true);
+
+		if (focused.name !== 'name') return;
+		const name = focused.value as string;
+
+		if (!name) return await interaction.respond([]);
+
+		const matching_tags = await get_matching_tag_names(name);
+		await interaction.respond(
+			matching_tags
+				? matching_tags.map((t) => ({
+						name: t,
+						value: t,
+				  }))
+				: [],
+		);
 	},
 });
