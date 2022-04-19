@@ -34,14 +34,13 @@ export default command({
 
 			const matching_tags = await get_matching_tag_names(tag_name);
 
-			return await defer.then(() =>
-				interaction.followUp({
-					content: `No tag found with that name, remember tag names have to be exact.`,
-					embeds: matching_tags && [
-						list_embed_builder(matching_tags, 'Did you mean?'),
-					],
-				}),
-			);
+			await defer;
+			return await interaction.followUp({
+				content: `No tag found with that name, remember tag names have to be exact.`,
+				embeds: matching_tags && [
+					list_embed_builder(matching_tags, 'Did you mean?'),
+				],
+			});
 		}
 
 		await interaction.reply({
