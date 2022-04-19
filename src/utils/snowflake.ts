@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
+import { GuildMember, Interaction, Snowflake } from 'discord.js';
 
 /**
  * Check if a member has any of the given roles or ids.
@@ -24,7 +24,7 @@ export function has_any_role_or_id(
  * @default {id} interaction.user.id
  */
 export async function get_member(
-	interaction: CommandInteraction,
+	interaction: Interaction,
 	id: Snowflake = interaction.user.id,
 ) {
 	return interaction.guild?.members.fetch(id).catch(() => undefined);
