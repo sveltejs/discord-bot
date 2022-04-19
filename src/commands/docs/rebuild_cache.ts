@@ -15,7 +15,7 @@ export default command({
 	run: async ({ interaction }) => {
 		const member = await get_member(interaction);
 
-		if (member && has_any_role_or_id(member, BOT_DEVS))
+		if (has_any_role_or_id(member, BOT_DEVS))
 			await Promise.all([
 				build_docs_cache(Repos.SVELTE),
 				build_docs_cache(Repos.SVELTE_KIT),
