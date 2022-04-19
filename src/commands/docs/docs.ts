@@ -27,6 +27,7 @@ export default command({
 					name: 'query',
 					type: 'STRING',
 					description: 'The string to search for in the docs.',
+					autocomplete: true,
 				},
 			],
 		},
@@ -39,6 +40,7 @@ export default command({
 					name: 'query',
 					type: 'STRING',
 					description: 'The string to search for in the docs.',
+					autocomplete: true,
 				},
 			],
 		},
@@ -82,5 +84,31 @@ export default command({
 				ephemeral: true,
 			});
 		}
+	},
+	autocomplete: async ({ interaction }) => {
+		const focused = interaction.options.getFocused(true);
+		if (focused.name !== 'query') return;
+
+		const query = focused.value as string;
+		if (!query) return await interaction.respond([]);
+		const repo =
+			sc_map[
+				interaction.options.getSubcommand(true) as
+					| 'svelte'
+					| 'sveltekit'
+			];
+
+		const results = await search_docs(query, repo, {
+			limit: 10,
+			as_link: false,
+		});
+		await interaction
+			.respond(
+				results.map((r) => ({
+					name: r,
+					value: r,
+				})),
+			)
+			.catch(no_op);
 	},
 });
