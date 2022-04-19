@@ -1,15 +1,11 @@
 import { Message, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import url_regex from 'url-regex';
-import {
-	AUTO_THREAD_CHANNELS,
-	HELP_CHANNELS,
-	LINK_ONLY_CHANNELS,
-} from '../config.js';
+import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config.js';
 import { wrap_in_embed } from '../utils/embed_helpers.js';
 import { add_thread_prefix } from '../utils/threads.js';
 import { get_title_from_url } from '../utils/unfurl.js';
-import { fails_link_test } from './_link_predicate.js';
+import { fails_link_test, in_link_only_channel } from './_link_predicate.js';
 
 export default event({
 	name: 'messageCreate',
@@ -41,7 +37,7 @@ function get_thread_name(message: Message): string | Promise<string> {
 	const url = message.content.match(url_regex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
-	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
+	if (!in_link_only_channel(message) || !url)
 		return `${message.content.replace(url_regex(), '')}`;
 
 	return get_title_from_url(url[0]);
