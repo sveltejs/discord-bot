@@ -26,7 +26,7 @@ export async function get_matching_tag_names(tag_name: string) {
 		.then(({ data, error }) => {
 			return error || !data?.length
 				? undefined
-				: data.map((t) => `\`${t.tag_name}\``);
+				: data.map((t) => t.tag_name);
 		});
 }
 

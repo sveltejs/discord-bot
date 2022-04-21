@@ -50,7 +50,10 @@ export default command({
 		await interaction.followUp({
 			content: `No tag found with that name, remember tag names have to be exact.`,
 			embeds: matching_tags && [
-				list_embed_builder(matching_tags, 'Did you mean?'),
+				list_embed_builder(
+					matching_tags.map((t) => `\`${t}\``),
+					'Did you mean?',
+				),
 			],
 		});
 	},
