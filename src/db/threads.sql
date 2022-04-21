@@ -9,7 +9,10 @@ CREATE VIEW leaderboard AS (
 
 DROP FUNCTION increment_solve_count(solver_id VARCHAR(18));
 
-CREATE OR REPLACE FUNCTION increment_solve_count(solver_id VARCHAR(18)) RETURNS void LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION increment_solve_count(solver_id VARCHAR(18))
+RETURNS void
+LANGUAGE plpgsql AS
+$$
 DECLARE i_count BIGINT;
 BEGIN
 	SELECT count INTO i_count FROM thread_solves WHERE user_id = solver_id;
