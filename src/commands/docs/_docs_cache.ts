@@ -29,8 +29,8 @@ export async function build_cache(repo: Repos) {
 	const lookup = new Map<Block['href'], string>();
 
 	for (const block of blocks) {
-		const title = block.breadcrumbs.at(-1);
-		lookup.set(block.href, block.breadcrumbs.join('/'));
+		const title = block.breadcrumbs.join('/');
+		lookup.set(block.href, title);
 
 		(indexes[block.rank ?? 0] ??= new flexsearch.Index({
 			tokenize: 'forward',
