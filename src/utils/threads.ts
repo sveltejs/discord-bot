@@ -61,9 +61,13 @@ export async function get_ending_message(
 	thread: ThreadChannel,
 	initiator_id: Snowflake,
 ): Promise<MessageOptions> {
+	// Attempt to load all members even if they aren't currently cached
+	thread = await thread.fetch();
+
 	const start_message = await undefined_on_error(
 		thread.fetchStarterMessage(),
 	);
+
 	const clickable_participants = thread.guildMembers.filter(
 		(m) =>
 			DEV_MODE ||
