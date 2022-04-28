@@ -1,7 +1,8 @@
 # Svelte Bot - Cybernetically enhanced discord servers
 
 Welcome to the repo for the official Svelte Discord bot!
-<img align="center" src="https://cdn.discordapp.com/avatars/918868862198509639/41ca0acf7bdbce019a1bf05fa0ea7062.png">
+
+<div><img align="center" src="https://cdn.discordapp.com/avatars/918868862198509639/41ca0acf7bdbce019a1bf05fa0ea7062.png"></div>
 
 # Documentation
 
