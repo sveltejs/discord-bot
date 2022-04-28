@@ -4,6 +4,41 @@ Welcome to the repo for the official Svelte Discord bot!
 
 # Documentation
 
+## Commands
+
+-   Bookmark
+
+    -   Message command that lets you save a reference to a message from the server in your DMs. Right click any message then go to `Apps` in the context menu to use.
+
+-   Docs
+
+    -   `/docs svelte` or `/docs sveltekit`: Quickly search the Svelte or SvelteKit docs and send a link in the chat.
+    -   `/mdn` Same as above but for the MDN web docs.
+
+-   Github
+
+    -   `/discussion`, `/issue` or `/pr` search for matching discussions, issues or PRs in some of the `sveltejs/*` repositories and send links to the results in the chat.
+
+-   Tags: Tags are a way to store and reuse frequent responses so that you don't have to look up and type them out every time.
+
+    -   `/tag` Sends an existing tag to the chat.
+    -   `/tags create` Create a tag. You must have the threadlord role to use it.
+    -   `/tags update` Edit a tag. You must be the author of the tag to use it.
+    -   `/tags delete` Delete a tag. You must be the author of the tag or have the threadlord role.
+
+-   Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people with the threadlord role.
+
+    -   `/thread rename`
+    -   `/thread solve` Renames the thread to have a green checkmark at the start and sets the archive duration to 1hr.
+    -   `/thread archive` Archive an active thread without marking it as solved.
+    -   `/thread reopen` Reopen a thread that's been accidentally marked as solved.
+
+-   Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.
+internet points for solving threads, not the evil tracking ones  
+<small style="margin-inline-start: 4ch;">‡ internet points for solving threads, not the evil tracking ones</small>
+
+# Stack
+
 Click on the links below to view the documentation on the different parts of the bot's tech stack:
 
 -   [TypeScript](https://www.typescriptlang.org/docs/)
@@ -30,16 +65,15 @@ All contributions are welcome, please try and make an issue first since most new
 
 2. Run the bot with `pnpm dev`
 
-> You might get a `MODULE_NOT_FOUND` error, just wait a while for tsc to finish compiling the files and nodemon will restart.
-
 ## Code Conventions
+
 Since there is no user facing code, prefer `snake_case` for variables and function names wherever possible. Local constants follow the same, whereas global constants should be in `SCREAMING_SNAKE_CASE`.
 
 # Deploying
 
-The bot can be ran in any Node 16+ environment. It's written in typescript so you have to build it before running it:
+The bot uses the [tsm](https://github.com/lukeed/tsm) module loader to transpile its Typescript code on the fly so there's no build step involved.
 
 ```sh
-pnpm build
+pnpm install
 pnpm start
 ```
