@@ -1,6 +1,7 @@
 # Svelte Bot - Cybernetically enhanced discord servers
 
 Welcome to the repo for the official Svelte Discord bot!
+<img align="center" src="https://cdn.discordapp.com/avatars/918868862198509639/41ca0acf7bdbce019a1bf05fa0ea7062.png">
 
 # Documentation
 
@@ -34,7 +35,7 @@ Welcome to the repo for the official Svelte Discord bot!
     -   `/thread reopen` Reopen a thread that's been accidentally marked as solved.
 
 -   Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.  
-<span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
+    <span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
 
 # Stack
 
