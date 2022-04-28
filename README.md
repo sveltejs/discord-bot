@@ -33,9 +33,8 @@ Welcome to the repo for the official Svelte Discord bot!
     -   `/thread archive` Archive an active thread without marking it as solved.
     -   `/thread reopen` Reopen a thread that's been accidentally marked as solved.
 
--   Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.
-internet points for solving threads, not the evil tracking ones  
-<small style="margin-inline-start: 4ch;">‡ internet points for solving threads, not the evil tracking ones</small>
+-   Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.  
+<span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
 
 # Stack
 
