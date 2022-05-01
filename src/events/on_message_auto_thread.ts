@@ -13,6 +13,7 @@ export default event({
 		const should_ignore =
 			message.author.bot ||
 			message.channel.type != 'GUILD_TEXT' ||
+			message.type != 'DEFAULT' ||
 			!AUTO_THREAD_CHANNELS.includes(message.channelId) ||
 			fails_link_test(message); // If it fails link test then it'll get deleted and the thread will be orphaned
 
