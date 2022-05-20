@@ -1,4 +1,4 @@
-import { Message, ThreadChannel } from 'discord.js';
+import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import url_regex from 'url-regex';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config.js';
@@ -52,5 +52,5 @@ function send_instruction_message(thread: ThreadChannel) {
 		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
-	return thread.send(wrap_in_embed(description));
+	return thread.send(wrap_in_embed(description) as MessageOptions);
 }
