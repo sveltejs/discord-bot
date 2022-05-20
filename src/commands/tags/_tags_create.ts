@@ -61,19 +61,18 @@ export const tag_create_handler: TagCRUDHandler = async ({
 		author_id: interaction.user.id,
 	});
 
-	if (error)
-		return await submission.reply({
-			content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
-		});
-
-	await submission.reply({
-		content: `Added tag "${tag_name}".`,
-		embeds: [
-			tags_embed_builder({
-				tag_name,
-				tag_content: content,
-				author: member,
-			}),
-		],
-	});
+	await submission.reply(
+		error
+			? {
+					content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
+			  }
+			: {
+					content: `Added tag "${tag_name}".`,
+					embeds: tags_embed_builder({
+						tag_name,
+						tag_content: content,
+						author: member,
+					}),
+			  },
+	);
 };

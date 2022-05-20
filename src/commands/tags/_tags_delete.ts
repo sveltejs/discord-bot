@@ -39,13 +39,11 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 
 	await interaction.reply({
 		content: `Tag "${tag_name}" was successfully deleted.`,
-		embeds: [
-			tags_embed_builder({
-				tag_name,
-				tag_content: tag.tag_content,
-				author: await get_member(interaction, tag.author_id),
-			}),
-		],
+		embeds: tags_embed_builder({
+			tag_name,
+			tag_content: tag.tag_content,
+			author: await get_member(interaction, tag.author_id),
+		}),
 		ephemeral: true,
 	});
 };

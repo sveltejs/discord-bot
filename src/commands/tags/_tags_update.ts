@@ -55,20 +55,18 @@ export const tag_update_handler: TagCRUDHandler = async ({
 		.update({ tag_content: content })
 		.eq('id', tag.id);
 
-	if (error) {
-		return await submission.reply({
-			content: `Failed to update tag "${tag_name}."`,
-		});
-	}
-
-	await submission.reply({
-		content: `Tag "${tag_name}" was successfully updated.`,
-		embeds: [
-			tags_embed_builder({
-				tag_name,
-				tag_content: content,
-				author: await get_member(interaction, tag.author_id),
-			}),
-		],
-	});
+	await submission.reply(
+		error
+			? {
+					content: `Failed to update tag "${tag_name}."`,
+			  }
+			: {
+					content: `Tag "${tag_name}" was successfully updated.`,
+					embeds: tags_embed_builder({
+						tag_name,
+						tag_content: content,
+						author: await get_member(interaction, tag.author_id),
+					}),
+			  },
+	);
 };

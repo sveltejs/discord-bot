@@ -33,14 +33,16 @@ export function tags_embed_builder({
 	tag_content: string;
 	author?: GuildMember;
 }) {
-	return build_embed({
-		title: `\`${tag_name}\``,
-		description: tag_content,
-		footer: author && {
-			text: `Created by ${author.displayName}`,
-			iconURL: author.displayAvatarURL({
-				size: 64,
-			}),
-		},
-	});
+	return [
+		build_embed({
+			title: `\`${tag_name}\``,
+			description: tag_content,
+			footer: author && {
+				text: `Created by ${author.displayName}`,
+				iconURL: author.displayAvatarURL({
+					size: 64,
+				}),
+			},
+		}),
+	];
 }
