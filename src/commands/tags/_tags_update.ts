@@ -10,13 +10,11 @@ export const tag_update_handler: TagCRUDHandler = async ({
 }) => {
 	const tag = await get_tag(tag_name);
 
-	const fault = await (async () => {
-		return !tag
-			? 'No tag with that name exists. Did you mean to do `/tags create` instead?'
-			: interaction.user.id !== tag.author_id
-			? "You don't have the permissions to edit that tag. You have to be the author of the tag."
-			: null;
-	})();
+	const fault = !tag
+		? 'No tag with that name exists. Did you mean to do `/tags create` instead?'
+		: interaction.user.id !== tag.author_id
+		? "You don't have the permissions to edit that tag. You have to be the author of the tag."
+		: null;
 
 	if (fault !== null || !tag /* Typescript ceremony */)
 		return await interaction.reply({

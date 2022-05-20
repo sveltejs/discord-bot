@@ -13,15 +13,13 @@ export const tag_create_handler: TagCRUDHandler = async ({
 }) => {
 	const member = (await get_member(interaction))!;
 
-	const fault = await (async () => {
-		return !has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)
-			? "You don't have the permissions to create a tag."
-			: !validator_regex.test(tag_name)
-			? `The name provided isn't valid. It must match \`${validator_regex.source}\``
-			: (await get_tag(tag_name))
-			? 'A tag with that name exists already. Did you mean to do `/tags update` instead?'
-			: null;
-	})();
+	const fault = !has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)
+		? "You don't have the permissions to create a tag."
+		: !validator_regex.test(tag_name)
+		? `The name provided isn't valid. It must match \`${validator_regex.source}\``
+		: (await get_tag(tag_name))
+		? 'A tag with that name exists already. Did you mean to do `/tags update` instead?'
+		: null;
 
 	if (fault !== null)
 		return await interaction.reply({
