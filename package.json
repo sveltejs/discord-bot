@@ -11,22 +11,22 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"discord.js": "^13.7.0",
-		"dotenv": "^16.0.0",
+		"discord.js": "^13.8.0",
+		"dotenv": "^16.0.1",
 		"flexsearch": "^0.7.21",
-		"jellycommands": "1.0.0-next.22",
-		"node-fetch": "^3.2.3",
+		"jellycommands": "1.0.0-next.24",
+		"node-fetch": "^3.2.6",
 		"tsm": "^2.2.1",
-		"unfurl.js": "^5.6.4",
+		"unfurl.js": "^5.7.0",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@supabase/supabase-js": "^1.35.2",
+		"@supabase/supabase-js": "^1.35.3",
 		"@types/flexsearch": "^0.7.3",
-		"@types/node": "^16.11.31",
-		"nodemon": "^2.0.15",
+		"@types/node": "^16.11.39",
+		"nodemon": "^2.0.16",
 		"prettier": "^2.6.2",
-		"typescript": "^4.6.3"
+		"typescript": "^4.7.3"
 	},
 	"nodemonConfig": {
 		"watch": [
