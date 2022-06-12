@@ -1,8 +1,8 @@
 import {
 	GuildMember,
+	InteractionReplyOptions,
 	MessageActionRow,
 	MessageButton,
-	MessageOptions,
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
@@ -60,7 +60,7 @@ export async function check_autothread_permissions(
 export async function get_ending_message(
 	thread: ThreadChannel,
 	initiator_id: Snowflake,
-): Promise<MessageOptions> {
+): Promise<InteractionReplyOptions> {
 	// Attempt to load all members even if they aren't currently cached
 	thread = await thread.fetch();
 

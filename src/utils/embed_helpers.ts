@@ -3,16 +3,14 @@ import {
 	InteractionReplyOptions,
 	MessageEmbed,
 	MessageEmbedOptions,
+	MessageOptions,
 } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export const build_embed = (options: MessageEmbedOptions) =>
 	new MessageEmbed({ color: SVELTE_ORANGE, ...options });
 
-export function wrap_in_embed(
-	content: string,
-	ephemeral?: boolean,
-): InteractionReplyOptions {
+export function wrap_in_embed(content: string, ephemeral?: boolean) {
 	const embed = build_embed({ description: content });
 	return { embeds: [embed], ephemeral };
 }
