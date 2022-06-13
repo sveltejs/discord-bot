@@ -1,10 +1,4 @@
-import {
-	GuildMember,
-	InteractionReplyOptions,
-	MessageEmbed,
-	MessageEmbedOptions,
-	MessageOptions,
-} from 'discord.js';
+import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export const build_embed = (options: MessageEmbedOptions) =>

@@ -13,11 +13,28 @@ export default event({
 		const should_ignore =
 			message.author.bot ||
 			message.channel.type != 'GUILD_TEXT' ||
-			message.type != 'DEFAULT' ||
 			!AUTO_THREAD_CHANNELS.includes(message.channelId) ||
 			fails_link_test(message); // If it fails link test then it'll get deleted and the thread will be orphaned
 
 		if (should_ignore) return;
+
+		if (message.type !== 'DEFAULT') {
+			const ref_thread = (
+				await message.fetchReference()
+			)?.thread?.toString();
+
+			if (ref_thread)
+				await Promise.allSettled([
+					message.delete(),
+					message.author.send(
+						wrap_in_embed(
+							`Your message in ${message.channel.toString()} was removed. Please use the thread ${ref_thread} to reply instead. The contents have been preserved below.`,
+						),
+					),
+					message.author.send(message.content),
+				]);
+			return;
+		}
 
 		const raw_name = await get_thread_name(message);
 
