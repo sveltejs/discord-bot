@@ -62,7 +62,7 @@ export async function search_docs(
 
 			return as_link
 				? // prettier-ignore
-				  `[${link_text}](${RepositoryDetails[repo].HOMEPAGE}${href.toString()})`
+				  `[${link_text}](${RepositoryDetails[repo].HOMEPAGE}${href})`
 				: link_text;
 		});
 }

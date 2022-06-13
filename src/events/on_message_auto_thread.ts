@@ -19,16 +19,14 @@ export default event({
 		if (should_ignore) return;
 
 		if (message.type !== 'DEFAULT') {
-			const ref_thread = (
-				await message.fetchReference()
-			)?.thread?.toString();
+			const ref_thread = (await message.fetchReference())?.thread;
 
 			if (ref_thread)
 				await Promise.allSettled([
 					message.delete(),
 					message.author.send(
 						wrap_in_embed(
-							`Your message in ${message.channel.toString()} was removed. Please use the thread ${ref_thread} to reply instead. The contents have been preserved below.`,
+							`Your message in ${message.channel} was removed. Please use the thread ${ref_thread} to reply instead. The contents have been preserved below.`,
 						),
 					),
 					message.author.send(message.content),
@@ -42,11 +40,8 @@ export default event({
 			? add_thread_prefix(raw_name, false)
 			: raw_name;
 
-		await message.channel.threads
-			.create({
-				name: name.slice(0, 100),
-				startMessage: message,
-			})
+		await message
+			.startThread({ name: name.slice(0, 100) })
 			.then(send_instruction_message);
 	},
 });

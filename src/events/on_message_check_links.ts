@@ -13,7 +13,7 @@ export default event({
 
 			await message.author.send(
 				wrap_in_embed(
-					`Your message in ${message.channel.toString()} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
+					`Your message in ${message.channel} was removed since it doesn't contain a link, if you are trying to showcase a project please post a link with your text. Otherwise all conversation should be inside a thread\n\nYour message was sent below so you don't lose it!`,
 				),
 			);
 
