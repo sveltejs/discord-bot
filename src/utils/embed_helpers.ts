@@ -1,18 +1,10 @@
-import {
-	GuildMember,
-	InteractionReplyOptions,
-	MessageEmbed,
-	MessageEmbedOptions,
-} from 'discord.js';
+import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export const build_embed = (options: MessageEmbedOptions) =>
 	new MessageEmbed({ color: SVELTE_ORANGE, ...options });
 
-export function wrap_in_embed(
-	content: string,
-	ephemeral?: boolean,
-): InteractionReplyOptions {
+export function wrap_in_embed(content: string, ephemeral?: boolean) {
 	const embed = build_embed({ description: content });
 	return { embeds: [embed], ephemeral };
 }
@@ -33,16 +25,16 @@ export function tags_embed_builder({
 	tag_content: string;
 	author?: GuildMember;
 }) {
-	return build_embed({
-		title: `\`${tag_name}\``,
-		description: tag_content,
-		author: author
-			? {
-					name: author.displayName,
-					icon_url: author.displayAvatarURL({
-						size: 64,
-					}),
-			  }
-			: undefined,
-	});
+	return [
+		build_embed({
+			title: `\`${tag_name}\``,
+			description: tag_content,
+			footer: author && {
+				text: `Created by ${author.displayName}`,
+				iconURL: author.displayAvatarURL({
+					size: 64,
+				}),
+			},
+		}),
+	];
 }

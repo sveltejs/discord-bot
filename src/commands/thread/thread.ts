@@ -10,6 +10,7 @@ import {
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
+import { no_op } from '../../utils/promise.js';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
@@ -65,16 +66,17 @@ export default command({
 		ephemeral: true,
 	},
 
-	run: async ({ interaction }): Promise<void> => {
+	// @ts-expect-error
+	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
 		if (!thread?.isThread())
-			return void interaction.followUp('This channel is not a thread');
+			return await interaction.followUp('This channel is not a thread');
 
 		const member = await get_member(interaction);
 
-		if (!member) return void interaction.followUp('Unable to find you');
+		if (!member) return await interaction.followUp('Unable to find you');
 
 		const has_permission = await check_autothread_permissions(
 			thread,
@@ -82,17 +84,15 @@ export default command({
 		);
 
 		if (!has_permission)
-			return void interaction.followUp(
+			return await interaction.followUp(
 				"You don't have the permissions to manage this thread",
 			);
 
 		switch (subcommand) {
 			case 'archive': {
-				try {
-					await thread.setArchived(true);
-				} catch {}
+				await thread.setArchived(true).catch(no_op);
 
-				interaction.followUp('Thread archived');
+				await interaction.followUp('Thread archived');
 				break;
 			}
 
@@ -102,7 +102,7 @@ export default command({
 
 				try {
 					if (rename_limit.is_limited(thread.id, true))
-						return void interaction.followUp(
+						return await interaction.followUp(
 							'You can only rename a thread once every 10 minutes',
 						);
 
@@ -112,9 +112,9 @@ export default command({
 						HELP_CHANNELS.includes(parent_id),
 					);
 
-					interaction.followUp('Thread renamed');
+					await interaction.followUp('Thread renamed');
 				} catch (error) {
-					interaction.followUp((error as Error).message);
+					await interaction.followUp((error as Error).message);
 				}
 				break;
 			}
@@ -131,15 +131,16 @@ export default command({
 
 					await solve_thread(thread);
 
-					thread.send(
-						wrap_in_embed('Thread solved. Thank you everyone.'),
-					);
-
-					interaction.followUp(
-						await get_ending_message(thread, interaction.user.id),
-					);
+					await Promise.allSettled([
+						thread.send(
+							wrap_in_embed('Thread solved. Thank you everyone.'),
+						),
+						get_ending_message(thread, interaction.user.id).then(
+							(m) => interaction.followUp(m),
+						),
+					]);
 				} catch (e) {
-					interaction.followUp((e as Error).message);
+					await interaction.followUp((e as Error).message);
 				}
 				break;
 			}
@@ -171,9 +172,9 @@ export default command({
 						autoArchiveDuration: 1440,
 					});
 
-					interaction.followUp('Thread reopened.');
+					await interaction.followUp('Thread reopened.');
 				} catch (e) {
-					interaction.followUp((e as Error).message);
+					await interaction.followUp((e as Error).message);
 				}
 				break;
 		}

@@ -1,11 +1,9 @@
-import { MessageActionRow, MessageButton, MessageOptions } from 'discord.js';
+import { MessageActionRow, MessageButton } from 'discord.js';
 import { Tag } from '../commands/tags/_common.js';
 import { supabase } from '../db/index.js';
 import { list_embed_builder } from './embed_helpers.js';
 
-export async function get_tags_list(
-	page_number: number,
-): Promise<MessageOptions | null> {
+export async function get_tags_list(page_number: number) {
 	const { data, error } = await supabase.rpc<Tag>('get_tags_list', {
 		page_number,
 	});

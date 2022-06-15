@@ -39,10 +39,9 @@ export default command({
 		},
 	],
 
-	run: async ({ interaction }) => {
+	run: async ({ interaction }) =>
 		await github_command_handler(
 			interaction,
 			GithubResultType.PULL_REQUEST,
-		);
-	},
+		),
 });

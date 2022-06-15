@@ -1,7 +1,6 @@
 import { command } from 'jellycommands';
-import { SVELTE_COIN_EMOJI } from '../../config.js';
 import { supabase } from '../../db/index.js';
-import { build_embed } from '../../utils/embed_helpers.js';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'stats',
@@ -49,25 +48,16 @@ export default command({
 					.maybeSingle();
 
 				if (error)
-					return void interaction.followUp('Something went wrong');
+					return await interaction.followUp('Something went wrong');
 
-				if (!data)
-					return void interaction.followUp({
-						embeds: [
-							build_embed({
-								description: `<@${user_id}> has not solved any threads yet.`,
-							}),
-						],
-					});
-
-				return void interaction.followUp({
-					embeds: [
-						build_embed({
-							// prettier-ignore
-							description: `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`,
-						}),
-					],
-				});
+				return await interaction.followUp(
+					wrap_in_embed(
+						data?.count
+							? // prettier-ignore
+							  `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`
+							: `<@${user_id}> has not solved any threads yet.`,
+					),
+				);
 			}
 
 			case 'server': {
@@ -76,7 +66,7 @@ export default command({
 					.select('*');
 
 				if (error || !data?.length)
-					return void interaction.followUp('Could not fetch data');
+					return await interaction.followUp('Could not fetch data');
 
 				const leaderboard = build_embed({
 					title: 'Server Leaderboard',
@@ -88,13 +78,11 @@ export default command({
 					)
 					.addField(
 						'Solves',
-						data
-							.map(({ count }) => `${count} ${SVELTE_COIN_EMOJI}`)
-							.join('\n'),
+						data.map(({ count }) => `${count} 🍪`).join('\n'),
 						true,
 					);
 
-				return void interaction.followUp({
+				return await interaction.followUp({
 					embeds: [leaderboard],
 				});
 			}

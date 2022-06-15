@@ -1,46 +1,48 @@
-import { Message, ThreadChannel } from 'discord.js';
+import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import url_regex from 'url-regex';
-import {
-	AUTO_THREAD_CHANNELS,
-	HELP_CHANNELS,
-	LINK_ONLY_CHANNELS,
-} from '../config.js';
+import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config.js';
 import { wrap_in_embed } from '../utils/embed_helpers.js';
 import { add_thread_prefix } from '../utils/threads.js';
 import { get_title_from_url } from '../utils/unfurl.js';
+import { fails_link_test, in_link_only_channel } from './_link_predicate.js';
 
 export default event({
 	name: 'messageCreate',
 	run: async ({}, message) => {
 		const should_ignore =
 			message.author.bot ||
-			message.hasThread ||
 			message.channel.type != 'GUILD_TEXT' ||
-			(LINK_ONLY_CHANNELS.includes(message.channel.id) && // It's going to be deleted in this case, which could cause an orphan thread
-				!url_regex().test(message.content));
+			!AUTO_THREAD_CHANNELS.includes(message.channelId) ||
+			fails_link_test(message); // If it fails link test then it'll get deleted and the thread will be orphaned
 
 		if (should_ignore) return;
 
-		if (AUTO_THREAD_CHANNELS.includes(message.channel.id)) {
-			try {
-				const raw_name = await get_thread_name(message);
-				const prefixed = add_thread_prefix(raw_name, false);
+		if (message.type !== 'DEFAULT') {
+			const ref_thread = (await message.fetchReference())?.thread;
 
-				const name = HELP_CHANNELS.includes(message.channelId)
-					? prefixed
-					: raw_name;
-
-				await message.channel.threads
-					.create({
-						name: name.slice(0, 100),
-						startMessage: message,
-					})
-					.then(send_instruction_message);
-			} catch {
-				// we can ignore this error since chances are it will be that thread already exists
-			}
+			if (ref_thread)
+				await Promise.allSettled([
+					message.delete(),
+					message.author.send(
+						wrap_in_embed(
+							`Your message in ${message.channel} was removed. Please use the thread ${ref_thread} to reply instead. The contents have been preserved below.`,
+						),
+					),
+					message.author.send(message.content),
+				]);
+			return;
 		}
+
+		const raw_name = await get_thread_name(message);
+
+		const name = HELP_CHANNELS.includes(message.channelId)
+			? add_thread_prefix(raw_name, false)
+			: raw_name;
+
+		await message
+			.startThread({ name: name.slice(0, 100) })
+			.then(send_instruction_message);
 	},
 });
 
@@ -48,7 +50,7 @@ function get_thread_name(message: Message): string | Promise<string> {
 	const url = message.content.match(url_regex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
-	if (!LINK_ONLY_CHANNELS.includes(message.channelId) || !url)
+	if (!in_link_only_channel(message) || !url)
 		return `${message.content.replace(url_regex(), '')}`;
 
 	return get_title_from_url(url[0]);
@@ -62,5 +64,5 @@ function send_instruction_message(thread: ThreadChannel) {
 		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
-	return thread.send(wrap_in_embed(description));
+	return thread.send(wrap_in_embed(description) as MessageOptions);
 }

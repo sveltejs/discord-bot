@@ -11,17 +11,19 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 	const tag = await get_tag(tag_name);
 
 	if (!tag) {
-		return interaction.reply({
+		return await interaction.reply({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
 	}
 
-	const member = (await get_member(interaction))!;
 	if (
-		!has_any_role_or_id(member, [tag.author_id, ...TAG_DEL_PERMITTED_IDS])
+		!has_any_role_or_id(await get_member(interaction), [
+			tag.author_id,
+			...TAG_DEL_PERMITTED_IDS,
+		])
 	) {
-		return interaction.reply({
+		return await interaction.reply({
 			content:
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
@@ -29,7 +31,7 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 	}
 
 	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
-		return interaction.reply({
+		return await interaction.reply({
 			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,
 		});
@@ -37,13 +39,11 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 
 	await interaction.reply({
 		content: `Tag "${tag_name}" was successfully deleted.`,
-		embeds: [
-			tags_embed_builder({
-				tag_name,
-				tag_content: tag.tag_content,
-				author: await get_member(interaction, tag.author_id),
-			}),
-		],
+		embeds: tags_embed_builder({
+			tag_name,
+			tag_content: tag.tag_content,
+			author: await get_member(interaction, tag.author_id),
+		}),
 		ephemeral: true,
 	});
 };

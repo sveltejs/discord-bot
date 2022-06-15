@@ -1,12 +1,12 @@
 import {
 	GuildMember,
+	InteractionReplyOptions,
 	MessageActionRow,
 	MessageButton,
-	MessageOptions,
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
-import { THREAD_ADMIN_IDS } from '../config.js';
+import { DEV_MODE, THREAD_ADMIN_IDS } from '../config.js';
 import { supabase } from '../db/index.js';
 import { build_embed } from './embed_helpers.js';
 import { no_op, undefined_on_error } from './promise.js';
@@ -15,10 +15,7 @@ import { has_any_role_or_id } from './snowflake.js';
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} - `;
 
-	if (name.startsWith('✅ - ') || name.startsWith('❔ - '))
-		return `${prefix}${name.slice(4)}`;
-
-	return `${prefix}${name}`;
+	return `${prefix}${name.replace(/^[✅❔] - /, '')}`;
 };
 
 export async function rename_thread(
@@ -51,16 +48,11 @@ export async function check_autothread_permissions(
 	member: GuildMember,
 ): Promise<boolean> {
 	const allowed_ids = [...THREAD_ADMIN_IDS];
+	if (thread.ownerId) allowed_ids.push(thread.ownerId);
 
-	await Promise.all([
-		thread.fetchStarterMessage().then((message) => {
-			allowed_ids.push(message.author.id);
-		}, no_op),
-
-		thread.fetchOwner().then((owner) => {
-			if (owner) allowed_ids.push(owner.id);
-		}, no_op),
-	]);
+	await thread.fetchStarterMessage().then((message) => {
+		allowed_ids.push(message.author.id);
+	}, no_op);
 
 	return has_any_role_or_id(member, allowed_ids);
 }
@@ -68,13 +60,19 @@ export async function check_autothread_permissions(
 export async function get_ending_message(
 	thread: ThreadChannel,
 	initiator_id: Snowflake,
-): Promise<MessageOptions> {
+): Promise<InteractionReplyOptions> {
+	// Attempt to load all members even if they aren't currently cached
+	thread = await thread.fetch();
+
 	const start_message = await undefined_on_error(
 		thread.fetchStarterMessage(),
 	);
+
 	const clickable_participants = thread.guildMembers.filter(
 		(m) =>
-			!m.user.bot && m.id !== (start_message?.author.id ?? initiator_id),
+			DEV_MODE ||
+			(!m.user.bot &&
+				m.id !== (start_message?.author.id ?? initiator_id)),
 	);
 
 	const embed = build_embed({

@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
+import { GuildMember, Interaction, Snowflake } from 'discord.js';
 
 /**
  * Check if a member has any of the given roles or ids.
@@ -7,16 +7,16 @@ import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
  * @param {Snowflake[]} snowflakes - The list of snowflakes to compare the member's roles/id against
  */
 export function has_any_role_or_id(
-	member: GuildMember,
+	member: GuildMember | undefined,
 	snowflakes: Snowflake[],
-): boolean {
-	if (!member) return false;
-	for (const snowflake of snowflakes) {
-		if (snowflake === member.id || member.roles.cache.has(snowflake))
-			return true;
-	}
-
-	return false;
+) {
+	return !!(
+		member &&
+		snowflakes.find(
+			(snowflake) =>
+				snowflake === member.id || member.roles.cache.has(snowflake),
+		)
+	);
 }
 
 /**
@@ -24,7 +24,7 @@ export function has_any_role_or_id(
  * @default {id} interaction.user.id
  */
 export async function get_member(
-	interaction: CommandInteraction,
+	interaction: Interaction,
 	id: Snowflake = interaction.user.id,
 ) {
 	return interaction.guild?.members.fetch(id).catch(() => undefined);
