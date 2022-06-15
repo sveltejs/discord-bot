@@ -5,7 +5,7 @@
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "nodemon --loader tsm .",
+		"dev": "nodemon -e js,ts --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
 		"start": "tsm ."
 	},
