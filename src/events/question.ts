@@ -32,7 +32,7 @@ export default event({
 				author_id: message.author.id,
 			});
 
-			message.reply({
+			await message.reply({
 				embeds: [
 					build_embed({
 						description:
