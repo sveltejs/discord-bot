@@ -15,11 +15,11 @@ export default event({
 		const message_id = interaction.customId.slice('prediction_'.length);
 
 		if (!THREAD_ADMIN_IDS.includes(interaction.user.id))
-			return void (await interaction.followUp(
+			return await interaction.followUp(
 				wrap_in_embed(
 					'Only ThreadLords are able to report predictions as incorrect',
 				),
-			));
+			);
 
 		const { error } = await supabase
 			.from('predictions')
@@ -27,11 +27,11 @@ export default event({
 			.eq('message_id', message_id);
 
 		if (error)
-			return void (await interaction.followUp(
+			return await interaction.followUp(
 				wrap_in_embed(
 					'There was an error marking that prediction as incorrect',
 				),
-			));
+			);
 
 		await interaction.followUp('Thanks for reporting that prediction!');
 
@@ -39,11 +39,11 @@ export default event({
 			interaction.message.id,
 		);
 
-		return void (await message?.edit({
+		return await message?.edit({
 			embeds: wrap_in_embed(
 				'Thank for you reporting this prediction as incorrect!',
 			).embeds,
 			components: [],
-		}));
+		});
 	},
 });
