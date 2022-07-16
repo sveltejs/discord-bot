@@ -56,10 +56,6 @@ export const THREAD_ADMIN_IDS = [
 // #endregion
 
 // #region channels
-export const NO_QUESTIONS_CHANNELS = DEV_MODE
-	? ['997596983051177985']
-	: ['728292755087818924'];
-
 export const HELP_CHANNELS = DEV_MODE
 	? ['935524190008770610']
 	: [
