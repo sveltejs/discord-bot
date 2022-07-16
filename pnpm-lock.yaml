@@ -10,7 +10,7 @@ specifiers:
   discord.js: ^13.8.0
   dotenv: ^16.0.1
   flexsearch: ^0.7.21
-  jellycommands: 1.0.0-next.24
+  jellycommands: 1.0.0-next.31
   node-fetch: ^3.2.6
   nodemon: ^2.0.16
   prettier: ^2.6.2
@@ -26,7 +26,7 @@ dependencies:
   discord.js: 13.8.0
   dotenv: 16.0.1
   flexsearch: 0.7.21
-  jellycommands: 1.0.0-next.24
+  jellycommands: 1.0.0-next.31
   node-fetch: 3.2.6
   tsm: 2.2.1
   unfurl.js: 5.7.0
@@ -433,10 +433,11 @@ packages:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: false
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
       follow-redirects: 1.15.1
+      form-data: 4.0.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -715,13 +716,12 @@ packages:
     hasBin: true
     dev: false
 
-  /discord-api-types/0.26.1:
-    resolution: {integrity: sha512-T5PdMQ+Y1MEECYMV5wmyi9VEYPagEDEi4S0amgsszpWY0VB9JJ/hEvM6BgLhbdnKky4gfmZEXtEEtojN8ZKJQQ==}
-    engines: {node: '>=12'}
-    dev: false
-
   /discord-api-types/0.33.5:
     resolution: {integrity: sha512-dvO5M52v7m7Dy96+XUnzXNsQ/0npsYpU6dL205kAtEDueswoz3aU3bh1UMoK4cQmcGtB1YRyLKqp+DXi05lzFg==}
+    dev: false
+
+  /discord-api-types/0.36.2:
+    resolution: {integrity: sha512-TunPAvzwneK/m5fr4hxH3bMsrtI22nr9yjfHyo5NBGMjpsAauGNiGCmwoFf0oO3jSd2mZiKUvZwCKDaB166u2Q==}
     dev: false
 
   /discord.js/13.8.0:
@@ -1415,11 +1415,11 @@ packages:
     resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
     dev: false
 
-  /jellycommands/1.0.0-next.24:
-    resolution: {integrity: sha512-5B4MXjs7tJw/TwsAaZWEt66hW4ZRl/DoXnJvRWjP1YhVM89YOWfhV6Yxvegl2/aXEQYCS0Fh1I91Jgmpb4I8zQ==}
+  /jellycommands/1.0.0-next.31:
+    resolution: {integrity: sha512-Yq16xNvbPqZZMmeJ99zPKrFIiiL1sWLg2pUTe4FuVCy+XaxFFK9UkM/DyZnyCtNTHBpNHkC3SB1Lbogi9LYZ1Q==}
     dependencies:
-      axios: 0.24.0
-      discord-api-types: 0.26.1
+      axios: 0.27.2
+      discord-api-types: 0.36.2
       ghoststools: 0.6.3
       joi: 17.6.0
     transitivePeerDependencies:
