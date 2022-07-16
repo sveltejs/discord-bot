@@ -1,11 +1,12 @@
+import { wrap_in_embed } from '../utils/embed_helpers';
+import { THREAD_ADMIN_IDS } from '../config';
 import { supabase } from '../db/index';
 import { event } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers';
 
 export default event({
 	name: 'interactionCreate',
 
-	async run({ client }, interaction) {
+	async run({}, interaction) {
 		if (!interaction.isButton()) return;
 		if (!interaction.customId.startsWith('prediction')) return;
 
@@ -13,7 +14,7 @@ export default event({
 
 		const message_id = interaction.customId.slice('prediction_'.length);
 
-		const { data: prediction, error } = await supabase
+		const { error } = await supabase
 			.from('predictions')
 			.select()
 			.eq('message_id', message_id)
@@ -21,14 +22,16 @@ export default event({
 			.single();
 
 		if (error)
-			return void interaction.followUp(
+			return void (await interaction.followUp(
 				wrap_in_embed('Unable to find that message prediction'),
-			);
+			));
 
-		if (interaction.user.id != prediction.author_id)
-			return void interaction.followUp(
-				wrap_in_embed('You can only report your own predictions'),
-			);
+		if (!THREAD_ADMIN_IDS.includes(interaction.user.id))
+			return void (await interaction.followUp(
+				wrap_in_embed(
+					'Only ThreadLords are able to report predictions as incorrect',
+				),
+			));
 
 		await supabase
 			.from('predictions')
@@ -41,11 +44,11 @@ export default event({
 			interaction.message.id,
 		);
 
-		return void message?.edit({
+		return void (await message?.edit({
 			embeds: wrap_in_embed(
 				'Thank for you reporting this prediction as incorrect!',
 			).embeds,
 			components: [],
-		});
+		}));
 	},
 });
