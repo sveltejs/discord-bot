@@ -22,7 +22,7 @@ export async function guess(content: string) {
 
 	return {
 		question: chance > 0.85,
-		message: chance < 0.85,
+		message: chance <= 0.85,
 		chance,
 	};
 }
