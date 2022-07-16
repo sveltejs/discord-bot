@@ -14,18 +14,6 @@ export default event({
 
 		const message_id = interaction.customId.slice('prediction_'.length);
 
-		const { error } = await supabase
-			.from('predictions')
-			.select()
-			.eq('message_id', message_id)
-			.limit(1)
-			.single();
-
-		if (error)
-			return void (await interaction.followUp(
-				wrap_in_embed('Unable to find that message prediction'),
-			));
-
 		if (!THREAD_ADMIN_IDS.includes(interaction.user.id))
 			return void (await interaction.followUp(
 				wrap_in_embed(
@@ -33,10 +21,17 @@ export default event({
 				),
 			));
 
-		await supabase
+		const { error } = await supabase
 			.from('predictions')
 			.update({ correct: false })
 			.eq('message_id', message_id);
+
+		if (error)
+			return void (await interaction.followUp(
+				wrap_in_embed(
+					'There was an error marking that prediction as incorrect',
+				),
+			));
 
 		await interaction.followUp('Thanks for reporting that prediction!');
 
