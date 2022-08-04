@@ -1,6 +1,6 @@
 import { event } from 'jellycommands';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { fails_link_test } from './_link_predicate.js';
+import { fails_link_test } from './_common.js';
 
 export default event({
 	name: 'messageCreate',
