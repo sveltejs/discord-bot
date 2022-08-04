@@ -1,5 +1,5 @@
 import { event } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { fails_link_test } from './_link_predicate.js';
 
 export default event({
