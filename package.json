@@ -16,7 +16,7 @@
 		"flexsearch": "^0.7.21",
 		"jellycommands": "1.0.0-next.24",
 		"node-fetch": "^3.2.6",
-		"tsm": "^2.2.1",
+		"tsm": "^2.2.2",
 		"unfurl.js": "^5.7.0",
 		"url-regex": "^5.0.0"
 	},
