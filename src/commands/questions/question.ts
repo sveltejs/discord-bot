@@ -1,0 +1,101 @@
+import { ThreadAutoArchiveDuration } from 'discord.js';
+import { command } from 'jellycommands';
+import { HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
+import { no_op } from '../../utils/promise.js';
+import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
+import { get_member } from '../../utils/snowflake.js';
+import {
+	check_autothread_permissions,
+	get_ending_message,
+} from '../../utils/threads.js';
+
+export default command({
+	name: 'question',
+	description: 'Manage a question forum thread',
+
+	options: [
+		{
+			name: 'solve',
+			description: 'Mark a thread as solved',
+			type: 'Subcommand',
+		},
+		{
+			name: 'reopen',
+			description: 'Reopen a solved thread',
+			type: 'Subcommand',
+		},
+	],
+
+	global: true,
+	defer: {
+		ephemeral: true,
+	},
+
+	run: async ({ interaction }) => {
+		const subcommand = interaction.options.getSubcommand(true);
+		const thread = await interaction.channel?.fetch();
+
+		if (!thread?.isThread() || !HELP_CHANNELS.includes(thread.parentId!)) {
+			interaction.followUp('This channel is not a question thread');
+			return;
+		}
+
+		/* @__PURE__ */ i_solemnly_swear_it_is_a_forum_thread(thread);
+
+		const member = await get_member(interaction);
+		if (!member) {
+			await interaction.followUp('Unable to find you');
+			return;
+		}
+
+		const has_permission = await check_autothread_permissions(
+			thread,
+			member,
+		);
+
+		if (!has_permission) {
+			await interaction.followUp(
+				"You don't have the permissions to manage this thread",
+			);
+			return;
+		}
+
+		switch (subcommand) {
+			case 'solve': {
+				try {
+					if (thread.appliedTags.includes(SOLVED_TAG))
+						throw new Error('Thread already marked as solved');
+
+					await thread.edit({
+						autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
+						appliedTags: [SOLVED_TAG, ...thread.appliedTags],
+					});
+
+					await get_ending_message(thread, interaction.user.id)
+						.then((m) => interaction.followUp(m))
+						.catch(no_op);
+				} catch (e) {
+					await interaction.followUp((e as Error).message);
+				}
+				break;
+			}
+
+			case 'reopen': {
+				try {
+					await thread.edit({
+						autoArchiveDuration:
+							ThreadAutoArchiveDuration.ThreeDays,
+						appliedTags: thread.appliedTags.filter(
+							(tag_id) => tag_id !== SOLVED_TAG,
+						),
+					});
+
+					await interaction.followUp('Thread reopened.');
+				} catch (e) {
+					await interaction.followUp((e as Error).message);
+				}
+				break;
+			}
+		}
+	},
+});

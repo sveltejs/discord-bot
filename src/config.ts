@@ -55,16 +55,14 @@ export const THREAD_ADMIN_IDS = [
 
 // #endregion
 
+export const SOLVED_TAG = DEV_MODE
+	? '1023931412933525554'
+	: '1024301926952730636';
+
 // #region channels
 export const HELP_CHANNELS = DEV_MODE
-	? ['935524190008770610']
-	: [
-			// svelte-help
-			'939867760492703744',
-
-			// kit-help
-			'939868205869072444',
-	  ];
+	? ['1023930215329697792']
+	: ['1023340103071965194'];
 
 const COMMUNITY_CHANNELS = [
 	// Showcase
@@ -91,9 +89,6 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 
 			// #both-both-is-good
 			'919196322303725568',
-
-			// emulated help channel
-			'935524190008770610',
 	  ]
-	: [...COMMUNITY_CHANNELS, ...HELP_CHANNELS];
+	: [...COMMUNITY_CHANNELS];
 // #endregion

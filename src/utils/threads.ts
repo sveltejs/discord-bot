@@ -28,14 +28,6 @@ export async function rename_thread(
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
-export async function solve_thread(thread: ThreadChannel) {
-	return thread.edit({
-		name: add_thread_prefix(thread.name, true).slice(0, 100),
-		// Archiving immediately won't let users click the buttons.
-		autoArchiveDuration: 60,
-	});
-}
-
 export async function increment_solve_count(id: Snowflake) {
 	const { error } = await supabase.rpc('increment_solve_count', {
 		solver_id: id,
