@@ -11,7 +11,7 @@ export default command({
 		{
 			name: 'repository',
 			description: 'The repository to search within',
-			type: 'INTEGER',
+			type: 'Integer',
 			choices: [
 				{
 					name: 'SvelteKit',
@@ -23,7 +23,7 @@ export default command({
 		{
 			name: 'topic',
 			description: 'What to search for',
-			type: 'STRING',
+			type: 'String',
 		},
 	],
 

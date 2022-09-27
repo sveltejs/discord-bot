@@ -21,12 +21,12 @@ export default command({
 	options: [
 		{
 			name: 'svelte',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Search svelte docs',
 			options: [
 				{
 					name: 'query',
-					type: 'STRING',
+					type: 'String',
 					description: 'The string to search for in the docs.',
 					autocomplete: true,
 				},
@@ -34,12 +34,12 @@ export default command({
 		},
 		{
 			name: 'sveltekit',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Search sveltekit docs',
 			options: [
 				{
 					name: 'query',
-					type: 'STRING',
+					type: 'String',
 					description: 'The string to search for in the docs.',
 					autocomplete: true,
 				},
@@ -59,20 +59,24 @@ export default command({
 		const query = interaction.options.getString('query');
 
 		try {
-			if (!query)
-				return await interaction.reply(
+			if (!query) {
+				await interaction.reply(
 					wrap_in_embed(
 						`[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
 					),
 				);
+				return;
+			}
 			const results = await search_docs(query, repo);
 
-			if (!results.length)
-				return await interaction.reply({
+			if (!results.length) {
+				await interaction.reply({
 					content:
 						'No matching result found. Try again with a different search term.',
 					ephemeral: true,
 				});
+				return;
+			}
 
 			await interaction.reply({
 				embeds: [

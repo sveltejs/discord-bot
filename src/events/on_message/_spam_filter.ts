@@ -42,7 +42,7 @@ async function ban(member: GuildMember, retried = 0) {
 			// TODO: Update in v14
 			// This has a bad name, it's how many days of messages from the user to delete
 			// not for how many days to ban the user.
-			days: 1,
+			deleteMessageSeconds: 24 * 60 * 60,
 		});
 	} catch {
 		await ban(member, retried + 1);

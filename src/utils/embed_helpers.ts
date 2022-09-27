@@ -1,8 +1,8 @@
-import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { GuildMember, EmbedBuilder, EmbedData } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
-export const build_embed = (options: MessageEmbedOptions) =>
-	new MessageEmbed({ color: SVELTE_ORANGE, ...options });
+export const build_embed = (options: EmbedData) =>
+	new EmbedBuilder({ color: SVELTE_ORANGE, ...options });
 
 export function wrap_in_embed(content: string, ephemeral?: boolean) {
 	const embed = build_embed({ description: content });

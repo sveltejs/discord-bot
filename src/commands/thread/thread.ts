@@ -33,18 +33,18 @@ export default command({
 		{
 			name: 'archive',
 			description: 'Archive a thread',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 		},
 		{
 			name: 'rename',
 			description: 'Rename a thread',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 
 			options: [
 				{
 					name: 'name',
 					description: 'The new name of the thread',
-					type: 'STRING',
+					type: 'String',
 					required: true,
 				},
 			],
@@ -52,12 +52,12 @@ export default command({
 		{
 			name: 'solve',
 			description: 'Mark a thread as solved',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 		},
 		{
 			name: 'reopen',
 			description: 'Reopen a solved thread',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 		},
 	],
 

@@ -1,4 +1,9 @@
-import { MessageActionRow, ModalActionRowComponent } from 'discord.js';
+import {
+	ActionRowBuilder,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+} from 'discord.js';
 import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
 import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
@@ -21,27 +26,30 @@ export const tag_create_handler: TagCRUDHandler = async ({
 		? 'A tag with that name exists already. Did you mean to do `/tags update` instead?'
 		: null;
 
-	if (fault !== null)
-		return await interaction.reply({
+	if (fault !== null) {
+		await interaction.reply({
 			content: fault,
 			ephemeral: true,
 		});
+		return;
+	}
 
-	await interaction.showModal({
-		title: `Creating tag: ${tag_name}`,
-		customId: 'tag--modal',
-		components: [
-			new MessageActionRow<ModalActionRowComponent>().setComponents({
-				type: 'TEXT_INPUT',
-				customId: 'tag--modal__content',
-				label: 'Content',
-				maxLength: 2000,
-				required: true,
-				style: 'PARAGRAPH',
-				value: 'Enter the content for the tag',
-			}),
-		],
-	});
+	await interaction.showModal(
+		new ModalBuilder()
+			.setTitle(`Creating tag: ${tag_name}`)
+			.setCustomId('tag--modal')
+			.addComponents(
+				new ActionRowBuilder<TextInputBuilder>().addComponents(
+					new TextInputBuilder()
+						.setStyle(TextInputStyle.Paragraph)
+						.setCustomId('tag--modal__content')
+						.setLabel('Content')
+						.setMaxLength(2000)
+						.setRequired(true)
+						.setValue('Enter the content for the tag'),
+				),
+			),
+	);
 
 	let submission: Awaited<ReturnType<typeof interaction.awaitModalSubmit>>;
 	try {

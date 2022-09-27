@@ -15,7 +15,7 @@ export default command({
 		{
 			name: 'name',
 			description: 'The exact name of the tag to view',
-			type: 'STRING',
+			type: 'String',
 			required: true,
 			autocomplete: true,
 		},
@@ -29,13 +29,14 @@ export default command({
 		const tag = await get_tag(tag_name);
 
 		if (tag) {
-			return await interaction.reply({
+			await interaction.reply({
 				embeds: tags_embed_builder({
 					tag_name,
 					tag_content: tag.tag_content,
 					author: await get_member(interaction, tag.author_id),
 				}),
 			});
+			return;
 		}
 
 		const defer = interaction.deferReply({

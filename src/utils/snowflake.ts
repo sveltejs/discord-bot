@@ -24,7 +24,7 @@ export function has_any_role_or_id(
  * @default {id} interaction.user.id
  */
 export async function get_member(
-	interaction: Interaction,
+	interaction: Pick<Interaction, 'guild' | 'user'>,
 	id: Snowflake = interaction.user.id,
 ) {
 	return interaction.guild?.members.fetch(id).catch(() => undefined);

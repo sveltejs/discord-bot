@@ -1,4 +1,4 @@
-import { Message, ThreadChannel } from 'discord.js';
+import { ChannelType, Message, MessageType, ThreadChannel } from 'discord.js';
 import url_regex from 'url-regex';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../../config.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
@@ -8,12 +8,12 @@ import { delete_message, in_link_only_channel, STOP } from './_common.js';
 
 export default async function autothread(message: Message) {
 	if (
-		message.channel.type != 'GUILD_TEXT' ||
+		message.channel.type != ChannelType.GuildText ||
 		!AUTO_THREAD_CHANNELS.includes(message.channelId)
 	)
 		return;
 
-	if (message.type !== 'DEFAULT') {
+	if (message.type !== MessageType.Default) {
 		const ref = await message.fetchReference();
 		const ref_thread = ref?.thread;
 

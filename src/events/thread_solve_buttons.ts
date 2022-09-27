@@ -1,3 +1,9 @@
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonComponent,
+	ButtonComponentData,
+} from 'discord.js';
 import { event } from 'jellycommands';
 import { increment_solve_count } from '../utils/threads.js';
 
@@ -16,10 +22,15 @@ export default event({
 		);
 
 		if (!message) return;
-		const row = message.components[0];
+		const row = new ActionRowBuilder<ButtonBuilder>();
 
 		row.setComponents(
-			row.components.filter((c) => c.customId !== interaction.customId),
+			message.components[0].components
+				.filter(
+					(c): c is ButtonComponent =>
+						c.customId !== interaction.customId,
+				)
+				.map((c) => new ButtonBuilder(c as ButtonComponentData)),
 		);
 
 		await interaction.update(
