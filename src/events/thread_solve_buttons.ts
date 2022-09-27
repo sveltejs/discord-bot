@@ -1,9 +1,4 @@
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonComponent,
-	ButtonComponentData,
-} from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonComponent } from 'discord.js';
 import { event } from 'jellycommands';
 import { increment_solve_count } from '../utils/threads.js';
 
