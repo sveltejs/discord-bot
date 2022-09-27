@@ -56,7 +56,7 @@ export default command({
 			limit: 5,
 			as_link: false,
 		});
-		console.log(results);
+
 		await interaction
 			.respond(results.map(into_name_value_pair))
 			.catch(no_op);

@@ -20,7 +20,7 @@ export default command({
 		},
 	],
 
-	run: async ({ interaction }): Promise<void> => {
+	run: async ({ interaction }) => {
 		const search_topic = interaction.options.getString('topic');
 
 		if (!search_topic) {

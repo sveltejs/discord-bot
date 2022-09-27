@@ -25,12 +25,9 @@ export default event({
 		const row = new ActionRowBuilder<ButtonBuilder>();
 
 		row.setComponents(
-			message.components[0].components
-				.filter(
-					(c): c is ButtonComponent =>
-						c.customId !== interaction.customId,
-				)
-				.map((c) => new ButtonBuilder(c as ButtonComponentData)),
+			(message.components[0].components as ButtonComponent[])
+				.filter((button) => button.customId !== interaction.customId)
+				.map((button) => ButtonBuilder.from(button)),
 		);
 
 		await interaction.update(
