@@ -36,27 +36,33 @@ export default command({
 		ephemeral: true,
 	},
 
-	// @ts-expect-error
 	run: async ({ interaction, client }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
-		if (!thread?.isThread())
-			return await interaction.followUp('This channel is not a thread');
+		if (!thread?.isThread()) {
+			await interaction.followUp('This channel is not a thread');
+			return;
+		}
 
 		const member = await get_member(interaction);
 
-		if (!member) return await interaction.followUp('Unable to find you');
+		if (!member) {
+			await interaction.followUp('Unable to find you');
+			return;
+		}
 
 		const has_permission = await check_autothread_permissions(
 			thread,
 			member,
 		);
 
-		if (!has_permission)
-			return await interaction.followUp(
+		if (!has_permission) {
+			await interaction.followUp(
 				"You don't have the permissions to manage this thread",
 			);
+			return;
+		}
 
 		switch (subcommand) {
 			case 'archive': {
