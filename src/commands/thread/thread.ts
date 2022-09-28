@@ -1,9 +1,19 @@
 import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
+import fetch from 'node-fetch';
 import { get_member } from '../../utils/snowflake.js';
 import { check_autothread_permissions } from '../../utils/threads.js';
 
 const allowed_attempts_map = new Map<string, number>();
+
+// Clean out stale ones to prevent memory leak
+setInterval(() => {
+	for (const [k, v] of allowed_attempts_map) {
+		if (v * 1000 < Date.now()) {
+			allowed_attempts_map.delete(k);
+		}
+	}
+}, 30 * 60 * 1000);
 
 export default command({
 	name: 'thread',
@@ -73,11 +83,11 @@ export default command({
 
 			case 'rename': {
 				const new_name = interaction.options.getString('name', true);
+				const thread_id = thread.id;
 
 				try {
-					const next_allowed_attempt = allowed_attempts_map.get(
-						thread.id,
-					);
+					const next_allowed_attempt =
+						allowed_attempts_map.get(thread_id);
 
 					if (
 						next_allowed_attempt &&
@@ -91,7 +101,7 @@ export default command({
 
 					// Have to do a manual request because doing it through discord.js gets stuck until rate limits expire
 					const res = await fetch(
-						RouteBases.api + Routes.channel(thread.id),
+						RouteBases.api + Routes.channel(thread_id),
 						{
 							body: JSON.stringify({
 								name: new_name.slice(0, 100),
@@ -105,12 +115,12 @@ export default command({
 					);
 
 					if (res.status === 429) {
-						const retry_after = res.headers.get('retry-after')!;
+						const retry_after = +res.headers.get('retry-after')!;
 
 						const timestamp =
-							Math.trunc(Date.now() / 1000) + +retry_after;
+							Math.trunc(Date.now() / 1000) + retry_after;
 
-						allowed_attempts_map.set(thread.id, timestamp);
+						allowed_attempts_map.set(thread_id, timestamp);
 
 						await interaction.followUp(
 							`Your request is being rate limited by discord, you can make the request again <t:${timestamp}:R>`,
