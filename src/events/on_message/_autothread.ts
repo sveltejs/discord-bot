@@ -2,7 +2,6 @@ import { ChannelType, Message, MessageType, ThreadChannel } from 'discord.js';
 import url_regex from 'url-regex';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../../config.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { add_thread_prefix } from '../../utils/threads.js';
 import { get_title_from_url } from '../../utils/unfurl.js';
 import { delete_message, in_link_only_channel, STOP } from './_common.js';
 
@@ -33,20 +32,13 @@ export default async function autothread(message: Message) {
 			return STOP;
 		}
 	}
+	const name = (await get_thread_name(message)).slice(0, 100);
+	await message.startThread({ name }).then(send_instruction_message);
 
-	const raw_name = await get_thread_name(message);
-
-	const name = HELP_CHANNELS.includes(message.channelId)
-		? add_thread_prefix(raw_name, false)
-		: raw_name;
-
-	await message
-		.startThread({ name: name.slice(0, 100) })
-		.then(send_instruction_message);
 	return;
 }
 
-function get_thread_name(message: Message): string | Promise<string> {
+async function get_thread_name(message: Message): Promise<string> {
 	const url = message.content.match(url_regex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
