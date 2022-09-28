@@ -1,3 +1,4 @@
+import { RequestMethod, RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
 import { HELP_CHANNELS } from '../../config.js';
 import { no_op } from '../../utils/promise.js';
@@ -8,10 +9,7 @@ import {
 	rename_thread,
 } from '../../utils/threads.js';
 
-/**
- * Discord allows 2 renames every 10 minutes.
- */
-const rename_limit = new RateLimitStore(2, 10 * 60 * 1000);
+const rename_limited_threads = new Map<string, number>();
 
 export default command({
 	name: 'thread',
@@ -45,7 +43,7 @@ export default command({
 	},
 
 	// @ts-expect-error
-	run: async ({ interaction }) => {
+	run: async ({ interaction, client }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
@@ -68,27 +66,57 @@ export default command({
 
 		switch (subcommand) {
 			case 'archive': {
-				await thread.setArchived(true).catch(no_op);
-
+				await thread.setArchived(true);
 				await interaction.followUp('Thread archived');
 				break;
 			}
 
 			case 'rename': {
 				const new_name = interaction.options.getString('name', true);
-				const parent_id = thread.parentId || '';
 
 				try {
-					if (rename_limit.is_limited(thread.id, true))
-						return await interaction.followUp(
-							'You can only rename a thread once every 10 minutes',
-						);
-
-					await rename_thread(
-						thread,
-						new_name,
-						HELP_CHANNELS.includes(parent_id),
+					const next_allowed_attempt = rename_limited_threads.get(
+						thread.id,
 					);
+
+					if (
+						next_allowed_attempt &&
+						next_allowed_attempt * 1000 > Date.now()
+					) {
+						await interaction.followUp(
+							`Your request is being rate limited by discord, you can make the request again <t:${next_allowed_attempt}:R>`,
+						);
+						return;
+					}
+
+					// Have to do a manual request because doing it through discord.js gets stuck until rate limits expire
+					const res = await fetch(
+						RouteBases.api + Routes.channel(thread.id),
+						{
+							body: JSON.stringify({
+								name: new_name.slice(0, 100),
+							}),
+							method: 'PATCH',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bot ${client.token}`,
+							},
+						},
+					);
+
+					if (res.status === 429) {
+						const retry_after = res.headers.get('retry-after')!;
+
+						const timestamp =
+							Math.trunc(Date.now() / 1000) + +retry_after;
+
+						rename_limited_threads.set(thread.id, timestamp);
+
+						await interaction.followUp(
+							`Your request is being rate limited by discord, you can make the request again <t:${timestamp}:R>`,
+						);
+						return;
+					}
 
 					await interaction.followUp('Thread renamed');
 				} catch (error) {
