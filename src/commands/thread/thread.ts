@@ -1,15 +1,9 @@
-import { RequestMethod, RouteBases, Routes } from 'discord.js';
+import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
-import { HELP_CHANNELS } from '../../config.js';
-import { no_op } from '../../utils/promise.js';
-import { RateLimitStore } from '../../utils/ratelimit.js';
 import { get_member } from '../../utils/snowflake.js';
-import {
-	check_autothread_permissions,
-	rename_thread,
-} from '../../utils/threads.js';
+import { check_autothread_permissions } from '../../utils/threads.js';
 
-const rename_limited_threads = new Map<string, number>();
+const allowed_attempts_map = new Map<string, number>();
 
 export default command({
 	name: 'thread',
@@ -75,7 +69,7 @@ export default command({
 				const new_name = interaction.options.getString('name', true);
 
 				try {
-					const next_allowed_attempt = rename_limited_threads.get(
+					const next_allowed_attempt = allowed_attempts_map.get(
 						thread.id,
 					);
 
@@ -110,7 +104,7 @@ export default command({
 						const timestamp =
 							Math.trunc(Date.now() / 1000) + +retry_after;
 
-						rename_limited_threads.set(thread.id, timestamp);
+						allowed_attempts_map.set(thread.id, timestamp);
 
 						await interaction.followUp(
 							`Your request is being rate limited by discord, you can make the request again <t:${timestamp}:R>`,
