@@ -15,7 +15,7 @@ export default command({
 		{
 			name: 'topic',
 			description: 'What to search MDN for',
-			type: 'STRING',
+			type: 'String',
 			required: false,
 		},
 	],
@@ -23,12 +23,14 @@ export default command({
 	run: async ({ interaction }) => {
 		const search_topic = interaction.options.getString('topic');
 
-		if (!search_topic)
-			return interaction.reply(
+		if (!search_topic) {
+			await interaction.reply(
 				wrap_in_embed(
 					`Have a HTML, CSS or JS question? Check the [MDN docs](https://developer.mozilla.org/en-US/docs/Web)`,
 				),
 			);
+			return;
+		}
 
 		const results = await mdn_search(search_topic);
 

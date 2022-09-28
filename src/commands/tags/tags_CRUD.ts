@@ -25,46 +25,46 @@ export default command({
 	options: [
 		{
 			name: Actions.CREATE,
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Create a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The name of the tag to create',
-					type: 'STRING',
+					type: 'String',
 					required: true,
 				},
 			],
 		},
 		{
 			name: Actions.UPDATE,
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Update a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The exact name of the tag to edit',
-					type: 'STRING',
+					type: 'String',
 					required: true,
 				},
 			],
 		},
 		{
 			name: Actions.DELETE,
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Delete a tag',
 			options: [
 				{
 					name: 'name',
 					description: 'The exact name of the tag to delete',
-					type: 'STRING',
+					type: 'String',
 					required: true,
 				},
 			],
 		},
 		{
 			name: Actions.LIST,
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'List all tags',
 		},
 	],

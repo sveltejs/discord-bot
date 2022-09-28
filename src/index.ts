@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { DEV_MODE, TEST_GUILD_ID } from './config.js';
 import { JellyCommands } from 'jellycommands';
-import { Intents } from 'discord.js';
+import { IntentsBitField } from 'discord.js';
 
 const client = new JellyCommands({
 	commands: 'src/commands',
@@ -9,9 +9,9 @@ const client = new JellyCommands({
 
 	clientOptions: {
 		intents: [
-			Intents.FLAGS.GUILDS,
-			Intents.FLAGS.GUILD_MESSAGES,
-			Intents.FLAGS.GUILD_MEMBERS,
+			IntentsBitField.Flags.GuildMessages,
+			IntentsBitField.Flags.Guilds,
+			IntentsBitField.Flags.GuildMembers,
 		],
 	},
 

@@ -1,6 +1,12 @@
-import { MessageActionRow, ModalActionRowComponent } from 'discord.js';
+import {
+	ActionRowBuilder,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+} from 'discord.js';
 import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
 import { get_member } from '../../utils/snowflake.js';
 import { get_tag, Tag, TagCRUDHandler } from './_common.js';
 
@@ -16,27 +22,32 @@ export const tag_update_handler: TagCRUDHandler = async ({
 		? "You don't have the permissions to edit that tag. You have to be the author of the tag."
 		: null;
 
-	if (fault !== null || !tag /* Typescript ceremony */)
-		return await interaction.reply({
+	if (fault !== null) {
+		await interaction.reply({
 			content: fault,
 			ephemeral: true,
 		});
+		return;
+	}
 
-	await interaction.showModal({
-		title: `Updating tag: ${tag_name}`,
-		customId: 'tag--modal',
-		components: [
-			new MessageActionRow<ModalActionRowComponent>().setComponents({
-				type: 'TEXT_INPUT',
-				customId: 'tag--modal__content',
-				label: 'Content',
-				maxLength: 2000,
-				required: true,
-				style: 'PARAGRAPH',
-				value: tag.tag_content,
-			}),
-		],
-	});
+	/* @__PURE__ */ i_solemnly_swear_it_is_not_null(tag);
+
+	await interaction.showModal(
+		new ModalBuilder()
+			.setTitle(`Updating tag: ${tag_name}`)
+			.setCustomId('tag--modal')
+			.addComponents(
+				new ActionRowBuilder<TextInputBuilder>().addComponents(
+					new TextInputBuilder()
+						.setStyle(TextInputStyle.Paragraph)
+						.setCustomId('tag--modal__content')
+						.setLabel('Content')
+						.setMaxLength(2000)
+						.setRequired(true)
+						.setValue(tag.tag_content),
+				),
+			),
+	);
 
 	let submission: Awaited<ReturnType<typeof interaction.awaitModalSubmit>>;
 	try {

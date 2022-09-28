@@ -9,12 +9,12 @@ export default command({
 	options: [
 		{
 			name: 'personal',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: "View a particular user's stats",
 			options: [
 				{
 					name: 'user',
-					type: 'USER',
+					type: 'User',
 					description:
 						'The user to view stats for (omit for your own)',
 				},
@@ -22,7 +22,7 @@ export default command({
 		},
 		{
 			name: 'server',
-			type: 'SUB_COMMAND',
+			type: 'Subcommand',
 			description: 'Server leaderboard',
 		},
 	],
@@ -31,7 +31,6 @@ export default command({
 	defer: true,
 	disabled: true,
 
-	// @ts-expect-error
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 
@@ -47,10 +46,12 @@ export default command({
 					.eq('user_id', user_id)
 					.maybeSingle();
 
-				if (error)
-					return await interaction.followUp('Something went wrong');
+				if (error) {
+					await interaction.followUp('Something went wrong');
+					return;
+				}
 
-				return await interaction.followUp(
+				await interaction.followUp(
 					wrap_in_embed(
 						data?.count
 							? // prettier-ignore
@@ -58,6 +59,7 @@ export default command({
 							: `<@${user_id}> has not solved any threads yet.`,
 					),
 				);
+				return;
 			}
 
 			case 'server': {
@@ -65,24 +67,31 @@ export default command({
 					.from<ThreadSolvesTable>('leaderboard')
 					.select('*');
 
-				if (error || !data?.length)
-					return await interaction.followUp('Could not fetch data');
+				if (error || !data?.length) {
+					await interaction.followUp('Could not fetch data');
+					return;
+				}
 
 				const leaderboard = build_embed({
 					title: 'Server Leaderboard',
-				})
-					.addField(
-						'Member',
-						data.map(({ user_id }) => `<@${user_id}>`).join('\n'),
-						true,
-					)
-					.addField(
-						'Solves',
-						data.map(({ count }) => `${count} 🍪`).join('\n'),
-						true,
-					);
+				}).addFields(
+					{
+						name: 'Member',
+						value: data
+							.map(({ user_id }) => `<@${user_id}>`)
+							.join('\n'),
+						inline: true,
+					},
+					{
+						name: 'Solves',
+						value: data
+							.map(({ count }) => `${count} 🍪`)
+							.join('\n'),
+						inline: true,
+					},
+				);
 
-				return await interaction.followUp({
+				await interaction.followUp({
 					embeds: [leaderboard],
 				});
 			}

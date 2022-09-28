@@ -1,4 +1,4 @@
-import { MessageActionRow, MessageButton } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { Tag } from '../commands/tags/_common.js';
 import { supabase } from '../db/index.js';
 import { list_embed_builder } from './embed_helpers.js';
@@ -10,21 +10,21 @@ export async function get_tags_list(page_number: number) {
 
 	if (error || !data?.length) return null;
 
-	const prev_button = new MessageButton()
+	const prev_button = new ButtonBuilder()
 		.setLabel('Previous')
 		.setCustomId(`tags_page_${page_number - 1}`)
 		.setDisabled(page_number <= 1)
-		.setStyle('PRIMARY');
+		.setStyle(ButtonStyle.Primary);
 
-	const next_button = new MessageButton()
+	const next_button = new ButtonBuilder()
 		.setLabel('Next')
 		.setCustomId(`tags_page_${page_number + 1}`)
 		// @todo This is not robust, will give the wrong result when we have
 		// exactly a multiple of 10 tags
 		.setDisabled(data.length !== 10)
-		.setStyle('PRIMARY');
+		.setStyle(ButtonStyle.Primary);
 
-	const row = new MessageActionRow({
+	const row = new ActionRowBuilder<ButtonBuilder>({
 		components: [prev_button, next_button],
 	});
 

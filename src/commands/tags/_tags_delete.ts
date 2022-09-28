@@ -11,10 +11,11 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 	const tag = await get_tag(tag_name);
 
 	if (!tag) {
-		return await interaction.reply({
+		await interaction.reply({
 			content: 'No tag with that name exists.',
 			ephemeral: true,
 		});
+		return;
 	}
 
 	if (
@@ -23,18 +24,20 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 			...TAG_DEL_PERMITTED_IDS,
 		])
 	) {
-		return await interaction.reply({
+		await interaction.reply({
 			content:
 				"You don't have the permissions to delete that tag. You either have to be the author or a moderator.",
 			ephemeral: true,
 		});
+		return;
 	}
 
 	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
-		return await interaction.reply({
+		await interaction.reply({
 			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,
 		});
+		return;
 	}
 
 	await interaction.reply({

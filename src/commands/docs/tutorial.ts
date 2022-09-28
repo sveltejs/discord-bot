@@ -9,7 +9,7 @@ export default command({
 	description: 'Send a link to a svelte tutorial chapter.',
 	options: [
 		{
-			type: 'STRING',
+			type: 'String',
 			description: 'The name of the tutorial.',
 			name: 'query',
 			required: false,
@@ -22,11 +22,12 @@ export default command({
 		const query = interaction.options.getString('query');
 
 		if (!query) {
-			return await interaction.reply(
+			await interaction.reply(
 				wrap_in_embed(
 					'Have you gone through the [Official Svelte Tutorial](https://svelte.dev/tutorial) yet? It covers all you need to know to start using svelte.',
 				),
 			);
+			return;
 		}
 
 		const results = await search_tutorials(query);
@@ -55,6 +56,7 @@ export default command({
 			limit: 5,
 			as_link: false,
 		});
+
 		await interaction
 			.respond(results.map(into_name_value_pair))
 			.catch(no_op);

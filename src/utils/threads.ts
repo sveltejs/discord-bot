@@ -1,10 +1,11 @@
 import {
 	GuildMember,
 	InteractionReplyOptions,
-	MessageActionRow,
-	MessageButton,
+	ActionRowBuilder,
+	ButtonBuilder,
 	Snowflake,
 	ThreadChannel,
+	ButtonStyle,
 } from 'discord.js';
 import { DEV_MODE, THREAD_ADMIN_IDS } from '../config.js';
 import { supabase } from '../db/index.js';
@@ -51,7 +52,7 @@ export async function check_autothread_permissions(
 	if (thread.ownerId) allowed_ids.push(thread.ownerId);
 
 	await thread.fetchStarterMessage().then((message) => {
-		allowed_ids.push(message.author.id);
+		if (message) allowed_ids.push(message.author.id);
 	}, no_op);
 
 	return has_any_role_or_id(member, allowed_ids);
@@ -83,12 +84,12 @@ export async function get_ending_message(
 		}`,
 	});
 
-	const row = new MessageActionRow().setComponents(
+	const row = new ActionRowBuilder<ButtonBuilder>().setComponents(
 		clickable_participants.map((m) =>
-			new MessageButton()
+			new ButtonBuilder()
 				.setCustomId(`thread_solver_${m.id}`)
 				.setLabel(m.displayName)
-				.setStyle('PRIMARY')
+				.setStyle(ButtonStyle.Primary)
 				.setDisabled(false),
 		),
 	);

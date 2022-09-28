@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import fetch, { Headers } from 'node-fetch';
+import fetch from 'node-fetch';
 import { GITHUB_TOKEN } from '../../config.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
@@ -55,10 +55,10 @@ async function search_github(
 				num,
 			},
 		}),
-		headers: new Headers({
+		headers: {
 			Authorization: `Bearer ${GITHUB_TOKEN}`,
 			'Content-Type': 'application/json',
-		}),
+		},
 	});
 
 	if (!res.ok) return null;
@@ -81,10 +81,10 @@ export async function github_command_handler(
 ) {
 	const repo_name =
 		RepositoryDetails[
-			interaction.options.getInteger('repository', true) as Repos
+			interaction.options.get('repository', true).value as Repos
 		].REPOSITORY_NAME;
 
-	const topic = interaction.options.getString('topic');
+	const topic = interaction.options.get('topic')?.value;
 
 	const search_string = `repo:${repo_name} ${topic ?? ''} ${
 		type === GithubResultType.ISSUE
