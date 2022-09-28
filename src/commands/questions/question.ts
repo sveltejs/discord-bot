@@ -11,17 +11,17 @@ import {
 
 export default command({
 	name: 'question',
-	description: 'Manage a question forum thread',
+	description: 'Manage a question thread',
 
 	options: [
 		{
 			name: 'solve',
-			description: 'Mark a thread as solved',
+			description: 'Mark a question as solved',
 			type: 'Subcommand',
 		},
 		{
 			name: 'reopen',
-			description: 'Reopen a solved thread',
+			description: 'Reopen a solved question',
 			type: 'Subcommand',
 		},
 	],
@@ -64,7 +64,7 @@ export default command({
 			case 'solve': {
 				try {
 					if (thread.appliedTags.includes(SOLVED_TAG))
-						throw new Error('Thread already marked as solved');
+						throw new Error('Question already marked as solved');
 
 					await thread.edit({
 						autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
@@ -90,7 +90,7 @@ export default command({
 						),
 					});
 
-					await interaction.followUp('Thread reopened.');
+					await interaction.followUp('Question reopened.');
 				} catch (e) {
 					await interaction.followUp((e as Error).message);
 				}
