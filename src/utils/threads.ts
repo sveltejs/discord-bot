@@ -13,29 +13,6 @@ import { build_embed } from './embed_helpers.js';
 import { no_op, undefined_on_error } from './promise.js';
 import { has_any_role_or_id } from './snowflake.js';
 
-export const add_thread_prefix = (name: string, solved: boolean) => {
-	const prefix = `${solved ? '✅' : '❔'} - `;
-
-	return `${prefix}${name.replace(/^[✅❔] - /, '')}`;
-};
-
-export async function rename_thread(
-	thread: ThreadChannel,
-	new_name: string,
-	use_prefix: boolean = true,
-) {
-	const prefixed = add_thread_prefix(new_name, thread.name.startsWith('✅'));
-	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
-}
-
-export async function solve_thread(thread: ThreadChannel) {
-	return thread.edit({
-		name: add_thread_prefix(thread.name, true).slice(0, 100),
-		// Archiving immediately won't let users click the buttons.
-		autoArchiveDuration: 60,
-	});
-}
-
 export async function increment_solve_count(id: Snowflake) {
 	const { error } = await supabase.rpc('increment_solve_count', {
 		solver_id: id,
@@ -79,7 +56,7 @@ export async function get_ending_message(
 	const embed = build_embed({
 		description: `Thread marked as solved. ${
 			clickable_participants.size
-				? 'Click the people who helped you solve it.'
+				? 'Click the people who helped you solve it. (Optional)'
 				: ''
 		}`,
 	});

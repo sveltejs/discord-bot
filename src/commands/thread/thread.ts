@@ -1,29 +1,19 @@
+import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
-import { HELP_CHANNELS } from '../../config.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { RateLimitStore } from '../../utils/ratelimit.js';
+import fetch from 'node-fetch';
 import { get_member } from '../../utils/snowflake.js';
-import {
-	add_thread_prefix,
-	check_autothread_permissions,
-	get_ending_message,
-	rename_thread,
-	solve_thread,
-} from '../../utils/threads.js';
-import { no_op } from '../../utils/promise.js';
+import { check_autothread_permissions } from '../../utils/threads.js';
 
-/**
- * Discord allows 2 renames every 10 minutes. We need one always available
- * for the solve command, so only one rename per 10 minutes is allowed for users.
- */
-const rename_limit = new RateLimitStore(1, 10 * 60 * 1000);
+const allowed_attempts_map = new Map<string, number>();
 
-/*
- * This is mostly just to prevent abuse. We could reuse the rename limit but
- * highly unlikely it'll be legitimately closed and then reopened multiple
- * times in the same day.
- */
-const reopen_limit = new RateLimitStore(1, 1440 * 60 * 1000);
+// Clean out stale ones to prevent memory leak
+setInterval(() => {
+	for (const [k, v] of allowed_attempts_map) {
+		if (v * 1000 < Date.now()) {
+			allowed_attempts_map.delete(k);
+		}
+	}
+}, 30 * 60 * 1000);
 
 export default command({
 	name: 'thread',
@@ -49,16 +39,6 @@ export default command({
 				},
 			],
 		},
-		{
-			name: 'solve',
-			description: 'Mark a thread as solved',
-			type: 'Subcommand',
-		},
-		{
-			name: 'reopen',
-			description: 'Reopen a solved thread',
-			type: 'Subcommand',
-		},
 	],
 
 	global: true,
@@ -66,51 +46,87 @@ export default command({
 		ephemeral: true,
 	},
 
-	// @ts-expect-error
-	run: async ({ interaction }) => {
+	run: async ({ interaction, client }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
-		if (!thread?.isThread())
-			return await interaction.followUp('This channel is not a thread');
+		if (!thread?.isThread()) {
+			await interaction.followUp('This channel is not a thread');
+			return;
+		}
 
 		const member = await get_member(interaction);
 
-		if (!member) return await interaction.followUp('Unable to find you');
+		if (!member) {
+			await interaction.followUp('Unable to find you');
+			return;
+		}
 
 		const has_permission = await check_autothread_permissions(
 			thread,
 			member,
 		);
 
-		if (!has_permission)
-			return await interaction.followUp(
+		if (!has_permission) {
+			await interaction.followUp(
 				"You don't have the permissions to manage this thread",
 			);
+			return;
+		}
 
 		switch (subcommand) {
 			case 'archive': {
-				await thread.setArchived(true).catch(no_op);
-
+				await thread.setArchived(true);
 				await interaction.followUp('Thread archived');
 				break;
 			}
 
 			case 'rename': {
 				const new_name = interaction.options.getString('name', true);
-				const parent_id = thread.parentId || '';
+				const thread_id = thread.id;
 
 				try {
-					if (rename_limit.is_limited(thread.id, true))
-						return await interaction.followUp(
-							'You can only rename a thread once every 10 minutes',
-						);
+					const next_allowed_attempt =
+						allowed_attempts_map.get(thread_id);
 
-					await rename_thread(
-						thread,
-						new_name,
-						HELP_CHANNELS.includes(parent_id),
+					if (
+						next_allowed_attempt &&
+						next_allowed_attempt * 1000 > Date.now()
+					) {
+						await interaction.followUp(
+							`Your request is being rate limited by discord, you can make the request again <t:${next_allowed_attempt}:R>`,
+						);
+						return;
+					}
+
+					// Have to do a manual request because doing it through discord.js gets stuck until rate limits expire
+					const res = await fetch(
+						RouteBases.api + Routes.channel(thread_id),
+						{
+							body: JSON.stringify({
+								name: new_name.slice(0, 100),
+							}),
+							method: 'PATCH',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bot ${client.token}`,
+							},
+						},
 					);
+
+					if (res.status === 429) {
+						const retry_after = +res.headers.get('retry-after')!;
+
+						const timestamp =
+							Math.trunc(Date.now() / 1000) + retry_after;
+
+						allowed_attempts_map.set(thread_id, timestamp);
+
+						await interaction.followUp(
+							`Your request is being rate limited by discord, you can make the request again <t:${timestamp}:R>`,
+						);
+						return;
+					}
 
 					await interaction.followUp('Thread renamed');
 				} catch (error) {
@@ -118,65 +134,6 @@ export default command({
 				}
 				break;
 			}
-
-			case 'solve': {
-				try {
-					if (thread.name.startsWith('✅'))
-						throw new Error('Thread already marked as solved');
-
-					if (!HELP_CHANNELS.includes(thread.parentId || ''))
-						throw new Error(
-							'This command only works in a auto thread',
-						);
-
-					await solve_thread(thread);
-
-					await Promise.allSettled([
-						thread.send(
-							wrap_in_embed('Thread solved. Thank you everyone.'),
-						),
-						get_ending_message(thread, interaction.user.id).then(
-							(m) => interaction.followUp(m),
-						),
-					]);
-				} catch (e) {
-					await interaction.followUp((e as Error).message);
-				}
-				break;
-			}
-
-			case 'reopen':
-				try {
-					if (!thread.name.startsWith('✅'))
-						throw new Error("Thread's not marked as solved");
-
-					if (!HELP_CHANNELS.includes(thread.parentId || ''))
-						throw new Error(
-							'This command only works in a auto thread',
-						);
-
-					if (reopen_limit.is_limited(thread.id, true))
-						throw new Error(
-							'You can only reopen a thread once every 24 hours',
-						);
-					if (rename_limit.is_limited(thread.id, true))
-						throw new Error(
-							"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
-						);
-
-					await thread.edit({
-						name: add_thread_prefix(thread.name, false).slice(
-							0,
-							100,
-						),
-						autoArchiveDuration: 1440,
-					});
-
-					await interaction.followUp('Thread reopened.');
-				} catch (e) {
-					await interaction.followUp((e as Error).message);
-				}
-				break;
 		}
 	},
 });
