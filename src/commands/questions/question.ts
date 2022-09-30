@@ -1,6 +1,7 @@
 import { ThreadAutoArchiveDuration } from 'discord.js';
 import { command } from 'jellycommands';
 import { HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { no_op } from '../../utils/promise.js';
 import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
 import { get_member } from '../../utils/snowflake.js';
@@ -71,9 +72,17 @@ export default command({
 						appliedTags: [SOLVED_TAG, ...thread.appliedTags],
 					});
 
-					await get_ending_message(thread, interaction.user.id)
-						.then((m) => interaction.followUp(m))
-						.catch(no_op);
+					await Promise.allSettled([
+						get_ending_message(thread, interaction.user.id).then(
+							(m) => interaction.followUp(m),
+						),
+
+						thread.send(
+							wrap_in_embed(
+								'Question marked as solved, thanks everyone!',
+							),
+						),
+					]);
 				} catch (e) {
 					await interaction.followUp((e as Error).message);
 				}
