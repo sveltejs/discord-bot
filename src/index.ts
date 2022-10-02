@@ -12,6 +12,8 @@ const client = new JellyCommands({
 			IntentsBitField.Flags.GuildMessages,
 			IntentsBitField.Flags.Guilds,
 			IntentsBitField.Flags.GuildMembers,
+			IntentsBitField.Flags.GuildMessages,
+			IntentsBitField.Flags.MessageContent,
 		],
 	},
 
