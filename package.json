@@ -14,7 +14,7 @@
 		"discord.js": "^14.5.0",
 		"dotenv": "^16.0.2",
 		"flexsearch": "^0.7.21",
-		"jellycommands": "1.0.0-next.36",
+		"jellycommands": "1.0.0-next.38",
 		"node-fetch": "^3.2.10",
 		"tsm": "^2.2.2",
 		"unfurl.js": "^5.7.0",

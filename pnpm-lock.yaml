@@ -7,7 +7,7 @@ specifiers:
   discord.js: ^14.5.0
   dotenv: ^16.0.2
   flexsearch: ^0.7.21
-  jellycommands: 1.0.0-next.36
+  jellycommands: 1.0.0-next.38
   node-fetch: ^3.2.10
   nodemon: ^2.0.20
   prettier: ^2.7.1
@@ -20,7 +20,7 @@ dependencies:
   discord.js: 14.5.0
   dotenv: 16.0.2
   flexsearch: 0.7.21
-  jellycommands: 1.0.0-next.36_discord.js@14.5.0
+  jellycommands: 1.0.0-next.38_discord.js@14.5.0
   node-fetch: 3.2.10
   tsm: 2.2.2
   unfurl.js: 5.7.0
@@ -791,8 +791,8 @@ packages:
     resolution: {integrity: sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==}
     dev: true
 
-  /jellycommands/1.0.0-next.36_discord.js@14.5.0:
-    resolution: {integrity: sha512-qrbPrCgQeDTuQPiCmYRQ3UKSWqgm8vzbHapHmHVgkx1yEPIYerMZFIAJuXmP3+MSfmGWACdZLemqVbVqdGmwvg==}
+  /jellycommands/1.0.0-next.38_discord.js@14.5.0:
+    resolution: {integrity: sha512-1ZErZxbyJYxuF/lETg69q39C8yRZ+KkDNbizTOklAUkv0XRlp4zjJ0teDUvnKglRgvOCNV6w10ePiGowJApV4A==}
     peerDependencies:
       discord.js: ^14.0.0
     dependencies:
@@ -800,13 +800,13 @@ packages:
       discord-api-types: 0.37.11
       discord.js: 14.5.0
       ghoststools: 0.6.3
-      joi: 17.6.1
+      joi: 17.6.2
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /joi/17.6.1:
-    resolution: {integrity: sha512-Hl7/iBklIX345OCM1TiFSCZRVaAOLDGlWCp0Df2vWYgBgjkezaR7Kvm3joBciBHQjZj5sxXs859r6eqsRSlG8w==}
+  /joi/17.6.2:
+    resolution: {integrity: sha512-+gqqdh1xc1wb+Lor0J9toqgeReyDOCqOdG8QSdRcEvwrcRiFQZneUCGKjFjuyBWUb3uaFOgY56yMaZ5FIc+H4w==}
     dependencies:
       '@hapi/hoek': 9.3.0
       '@hapi/topo': 5.1.0
