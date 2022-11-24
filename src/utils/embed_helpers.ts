@@ -23,18 +23,20 @@ export function tags_embed_builder({
 }: {
 	tag_name: string;
 	tag_content: string;
-	author?: GuildMember;
+	author?: GuildMember | null;
 }) {
 	return [
 		build_embed({
 			title: `\`${tag_name}\``,
 			description: tag_content,
-			footer: author && {
-				text: `Created by ${author.displayName}`,
-				iconURL: author.displayAvatarURL({
-					size: 64,
-				}),
-			},
+			footer: author
+				? {
+						text: `Created by ${author.displayName}`,
+						iconURL: author.displayAvatarURL({
+							size: 64,
+						}),
+				  }
+				: undefined,
 		}),
 	];
 }

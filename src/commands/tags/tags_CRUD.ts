@@ -71,6 +71,8 @@ export default command({
 
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand() as Actions;
+		if (subcommand !== Actions.LIST && !interaction.member) return;
+
 		// Make tag names case insensitive to disallow similar names and avoid confusion
 		const tag_name = interaction.options
 			.getString('name', subcommand !== Actions.LIST)!
