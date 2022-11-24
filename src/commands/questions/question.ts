@@ -2,7 +2,6 @@ import { ThreadAutoArchiveDuration } from 'discord.js';
 import { command } from 'jellycommands';
 import { HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
 import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
 import { get_member } from '../../utils/snowflake.js';
 import {

@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import { setTimeout } from 'timers/promises';
 import url_regex from 'url-regex';
 import { LINK_ONLY_CHANNELS } from '../../config';
 
@@ -16,12 +17,13 @@ export function in_link_only_channel(message: Message) {
 
 export const STOP = Symbol();
 
-export async function delete_message(m: Message, retried = 0) {
-	if (retried >= 3 || !m.deletable) return;
-
-	try {
-		await m.delete();
-	} catch {
-		await delete_message(m, retried + 1);
+export async function delete_message(message: Message, retries = 3) {
+	while (--retries && message.deletable) {
+		try {
+			await message.delete();
+			return;
+		} catch {
+			await setTimeout(1_000);
+		}
 	}
 }

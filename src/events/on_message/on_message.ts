@@ -8,10 +8,16 @@ export default event({
 	name: 'messageCreate',
 
 	async run(_, message) {
-		if (message.author.bot) return;
+		if (message.author.bot || !message.inGuild()) return;
 
 		for (const handler of [spam_filter, check_links, autothread]) {
-			if ((await handler(message)) === STOP) return;
+			try {
+				await handler(message);
+			} catch (e) {
+				if (e === STOP) return;
+				console.error(handler.name, '\n', e);
+				break;
+			}
 		}
 	},
 });

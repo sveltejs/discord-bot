@@ -1,5 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonComponent } from 'discord.js';
 import { event } from 'jellycommands';
+import { setTimeout } from 'timers/promises';
+import { no_op } from '../utils/promise.js';
 import { increment_solve_count } from '../utils/threads.js';
 
 const validator = /^thread_solver_\d+$/;
@@ -11,23 +13,42 @@ export default event({
 			return;
 
 		const solver_id = interaction.customId.split('_')[2];
-		await increment_solve_count(solver_id);
-		const message = await interaction.channel?.messages.fetch(
-			interaction.message.id,
-		);
 
-		if (!message) return;
-		const row = new ActionRowBuilder<ButtonBuilder>();
+		try {
+			await increment_solve_count(solver_id);
+		} catch (e) {
+			console.error('DB error in thread_solve_buttons:\n', e);
+			interaction.reply(`Couldn't mark <@${solver_id}>`).catch(no_op);
+			return;
+		}
 
-		row.setComponents(
-			(message.components[0].components as ButtonComponent[])
-				.filter((button) => button.customId !== interaction.customId)
-				.map((button) => ButtonBuilder.from(button)),
-		);
+		let retries_left = 3;
 
-		await interaction.update(
-			// Need to do this because the API gets mad when ActionRow is empty.
-			row.components.length ? { components: [row] } : { components: [] },
-		);
+		while (--retries_left) {
+			try {
+				const message = await interaction.message.fetch();
+
+				const updated_buttons = (
+					message.components[0]?.components as ButtonComponent[]
+				)
+					.filter(
+						(button) => button.customId !== interaction.customId,
+					)
+					.map((button) => ButtonBuilder.from(button));
+
+				await interaction.update({
+					components: updated_buttons.length
+						? [
+								new ActionRowBuilder<ButtonBuilder>().setComponents(
+									updated_buttons,
+								),
+						  ]
+						: [],
+				});
+			} catch (e) {
+				console.error(e);
+				await setTimeout(500);
+			}
+		}
 	},
 });

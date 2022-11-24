@@ -29,13 +29,12 @@ export default async function autothread(message: Message) {
 				),
 				message.author.send(message.content),
 			]);
-			return STOP;
+			throw STOP;
 		}
 	}
+
 	const name = (await get_thread_name(message)).slice(0, 100);
 	await message.startThread({ name }).then(send_instruction_message);
-
-	return;
 }
 
 async function get_thread_name(message: Message): Promise<string> {

@@ -7,7 +7,7 @@ import { GuildMember, Interaction, Snowflake } from 'discord.js';
  * @param {Snowflake[]} snowflakes - The list of snowflakes to compare the member's roles/id against
  */
 export function has_any_role_or_id(
-	member: GuildMember | undefined,
+	member: GuildMember | undefined | null,
 	snowflakes: Snowflake[],
 ) {
 	return !!(
