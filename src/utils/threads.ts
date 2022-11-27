@@ -1,16 +1,7 @@
-import {
-	GuildMember,
-	InteractionReplyOptions,
-	ActionRowBuilder,
-	ButtonBuilder,
-	Snowflake,
-	ThreadChannel,
-	ButtonStyle,
-} from 'discord.js';
-import { DEV_MODE, THREAD_ADMIN_IDS } from '../config.js';
+import { GuildMember, Snowflake, ThreadChannel } from 'discord.js';
+import { THREAD_ADMIN_IDS } from '../config.js';
 import { supabase } from '../db/index.js';
-import { build_embed } from './embed_helpers.js';
-import { no_op, undefined_on_error } from './promise.js';
+import { no_op } from './promise.js';
 import { has_any_role_or_id } from './snowflake.js';
 
 export async function increment_solve_count(id: Snowflake) {
