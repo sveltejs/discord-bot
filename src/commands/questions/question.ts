@@ -125,12 +125,15 @@ export async function get_ending_message(
 		thread.fetchStarterMessage(),
 	);
 
-	const clickable_participants = thread.guildMembers.filter(
-		(m) =>
-			DEV_MODE ||
-			(!m.user.bot &&
-				m.id !== (start_message?.author.id ?? initiator_id)),
-	);
+	const clickable_participants = DEV_MODE
+		? thread.guildMembers
+		: thread.guildMembers.filter(
+				(member) =>
+					!(
+						member.user.bot ||
+						member.id === (start_message?.author.id ?? initiator_id)
+					),
+		  );
 
 	const embed = build_embed({
 		description: `Thread marked as solved. ${
