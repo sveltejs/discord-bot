@@ -1,13 +1,19 @@
-import { ThreadAutoArchiveDuration } from 'discord.js';
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	InteractionReplyOptions,
+	Snowflake,
+	ThreadAutoArchiveDuration,
+	ThreadChannel,
+} from 'discord.js';
 import { command } from 'jellycommands';
-import { HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
+import { DEV_MODE, HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
+import { undefined_on_error } from '../../utils/promise.js';
 import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
 import { get_member } from '../../utils/snowflake.js';
-import {
-	check_autothread_permissions,
-	get_ending_message,
-} from '../../utils/threads.js';
+import { check_autothread_permissions } from '../../utils/threads.js';
 
 export default command({
 	name: 'question',
@@ -107,3 +113,49 @@ export default command({
 		}
 	},
 });
+
+export async function get_ending_message(
+	thread: ThreadChannel,
+	initiator_id: Snowflake,
+): Promise<InteractionReplyOptions> {
+	// Attempt to load all members even if they aren't currently cached
+	thread = await thread.fetch();
+
+	const start_message = await undefined_on_error(
+		thread.fetchStarterMessage(),
+	);
+
+	const clickable_participants = thread.guildMembers.filter(
+		(m) =>
+			DEV_MODE ||
+			(!m.user.bot &&
+				m.id !== (start_message?.author.id ?? initiator_id)),
+	);
+
+	const embed = build_embed({
+		description: `Thread marked as solved. ${
+			clickable_participants.size
+				? 'Click the people who helped you solve it. (Optional)'
+				: ''
+		}`,
+	});
+
+	const row = new ActionRowBuilder<ButtonBuilder>().setComponents(
+		clickable_participants.map((m) =>
+			new ButtonBuilder()
+				.setCustomId(`thread_solver_${m.id}`)
+				.setLabel(m.displayName)
+				.setStyle(ButtonStyle.Primary)
+				.setDisabled(false),
+		),
+	);
+
+	return clickable_participants.size
+		? {
+				components: [row],
+				embeds: [embed],
+		  }
+		: {
+				embeds: [embed],
+		  };
+}
