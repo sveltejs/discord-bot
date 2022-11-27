@@ -26,10 +26,9 @@ export default event({
 
 		while (--retries_left) {
 			try {
-				const message = await interaction.message.fetch();
-
 				const updated_buttons = (
-					message.components[0]?.components as ButtonComponent[]
+					interaction.message.components[0]!
+						.components as ButtonComponent[]
 				)
 					.filter(
 						(button) => button.customId !== interaction.customId,
