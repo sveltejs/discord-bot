@@ -1,4 +1,9 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonComponent } from 'discord.js';
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonComponent,
+	DiscordAPIError,
+} from 'discord.js';
 import { event } from 'jellycommands';
 import { setTimeout } from 'timers/promises';
 import { no_op } from '../utils/promise.js';
@@ -44,6 +49,7 @@ export default event({
 						  ]
 						: [],
 				});
+				return;
 			} catch (e) {
 				console.error(e);
 				await setTimeout(500);
