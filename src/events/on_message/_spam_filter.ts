@@ -27,7 +27,7 @@ export default async function spam_filter(message: Message) {
 		// Unlikely to be spam from trusted members
 		if (!is_threadlord) {
 			await Promise.allSettled([
-				ban(message.member),
+				ban(message.member, 3),
 				message.member.send(
 					'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at https://github.com/pngwn/svelte-bot/issues/38',
 				),
