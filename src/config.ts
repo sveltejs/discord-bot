@@ -62,7 +62,13 @@ export const SOLVED_TAG = DEV_MODE
 // #region channels
 export const HELP_CHANNELS = DEV_MODE
 	? ['1023930215329697792']
-	: ['1023340103071965194'];
+	: [
+			// Questions
+			'1023340103071965194',
+
+			// Ecosystem
+			'1060332203571151019',
+	  ];
 
 const COMMUNITY_CHANNELS = [
 	// Showcase
