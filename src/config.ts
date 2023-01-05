@@ -70,6 +70,9 @@ const COMMUNITY_CHANNELS = [
 
 	// Resources
 	'837012201444999248',
+
+	// #library-announcements
+	'1060265526439456858',
 ];
 
 export const LINK_ONLY_CHANNELS = DEV_MODE
@@ -79,9 +82,6 @@ export const LINK_ONLY_CHANNELS = DEV_MODE
 
 			// #both-both-is-good
 			'919196322303725568',
-
-			// #library-announcements
-			'1060265526439456858',
 	  ]
 	: COMMUNITY_CHANNELS;
 
