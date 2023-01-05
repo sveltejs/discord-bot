@@ -38,7 +38,7 @@ export default async function spam_filter(message: Message) {
 	throw STOP;
 }
 
-async function ban(member: GuildMember, tries = 0) {
+async function ban(member: GuildMember, tries: number) {
 	while (--tries && member.bannable) {
 		try {
 			await member.ban({
