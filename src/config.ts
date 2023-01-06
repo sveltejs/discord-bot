@@ -55,20 +55,18 @@ export const THREAD_ADMIN_IDS = [
 
 // #endregion
 
-export const SOLVED_TAG = DEV_MODE
-	? '1023931412933525554'
-	: '1024301926952730636';
-
 // #region channels
-export const HELP_CHANNELS = DEV_MODE
-	? ['1023930215329697792']
-	: [
+export const SOLVED_TAGS_MAP: Record<string, string> = DEV_MODE
+	? { '1023930215329697792': '1023931412933525554' }
+	: {
 			// Questions
-			'1023340103071965194',
+			'1023340103071965194': '1024301926952730636',
 
 			// Ecosystem
-			'1060332203571151019',
-	  ];
+			'1060332203571151019': '1060930530566217888',
+	  };
+
+export const HELP_CHANNELS = new Set(Object.keys(SOLVED_TAGS_MAP));
 
 const COMMUNITY_CHANNELS = [
 	// Showcase

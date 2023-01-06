@@ -8,7 +8,7 @@ import {
 	ThreadChannel,
 } from 'discord.js';
 import { command } from 'jellycommands';
-import { DEV_MODE, HELP_CHANNELS, SOLVED_TAG } from '../../config.js';
+import { DEV_MODE, SOLVED_TAGS_MAP, HELP_CHANNELS } from '../../config.js';
 import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
 import { undefined_on_error } from '../../utils/promise.js';
 import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
@@ -41,7 +41,7 @@ export default command({
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
 
-		if (!thread?.isThread() || !HELP_CHANNELS.includes(thread.parentId!)) {
+		if (!thread?.isThread() || !HELP_CHANNELS.has(thread.parentId!)) {
 			interaction.followUp('This channel is not a question thread');
 			return;
 		}
@@ -66,15 +66,16 @@ export default command({
 			return;
 		}
 
+		const solved_tag = SOLVED_TAGS_MAP[thread.parentId!]!;
 		switch (subcommand) {
 			case 'solve': {
 				try {
-					if (thread.appliedTags.includes(SOLVED_TAG))
+					if (thread.appliedTags.includes(solved_tag))
 						throw new Error('Question already marked as solved');
 
 					await thread.edit({
 						autoArchiveDuration: ThreadAutoArchiveDuration.OneHour,
-						appliedTags: [SOLVED_TAG, ...thread.appliedTags],
+						appliedTags: [solved_tag, ...thread.appliedTags],
 					});
 
 					await Promise.allSettled([
@@ -100,7 +101,7 @@ export default command({
 						autoArchiveDuration:
 							ThreadAutoArchiveDuration.ThreeDays,
 						appliedTags: thread.appliedTags.filter(
-							(tag_id) => tag_id !== SOLVED_TAG,
+							(tag_id) => tag_id !== solved_tag,
 						),
 					});
 
