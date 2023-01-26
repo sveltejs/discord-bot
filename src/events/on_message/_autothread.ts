@@ -51,7 +51,7 @@ function send_instruction_message(thread: ThreadChannel) {
 	const base_description =
 		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
 
-	const description = HELP_CHANNELS.includes(thread.parentId!)
+	const description = HELP_CHANNELS.has(thread.parentId!)
 		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
