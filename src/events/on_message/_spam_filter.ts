@@ -6,7 +6,7 @@ import { has_any_role_or_id } from '../../utils/snowflake';
 import { has_link, STOP } from './_common';
 
 // 3 messages within a 10 second period
-const limit = new RateLimitStore(1, 10_000);
+const limit = new RateLimitStore(3, 10_000);
 
 function debug<T>(val: T): T {
 	console.log(val);
