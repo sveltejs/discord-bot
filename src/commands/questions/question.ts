@@ -79,9 +79,9 @@ export default command({
 					});
 
 					await Promise.allSettled([
-						get_ending_message(thread, interaction.user.id).then(
-							(m) => interaction.followUp(m),
-						),
+						get_ending_message(thread, interaction.user.id)
+							.then((m) => interaction.followUp(m))
+							.catch(console.error),
 
 						thread.send(
 							wrap_in_embed(
