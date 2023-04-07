@@ -11,8 +11,8 @@ dependencies:
     specifier: ^0.7.31
     version: 0.7.31
   jellycommands:
-    specifier: 1.0.0-next.42
-    version: 1.0.0-next.42(discord.js@14.9.0)
+    specifier: 1.0.0-next.43
+    version: 1.0.0-next.43(discord.js@14.9.0)
   node-fetch:
     specifier: ^3.3.1
     version: 3.3.1
@@ -819,8 +819,8 @@ packages:
     resolution: {integrity: sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==}
     dev: true
 
-  /jellycommands@1.0.0-next.42(discord.js@14.9.0):
-    resolution: {integrity: sha512-0lPO5SznN4csEAgzuHDXmlmUnatRPQ7348b2C+ZifhAFzgFGZegm8SpTri24JmbMNi0XagYB582wEe5jsGwHZQ==}
+  /jellycommands@1.0.0-next.43(discord.js@14.9.0):
+    resolution: {integrity: sha512-UdhTB2rQzk/Z1AzE2tvJkhzLY8wtH10tsY3DxJkGrlYGaIhFj391JMAkWPJujbuKJGx4SkAH+C154jsZsX5VOw==}
     peerDependencies:
       discord.js: ^14.0.0
     dependencies:
