@@ -1,6 +1,6 @@
-import { command } from 'jellycommands';
-import { supabase } from '../../db/index.js';
 import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
+import { supabase } from '../../db/supabase';
+import { command } from 'jellycommands';
 
 export default command({
 	name: 'stats',
@@ -41,7 +41,7 @@ export default command({
 				).id;
 
 				const { data, error } = await supabase
-					.from<ThreadSolvesTable>('thread_solves')
+					.from('thread_solves')
 					.select('count')
 					.eq('user_id', user_id)
 					.maybeSingle();
@@ -64,7 +64,7 @@ export default command({
 
 			case 'server': {
 				const { data, error } = await supabase
-					.from<ThreadSolvesTable>('leaderboard')
+					.from('leaderboard')
 					.select('*');
 
 				if (error || !data?.length) {

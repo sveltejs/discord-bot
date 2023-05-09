@@ -4,11 +4,11 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from 'discord.js';
-import { supabase } from '../../db/index.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { get_tag, TagCRUDHandler } from './_common.js';
 import { get_member } from '../../utils/snowflake.js';
-import { get_tag, Tag, TagCRUDHandler } from './_common.js';
+import { supabase } from '../../db/supabase';
 
 export const tag_update_handler: TagCRUDHandler = async ({
 	interaction,
@@ -62,7 +62,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 	const content = submission.fields.getTextInputValue('tag--modal__content');
 
 	const { error } = await supabase
-		.from<Tag>('tags')
+		.from('tags')
 		.update({ tag_content: content })
 		.eq('id', tag.id);
 

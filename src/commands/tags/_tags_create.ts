@@ -5,10 +5,10 @@ import {
 	TextInputStyle,
 } from 'discord.js';
 import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
-import { supabase } from '../../db/index.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
-import { get_tag, Tag, TagCRUDHandler } from './_common.js';
+import { get_tag, TagCRUDHandler } from './_common.js';
+import { supabase } from '../../db/supabase';
 
 const validator_regex = /^[a-z0-9\-\+\_\.\ ]*$/;
 
@@ -63,7 +63,7 @@ export const tag_create_handler: TagCRUDHandler = async ({
 
 	const content = submission.fields.getTextInputValue('tag--modal__content');
 
-	const { error } = await supabase.from<Tag>('tags').insert({
+	const { error } = await supabase.from('tags').insert({
 		tag_name: tag_name,
 		tag_content: content,
 		author_id: interaction.user.id,
