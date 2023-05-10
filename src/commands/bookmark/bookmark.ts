@@ -6,14 +6,9 @@ export default messageCommand({
 
 	run: async ({ interaction }) => {
 		const message = interaction.options.getMessage('message', true);
-		const link = await interaction.channel?.messages
-			.fetch(message.id)
-			.then((m) => m.url);
+		const link = message.url;
 
-		const content = message.content.slice(
-			0,
-			2000 - (link?.length ? link.length + 1 : 0),
-		);
+		const content = message.content.slice(0, 2000 - link.length + 1);
 
 		await Promise.allSettled([
 			interaction.user.send(`${link}\n${content}`),

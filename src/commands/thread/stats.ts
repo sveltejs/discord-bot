@@ -98,8 +98,3 @@ export default command({
 		}
 	},
 });
-
-interface ThreadSolvesTable {
-	user_id: string;
-	count: number;
-}
