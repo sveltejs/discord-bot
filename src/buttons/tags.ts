@@ -5,7 +5,6 @@ export default button({
 	id: /^tags_page_\d+$/,
 
 	async run({ interaction }) {
-		console.log('asd');
 		const page = parseInt(interaction.customId.split('_')[2], 10);
 
 		const response = await get_tags_list(page);
