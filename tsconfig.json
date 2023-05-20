@@ -13,9 +13,14 @@
 		"noImplicitAny": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
+		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
 		"allowJs": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"flexsearch": ["node_modules/@types/flexsearch"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["dist"]

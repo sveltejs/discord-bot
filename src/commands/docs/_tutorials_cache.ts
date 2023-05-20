@@ -1,10 +1,12 @@
+import flexsearch, { type Index } from 'flexsearch';
 import fetch from 'node-fetch';
-import flexsearch from 'flexsearch';
 
-let cache: {
-	index: flexsearch.Index;
-	lookup: Map<Tutorial['slug'], Tutorial['name']>;
-};
+type CacheLookup = Map<Tutorial['slug'], Tutorial['name']>;
+
+interface Cache {
+	index: Index;
+	lookup: CacheLookup;
+}
 
 interface Tutorial {
 	name: string;
@@ -16,6 +18,8 @@ interface TutorialSection {
 	tutorials: Tutorial[];
 }
 
+let cache: Cache;
+
 export async function build_cache() {
 	const res = await fetch('https://api.svelte.dev/docs/svelte/tutorial');
 	if (!res.ok) throw new Error("Couldn't fetch tutorials.");
@@ -24,7 +28,8 @@ export async function build_cache() {
 	const index = new flexsearch.Index({
 		tokenize: 'forward',
 	});
-	const lookup: typeof cache['lookup'] = new Map();
+
+	const lookup: CacheLookup = new Map();
 
 	for (const section of data) {
 		for (const tutorial of section.tutorials) {
@@ -34,7 +39,12 @@ export async function build_cache() {
 		}
 	}
 
-	return (cache = { index, lookup });
+	cache = {
+		index,
+		lookup,
+	};
+
+	return cache;
 }
 
 export async function search_tutorials(
@@ -49,6 +59,7 @@ export async function search_tutorials(
 
 	return results.map((slug) => {
 		const title = lookup.get(slug.toString())!;
+
 		return as_link
 			? `[${title}](https://svelte.dev/tutorial/${slug})`
 			: title;
