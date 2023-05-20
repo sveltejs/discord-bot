@@ -1,11 +1,9 @@
-import { command } from 'jellycommands';
 import { into_name_value_pair } from '../../utils/autocomplete.js';
-import {
-	list_embed_builder,
-	tags_embed_builder,
-} from '../../utils/embed_helpers.js';
-import { get_member } from '../../utils/snowflake.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { get_matching_tag_names, get_tag } from './_common.js';
+import { get_member } from '../../utils/snowflake.js';
+import { command } from 'jellycommands';
 
 export default command({
 	name: 'tag',

@@ -1,8 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonComponent } from 'discord.js';
-import { event } from 'jellycommands';
+import { increment_solve_count } from '../utils/threads.js';
 import { setTimeout } from 'timers/promises';
 import { no_op } from '../utils/promise.js';
-import { increment_solve_count } from '../utils/threads.js';
+import { event } from 'jellycommands';
 
 const validator = /^thread_solver_\d+$/;
 

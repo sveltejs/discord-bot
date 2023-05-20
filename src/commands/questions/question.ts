@@ -1,3 +1,11 @@
+import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
+import { DEV_MODE, SOLVED_TAGS_MAP, HELP_CHANNELS } from '../../config.js';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
+import { check_autothread_permissions } from '../../utils/threads.js';
+import { undefined_on_error } from '../../utils/promise.js';
+import { get_member } from '../../utils/snowflake.js';
+import { command } from 'jellycommands';
+
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
@@ -7,13 +15,6 @@ import {
 	ThreadAutoArchiveDuration,
 	ThreadChannel,
 } from 'discord.js';
-import { command } from 'jellycommands';
-import { DEV_MODE, SOLVED_TAGS_MAP, HELP_CHANNELS } from '../../config.js';
-import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
-import { undefined_on_error } from '../../utils/promise.js';
-import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
-import { get_member } from '../../utils/snowflake.js';
-import { check_autothread_permissions } from '../../utils/threads.js';
 
 export default command({
 	name: 'question',

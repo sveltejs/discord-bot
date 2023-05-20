@@ -1,14 +1,15 @@
+import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { get_tag, TagCRUDHandler } from './_common.js';
+import { get_member } from '../../utils/snowflake.js';
+import { supabase } from '../../db/supabase';
+
 import {
 	ActionRowBuilder,
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle,
 } from 'discord.js';
-import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { get_tag, TagCRUDHandler } from './_common.js';
-import { get_member } from '../../utils/snowflake.js';
-import { supabase } from '../../db/supabase';
 
 export const tag_update_handler: TagCRUDHandler = async ({
 	interaction,

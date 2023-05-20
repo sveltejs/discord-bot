@@ -1,6 +1,6 @@
-import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
 import { get_tag, TagCRUDHandler } from './_common.js';
 import { supabase } from '../../db/supabase';
 

@@ -1,12 +1,10 @@
-import { command } from 'jellycommands';
-import { into_name_value_pair } from '../../utils/autocomplete.js';
-import {
-	list_embed_builder,
-	wrap_in_embed,
-} from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { into_name_value_pair } from '../../utils/autocomplete.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { search_docs } from './_docs_cache.js';
+import { no_op } from '../../utils/promise.js';
+import { command } from 'jellycommands';
 
 function get_repo(subcommand: string) {
 	return subcommand == 'svelte' ? Repos.SVELTE : Repos.SVELTE_KIT;

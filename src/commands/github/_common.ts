@@ -1,8 +1,8 @@
-import { CommandInteraction } from 'discord.js';
-import fetch from 'node-fetch';
-import { GITHUB_TOKEN } from '../../config.js';
-import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
+import { CommandInteraction } from 'discord.js';
+import { GITHUB_TOKEN } from '../../config.js';
+import fetch from 'node-fetch';
 
 const query =
 	`query searchResults($search_string: String!, $type: SearchType!, $num: Int!) {

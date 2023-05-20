@@ -1,10 +1,8 @@
+import { list_embed_builder } from '../../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import {
-	list_embed_builder,
-	wrap_in_embed,
-} from '../../utils/embed_helpers.js';
 
 export default command({
 	name: 'mdn',

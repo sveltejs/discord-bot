@@ -1,14 +1,15 @@
+import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
+import { get_tag, TagCRUDHandler } from './_common.js';
+import { supabase } from '../../db/supabase';
+
 import {
 	ActionRowBuilder,
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle,
 } from 'discord.js';
-import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
-import { get_tag, TagCRUDHandler } from './_common.js';
-import { supabase } from '../../db/supabase';
 
 const validator_regex = /^[a-z0-9\-\+\_\.\ ]*$/;
 

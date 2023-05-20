@@ -1,8 +1,8 @@
-import { command } from 'jellycommands';
 import { into_name_value_pair } from '../../utils/autocomplete.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
 import { search_tutorials } from './_tutorials_cache.js';
+import { no_op } from '../../utils/promise.js';
+import { command } from 'jellycommands';
 
 export default command({
 	name: 'tutorial',
