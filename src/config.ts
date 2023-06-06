@@ -77,6 +77,9 @@ const COMMUNITY_CHANNELS = [
 
 	// #library-announcements
 	'1060265526439456858',
+	
+	// #jobs
+	'640884695890133012',
 ];
 
 export const LINK_ONLY_CHANNELS = DEV_MODE
