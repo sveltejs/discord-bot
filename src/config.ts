@@ -77,9 +77,6 @@ const COMMUNITY_CHANNELS = [
 
 	// #library-announcements
 	'1060265526439456858',
-	
-	// #jobs
-	'640884695890133012',
 ];
 
 export const LINK_ONLY_CHANNELS = DEV_MODE
@@ -100,5 +97,8 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			// #both-both-is-good
 			'919196322303725568',
 	  ]
-	: [...COMMUNITY_CHANNELS];
+	: [
+		...COMMUNITY_CHANNELS,
+		'640884695890133012', // jobs
+	];
 // #endregion
