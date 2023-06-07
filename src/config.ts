@@ -97,5 +97,8 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			// #both-both-is-good
 			'919196322303725568',
 	  ]
-	: [...COMMUNITY_CHANNELS];
+	: [
+		...COMMUNITY_CHANNELS,
+		'640884695890133012', // jobs
+	];
 // #endregion
