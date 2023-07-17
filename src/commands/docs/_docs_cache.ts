@@ -1,31 +1,30 @@
-import flexsearch from 'flexsearch';
-import fetch from 'node-fetch';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import flexsearch, { type Index } from 'flexsearch';
+import fetch from 'node-fetch';
 
-const cache = new Map<
-	Repos,
-	{
-		indexes: flexsearch.Index[];
-		lookup: Map<Block['href'], string>;
-	}
->();
+interface CacheEntry {
+	indexes: Index[];
+	lookup: Map<Block['href'], string>;
+}
+
+const cache = new Map<Repos, CacheEntry>();
 
 export async function build_cache(repo: Repos) {
 	let blocks: Block[];
 
 	if (repo === Repos.SVELTE) {
 		const response = await fetch('https://api.svelte.dev/docs/svelte/docs');
-		blocks = transform_svelte_docs(
-			(await response.json()) as DocsSection[],
-		);
+		const data = (await response.json()) as DocsSection[];
+
+		blocks = transform_svelte_docs(data);
 	} else {
 		const response = await fetch('https://kit.svelte.dev/content.json');
-		blocks = ((await response.json()) as { blocks: Block[] }).blocks;
+		({ blocks } = (await response.json()) as { blocks: Block[] });
 	}
 
 	// Build the index using the same settings as the site
 	// Adapted from: https://github.com/sveltejs/kit/blob/2ddece81543459f5b2770fafda79e4ac91c9cbbe/sites/kit.svelte.dev/src/lib/search/SearchBox.svelte#L16
-	const indexes: flexsearch.Index[] = [];
+	const indexes: Index[] = [];
 	const lookup = new Map<Block['href'], string>();
 
 	for (const block of blocks) {
@@ -37,8 +36,13 @@ export async function build_cache(repo: Repos) {
 		})).add(block.href, `${title} ${block.content}`);
 	}
 
-	const cache_entry = { indexes, lookup };
+	const cache_entry: CacheEntry = {
+		indexes,
+		lookup,
+	};
+
 	cache.set(repo, cache_entry);
+
 	return cache_entry;
 }
 
@@ -49,11 +53,11 @@ export async function search_docs(
 ) {
 	const { indexes, lookup } = cache.get(repo) ?? (await build_cache(repo));
 
-	return (
-		await Promise.all(
-			indexes.map((index) => index.searchAsync(query, { limit })),
-		)
-	)
+	const raw_results = await Promise.all(
+		indexes.map((index) => index.searchAsync(query, { limit })),
+	);
+
+	return raw_results
 		.flat()
 		.slice(0, limit)
 		.map((href) => {
@@ -61,8 +65,7 @@ export async function search_docs(
 			const link_text = lookup.get(href.toString())!;
 
 			return as_link
-				? // prettier-ignore
-				  `[${link_text}](${RepositoryDetails[repo].HOMEPAGE}${href})`
+				? `[${link_text}](${RepositoryDetails[repo].HOMEPAGE}${href})`
 				: link_text;
 		});
 }
@@ -82,7 +85,6 @@ type Block = {
 
 /**
  * Transform the results of the Svelte docs API into a compatible format
- *
  * @todo This is a temporary solution until the API is fixed
  */
 function transform_svelte_docs(

@@ -1,10 +1,9 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { Tag } from '../commands/tags/_common.js';
-import { supabase } from '../db/index.js';
 import { list_embed_builder } from './embed_helpers.js';
+import { supabase } from '../db/supabase';
 
 export async function get_tags_list(page_number: number) {
-	const { data, error } = await supabase.rpc<Tag>('get_tags_list', {
+	const { data, error } = await supabase.rpc('get_tags_list', {
 		page_number,
 	});
 

@@ -1,8 +1,8 @@
-import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
-import { supabase } from '../../db/index.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
-import { get_tag, Tag, TagCRUDHandler } from './_common.js';
+import { tags_embed_builder } from '../../utils/embed_helpers.js';
+import { TAG_DEL_PERMITTED_IDS } from '../../config.js';
+import { get_tag, TagCRUDHandler } from './_common.js';
+import { supabase } from '../../db/supabase';
 
 export const tag_delete_handler: TagCRUDHandler = async ({
 	tag_name,
@@ -32,7 +32,7 @@ export const tag_delete_handler: TagCRUDHandler = async ({
 		return;
 	}
 
-	if ((await supabase.from<Tag>('tags').delete().eq('id', tag.id)).error) {
+	if ((await supabase.from('tags').delete().eq('id', tag.id)).error) {
 		await interaction.reply({
 			content: `Failed to delete tag "${tag_name}".`,
 			ephemeral: true,

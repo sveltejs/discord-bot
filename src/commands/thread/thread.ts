@@ -1,8 +1,8 @@
+import { check_autothread_permissions } from '../../utils/threads.js';
+import { get_member } from '../../utils/snowflake.js';
 import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
 import fetch from 'node-fetch';
-import { get_member } from '../../utils/snowflake.js';
-import { check_autothread_permissions } from '../../utils/threads.js';
 
 const allowed_attempts_map = new Map<string, number>();
 

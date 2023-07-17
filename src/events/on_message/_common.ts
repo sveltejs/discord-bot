@@ -1,7 +1,7 @@
-import { Message } from 'discord.js';
-import { setTimeout } from 'timers/promises';
-import url_regex from 'url-regex';
 import { LINK_ONLY_CHANNELS } from '../../config';
+import { setTimeout } from 'timers/promises';
+import { Message } from 'discord.js';
+import url_regex from 'url-regex';
 
 export function has_link(message: Message) {
 	return url_regex().test(message.content);

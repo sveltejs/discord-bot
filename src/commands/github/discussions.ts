@@ -1,6 +1,6 @@
-import { command } from 'jellycommands';
-import { Repos } from '../../utils/repositories.js';
 import { GithubResultType, github_command_handler } from './_common.js';
+import { Repos } from '../../utils/repositories.js';
+import { command } from 'jellycommands';
 
 export default command({
 	name: 'discussion',

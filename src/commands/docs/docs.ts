@@ -1,17 +1,14 @@
-import { command } from 'jellycommands';
-import { into_name_value_pair } from '../../utils/autocomplete.js';
-import {
-	list_embed_builder,
-	wrap_in_embed,
-} from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { into_name_value_pair } from '../../utils/autocomplete.js';
+import { list_embed_builder } from '../../utils/embed_helpers.js';
+import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { search_docs } from './_docs_cache.js';
+import { no_op } from '../../utils/promise.js';
+import { command } from 'jellycommands';
 
-const sc_map = {
-	svelte: Repos.SVELTE,
-	sveltekit: Repos.SVELTE_KIT,
-};
+function get_repo(subcommand: string) {
+	return subcommand == 'svelte' ? Repos.SVELTE : Repos.SVELTE_KIT;
+}
 
 export default command({
 	name: 'docs',
@@ -48,12 +45,7 @@ export default command({
 	],
 
 	run: async ({ interaction }) => {
-		const repo =
-			sc_map[
-				interaction.options.getSubcommand(true) as
-					| 'svelte'
-					| 'sveltekit'
-			];
+		const repo = get_repo(interaction.options.getSubcommand(true));
 
 		const repo_details = RepositoryDetails[repo];
 		const query = interaction.options.getString('query');
@@ -67,6 +59,7 @@ export default command({
 				);
 				return;
 			}
+
 			const results = await search_docs(query, repo);
 
 			if (!results.length) {
@@ -90,23 +83,21 @@ export default command({
 			});
 		}
 	},
+
 	autocomplete: async ({ interaction }) => {
 		const focused = interaction.options.getFocused(true);
 		if (focused.name !== 'query') return;
 
 		const query = focused.value as string;
 		if (!query) return await interaction.respond([]);
-		const repo =
-			sc_map[
-				interaction.options.getSubcommand(true) as
-					| 'svelte'
-					| 'sveltekit'
-			];
+
+		const repo = get_repo(interaction.options.getSubcommand(true));
 
 		const results = await search_docs(query, repo, {
 			limit: 10,
 			as_link: false,
 		});
+
 		await interaction
 			.respond(results.map(into_name_value_pair))
 			.catch(no_op);

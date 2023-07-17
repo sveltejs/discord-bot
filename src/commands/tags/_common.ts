@@ -1,16 +1,9 @@
 import { CommandInteraction } from 'discord.js';
-import { supabase } from '../../db/index.js';
-
-export interface Tag {
-	id: number;
-	tag_name: string;
-	tag_content: string;
-	author_id: string;
-}
+import { supabase } from '../../db/supabase';
 
 export async function get_tag(tag_name: string) {
 	return supabase
-		.from<Tag>('tags')
+		.from('tags')
 		.select('*')
 		.eq('tag_name', tag_name)
 		.limit(1)
@@ -20,7 +13,7 @@ export async function get_tag(tag_name: string) {
 
 export async function get_matching_tag_names(tag_name: string) {
 	return supabase
-		.rpc<Tag>('matching_tags', {
+		.rpc('matching_tags', {
 			to_search: tag_name,
 		})
 		.then(({ data, error }) => {
