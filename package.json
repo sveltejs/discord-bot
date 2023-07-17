@@ -14,21 +14,21 @@
 	"license": "MIT",
 	"dependencies": {
 		"discord.js": "^14.11.0",
-		"dotenv": "^16.0.3",
+		"dotenv": "^16.3.1",
 		"flexsearch": "^0.7.31",
 		"jellycommands": "1.0.0-next.43",
 		"node-fetch": "^3.3.1",
 		"tsm": "^2.3.0",
-		"unfurl.js": "^6.3.1",
+		"unfurl.js": "^6.3.2",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@supabase/supabase-js": "^2.21.0",
+		"@supabase/supabase-js": "^2.26.0",
 		"@types/flexsearch": "^0.7.3",
-		"@types/node": "^20.1.1",
-		"nodemon": "^2.0.22",
+		"@types/node": "^20.4.2",
+		"nodemon": "^3.0.1",
 		"prettier": "^2.8.8",
-		"supabase": "^1.57.3",
-		"typescript": "^5.0.4"
+		"supabase": "^1.77.9",
+		"typescript": "^5.1.6"
 	}
 }
