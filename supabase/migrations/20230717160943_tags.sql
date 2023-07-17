@@ -5,9 +5,9 @@ CREATE TABLE IF NOT EXISTS tags (
 	author_id TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX tag_name_idx ON tags(tag_name);
+CREATE UNIQUE INDEX IF NOT EXISTS tag_name_idx ON tags(tag_name);
 
-CREATE EXTENSION pg_trgm;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 CREATE OR REPLACE FUNCTION matching_tags(to_search VARCHAR) RETURNS TABLE (
 		tag_name VARCHAR(255)

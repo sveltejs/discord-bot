@@ -9,6 +9,7 @@
 		"format": "prettier --write --plugin-search-dir=. .",
 		"supabase": "supabase",
 		"supabase:gen": "supabase gen types typescript --linked > src/db/types.d.ts",
+		"supabase:push": "supabase db push --password $REMOTE_DB_PASSWORD",
 		"start": "tsm ."
 	},
 	"license": "MIT",

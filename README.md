@@ -64,7 +64,9 @@ All contributions are welcome, please try and make an issue first since most new
     cp .env.example .env
     ```
 
-2. Run the bot with `pnpm dev`
+2. Run the database with `pnpm supabase start`
+
+3. Run the bot with `pnpm dev`
 
 ## Code Conventions
 
