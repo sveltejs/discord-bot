@@ -4,8 +4,8 @@ import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
 import { check_autothread_permissions } from '../../utils/threads.js';
 import { undefined_on_error } from '../../utils/promise.js';
 import { get_member } from '../../utils/snowflake.js';
-import { command } from 'jellycommands';
 import { chunk_array } from '../../utils/chunk.js';
+import { command } from 'jellycommands';
 
 import {
 	ActionRowBuilder,
@@ -128,22 +128,20 @@ export async function get_ending_message(
 	initiator_id: Snowflake,
 ): Promise<InteractionReplyOptions> {
 	// Attempt to load all members even if they aren't currently cached
-	const threadMembers = await thread.members.fetch({ withMember: true });
+	const thread_members = await thread.members.fetch({ withMember: true });
 
 	const start_message = await undefined_on_error(
 		thread.fetchStarterMessage(),
 	);
 
 	const clickable_participants = DEV_MODE
-		? threadMembers
-		: threadMembers.filter(
+		? thread_members
+		: thread_members.filter(
 				({ guildMember }) =>
-					!(
-						guildMember.user.bot ||
-						guildMember.id ===
-							(start_message?.author.id ?? initiator_id)
-					),
-		  );
+					!guildMember.user.bot &&
+					guildMember.id !==
+						(start_message?.author.id ?? initiator_id),
+			);
 
 	const embed = build_embed({
 		description: `Thread marked as solved. ${
@@ -174,24 +172,18 @@ export async function get_ending_message(
 		components.push(row);
 	}
 
-	// Edge case, jun in case 😅
+	// Bail on unlikely case of more than 25 helpers
 	if (clickable_participants_group.length > 5) {
 		embed.setFields([
 			{
 				name: 'Helper Limit Exceeded!',
-				value: `There are ${
-					clickable_participants.size - 25
-				} additional helpers beyond the limit of 25. If you encounter this issue, please file a GitHub issue [here](https://github.com/sveltejs/discord-bot/issues) to notify our developers. Thank you!`,
+				// prettier-ignore
+				value: `There are ${clickable_participants.size - 25} additional helpers beyond the limit of 25. If you encounter this issue, please file a GitHub issue [here](https://github.com/sveltejs/discord-bot/issues) to notify our developers. Thank you!`,
 			},
 		]);
 	}
 
 	return clickable_participants_group.length
-		? {
-				components,
-				embeds: [embed],
-		  }
-		: {
-				embeds: [embed],
-		  };
+		? { components, embeds: [embed] }
+		: { embeds: [embed] };
 }

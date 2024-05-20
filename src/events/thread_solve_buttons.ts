@@ -1,8 +1,13 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonComponent } from 'discord.js';
-import { event } from 'jellycommands';
+import { increment_solve_count } from '../utils/threads.js';
 import { setTimeout } from 'timers/promises';
 import { no_op } from '../utils/promise.js';
-import { increment_solve_count } from '../utils/threads.js';
+import { event } from 'jellycommands';
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonComponent,
+	ComponentType,
+} from 'discord.js';
 
 const validator = /^thread_solver_\d+$/;
 
@@ -18,8 +23,7 @@ export default event({
 			await increment_solve_count(solver_id);
 		} catch (e) {
 			console.error('DB error in thread_solve_buttons:\n', e);
-			// We should not be showing this to everyone in the thread
-			interaction
+			await interaction
 				.reply({
 					content: `Couldn't mark <@${solver_id}>`,
 					ephemeral: true,
@@ -36,16 +40,16 @@ export default event({
 				const updated_button_components: ActionRowBuilder<ButtonBuilder>[] =
 					[];
 
-				old_buttons_group.map((buttons_row) => {
-					const filtered_buttons_row = (
-						buttons_row.components as ButtonComponent[]
-					).filter(
-						(button) => button.customId !== interaction.customId,
+				for (const buttons_row of old_buttons_group) {
+					const filtered_buttons_row = buttons_row.components.filter(
+						(button): button is ButtonComponent =>
+							button.type == ComponentType.Button &&
+							button.customId !== interaction.customId,
 					);
 
 					// Avoid pushing an empty row if there are no buttons left. This prevents the error:
 					// "data.components[<empty_row_index>].components[BASE_TYPE_BAD_LENGTH]: Must be between 1 and 5 in length."
-					if (!filtered_buttons_row.length) return;
+					if (!filtered_buttons_row.length) continue;
 
 					const row =
 						new ActionRowBuilder<ButtonBuilder>().setComponents(
@@ -55,13 +59,14 @@ export default event({
 						);
 
 					updated_button_components.push(row);
-				});
+				}
 
 				await interaction.update({
 					components: updated_button_components.length
 						? updated_button_components
 						: [],
 				});
+
 				return;
 			} catch (e) {
 				console.error(e);
