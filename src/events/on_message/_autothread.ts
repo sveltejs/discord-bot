@@ -41,8 +41,10 @@ async function get_thread_name(message: Message): Promise<string> {
 	const url = message.content.match(url_regex());
 
 	// If the channel isn't a link channel (i.e. a question one) or url can't be matched
-	if (!in_link_only_channel(message) || !url)
-		return message.content.replace(url_regex(), '');
+	if (!in_link_only_channel(message) || !url) {
+		const name = message.content.replace(url_regex(), '');
+		return name.trim().length == 0 ? message.content : name;
+	}
 
 	return get_title_from_url(url[0]);
 }

@@ -1,7 +1,18 @@
 import { unfurl } from 'unfurl.js';
 import { URL } from 'url';
 
-const get_url_host = (url: string): string => new URL(url).host;
+function get_url_host(raw_url: string) {
+	const url = new URL(raw_url);
+
+	if (url.host == 'github.com') {
+		const parts = url.pathname.split('/').filter(Boolean);
+		if (parts.length < 2) return url.host;
+
+		return `GitHub - ${parts[0]}/${parts[1]}`;
+	}
+
+	return url.host;
+}
 
 export async function get_title_from_url(url: string): Promise<string> {
 	try {
