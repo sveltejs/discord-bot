@@ -1,7 +1,6 @@
 {
 	"name": "svelte-bot",
 	"private": true,
-	"version": "0.0.0",
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
@@ -14,22 +13,22 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"discord.js": "^14.11.0",
-		"dotenv": "^16.3.1",
-		"flexsearch": "^0.7.31",
+		"discord.js": "^14.16.3",
+		"dotenv": "^16.4.5",
+		"flexsearch": "^0.7.43",
 		"jellycommands": "1.0.0-next.43",
-		"node-fetch": "^3.3.1",
+		"node-fetch": "^3.3.2",
 		"tsm": "^2.3.0",
-		"unfurl.js": "^6.3.2",
+		"unfurl.js": "^6.4.0",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@supabase/supabase-js": "^2.26.0",
-		"@types/flexsearch": "^0.7.3",
-		"@types/node": "^20.4.2",
-		"nodemon": "^3.0.1",
-		"prettier": "^3.2.5",
-		"supabase": "^1.77.9",
-		"typescript": "^5.1.6"
+		"@supabase/supabase-js": "^2.45.6",
+		"@types/flexsearch": "^0.7.6",
+		"@types/node": "^22.8.2",
+		"nodemon": "^3.1.7",
+		"prettier": "^3.3.3",
+		"supabase": "^1.207.9",
+		"typescript": "^5.6.3"
 	}
 }
