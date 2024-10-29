@@ -2,7 +2,6 @@ import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { CommandInteraction } from 'discord.js';
 import { GITHUB_TOKEN } from '../../config.js';
-import fetch from 'node-fetch';
 
 const query =
 	`query searchResults($search_string: String!, $type: SearchType!, $num: Int!) {
@@ -71,7 +70,7 @@ async function search_github(
 		? results.map(
 				(result) =>
 					`[#${result.number}](${result.url}): ${result.title}`,
-		  )
+			)
 		: null;
 }
 
@@ -90,8 +89,8 @@ export async function github_command_handler(
 		type === GithubResultType.ISSUE
 			? 'is:issue'
 			: type === GithubResultType.PULL_REQUEST
-			? 'is:pr'
-			: '' // Discussion ignores the `is:` filter
+				? 'is:pr'
+				: '' // Discussion ignores the `is:` filter
 	}`;
 
 	const results = await search_github(
@@ -103,11 +102,11 @@ export async function github_command_handler(
 		results
 			? {
 					embeds: [list_embed_builder(results)],
-			  }
+				}
 			: {
 					content: 'No results found.',
 					ephemeral: true,
-			  },
+				},
 	);
 }
 

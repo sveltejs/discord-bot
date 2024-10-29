@@ -1,6 +1,5 @@
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 import flexsearch, { type Index } from 'flexsearch';
-import fetch from 'node-fetch';
 
 interface CacheEntry {
 	indexes: Index[];

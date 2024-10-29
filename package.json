@@ -17,7 +17,6 @@
 		"dotenv": "^16.4.5",
 		"flexsearch": "^0.7.43",
 		"jellycommands": "1.0.0-next.43",
-		"node-fetch": "^3.3.2",
 		"tsm": "^2.3.0",
 		"unfurl.js": "^6.4.0",
 		"url-regex": "^5.0.0"

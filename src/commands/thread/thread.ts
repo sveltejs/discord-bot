@@ -2,18 +2,20 @@ import { check_autothread_permissions } from '../../utils/threads.js';
 import { get_member } from '../../utils/snowflake.js';
 import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
-import fetch from 'node-fetch';
 
 const allowed_attempts_map = new Map<string, number>();
 
 // Clean out stale ones to prevent memory leak
-setInterval(() => {
-	for (const [k, v] of allowed_attempts_map) {
-		if (v * 1000 < Date.now()) {
-			allowed_attempts_map.delete(k);
+setInterval(
+	() => {
+		for (const [k, v] of allowed_attempts_map) {
+			if (v * 1000 < Date.now()) {
+				allowed_attempts_map.delete(k);
+			}
 		}
-	}
-}, 30 * 60 * 1000);
+	},
+	30 * 60 * 1000,
+);
 
 export default command({
 	name: 'thread',

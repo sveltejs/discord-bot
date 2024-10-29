@@ -1,7 +1,6 @@
 import { list_embed_builder } from '../../utils/embed_helpers.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';
 import { command } from 'jellycommands';
-import fetch from 'node-fetch';
 import { URL } from 'url';
 
 export default command({
@@ -36,12 +35,12 @@ export default command({
 			results
 				? {
 						embeds: [list_embed_builder(results, 'MDN Docs')],
-				  }
+					}
 				: {
 						content:
 							'No results found. Try again with a different search term.',
 						ephemeral: true,
-				  },
+					},
 		);
 	},
 });

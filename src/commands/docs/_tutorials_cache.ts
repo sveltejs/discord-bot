@@ -1,5 +1,4 @@
 import flexsearch, { type Index } from 'flexsearch';
-import fetch from 'node-fetch';
 
 type CacheLookup = Map<Tutorial['slug'], Tutorial['name']>;
 
