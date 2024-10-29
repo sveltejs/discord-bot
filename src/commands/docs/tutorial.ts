@@ -37,11 +37,11 @@ export default command({
 			top_result
 				? wrap_in_embed(
 						`Have you gone through the tutorial page on ${top_result}?`,
-				  )
+					)
 				: {
 						content: `No matching result found. Try again with a different search term.`,
 						ephemeral: true,
-				  },
+					},
 		);
 	},
 

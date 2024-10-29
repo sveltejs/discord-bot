@@ -20,8 +20,8 @@ export const tag_update_handler: TagCRUDHandler = async ({
 	const fault = !tag
 		? 'No tag with that name exists. Did you mean to do `/tags create` instead?'
 		: interaction.user.id !== tag.author_id
-		? "You don't have the permissions to edit that tag. You have to be the author of the tag."
-		: null;
+			? "You don't have the permissions to edit that tag. You have to be the author of the tag."
+			: null;
 
 	if (fault !== null) {
 		await interaction.reply({
@@ -71,7 +71,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 		error
 			? {
 					content: `Failed to update tag "${tag_name}."`,
-			  }
+				}
 			: {
 					content: `Tag "${tag_name}" was successfully updated.`,
 					embeds: tags_embed_builder({
@@ -79,6 +79,6 @@ export const tag_update_handler: TagCRUDHandler = async ({
 						tag_content: content,
 						author: await get_member(interaction, tag.author_id),
 					}),
-			  },
+				},
 	);
 };

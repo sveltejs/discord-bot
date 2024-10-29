@@ -64,7 +64,7 @@ export const SOLVED_TAGS_MAP: Record<string, string> = DEV_MODE
 
 			// Ecosystem
 			'1060332203571151019': '1060930530566217888',
-	  };
+		};
 
 export const HELP_CHANNELS = new Set(Object.keys(SOLVED_TAGS_MAP));
 
@@ -86,7 +86,7 @@ export const LINK_ONLY_CHANNELS = DEV_MODE
 
 			// #both-both-is-good
 			'919196322303725568',
-	  ]
+		]
 	: COMMUNITY_CHANNELS;
 
 export const AUTO_THREAD_CHANNELS = DEV_MODE
@@ -96,9 +96,9 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 
 			// #both-both-is-good
 			'919196322303725568',
-	  ]
+		]
 	: [
-		...COMMUNITY_CHANNELS,
-		'640884695890133012', // jobs
-	];
+			...COMMUNITY_CHANNELS,
+			'640884695890133012', // jobs
+		];
 // #endregion

@@ -1,7 +1,10 @@
 export class RateLimitStore {
 	private available_uses = new Map<string, number>();
 
-	constructor(private count: number, private time_period: number) {}
+	constructor(
+		private count: number,
+		private time_period: number,
+	) {}
 
 	public is_limited(key: string, consume = false) {
 		const available_uses =

@@ -35,7 +35,7 @@ export function tags_embed_builder({
 						iconURL: author.displayAvatarURL({
 							size: 64,
 						}),
-				  }
+					}
 				: undefined,
 		}),
 	];

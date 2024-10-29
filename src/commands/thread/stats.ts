@@ -55,7 +55,7 @@ export default command({
 					wrap_in_embed(
 						data?.count
 							? // prettier-ignore
-							  `<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`
+								`<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`
 							: `<@${user_id}> has not solved any threads yet.`,
 					),
 				);

@@ -22,10 +22,10 @@ export const tag_create_handler: TagCRUDHandler = async ({
 	const fault = !has_any_role_or_id(member, TAG_CREATE_PERMITTED_IDS)
 		? "You don't have the permissions to create a tag."
 		: !validator_regex.test(tag_name)
-		? `The name provided isn't valid. It must match \`${validator_regex.source}\``
-		: (await get_tag(tag_name))
-		? 'A tag with that name exists already. Did you mean to do `/tags update` instead?'
-		: null;
+			? `The name provided isn't valid. It must match \`${validator_regex.source}\``
+			: (await get_tag(tag_name))
+				? 'A tag with that name exists already. Did you mean to do `/tags update` instead?'
+				: null;
 
 	if (fault !== null) {
 		await interaction.reply({
@@ -74,7 +74,7 @@ export const tag_create_handler: TagCRUDHandler = async ({
 		error
 			? {
 					content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
-			  }
+				}
 			: {
 					content: `Added tag "${tag_name}".`,
 					embeds: tags_embed_builder({
@@ -82,6 +82,6 @@ export const tag_create_handler: TagCRUDHandler = async ({
 						tag_content: content,
 						author: member,
 					}),
-			  },
+				},
 	);
 };
