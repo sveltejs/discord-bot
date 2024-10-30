@@ -3,3 +3,6 @@ package-lock.json
 .env
 dist
 .jellycommands
+
+pocketbase/pb_data
+pocketbase/svelte-bot-db
