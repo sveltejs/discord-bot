@@ -5,7 +5,8 @@ import (
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-	// _ "svelte-bot-db/migrations"
+
+	_ "svelte-bot-db/migrations"
 )
 
 func main() {
