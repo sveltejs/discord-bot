@@ -57,7 +57,7 @@ All contributions are welcome, please try and make an issue first since most new
 
 ## Running for development
 
-You'll need at least Node 22.10, pnpm 9.12.3, and go 23.3.
+You'll need at least Node 22.10, pnpm 9.12.3, and go 1.23.2.
 
 1. Once you have the bot cloned and have run `pnpm install` then you need to make a .env file and fill out the fields:
 
