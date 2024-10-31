@@ -2,7 +2,7 @@ import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
 import { get_tag, TagCRUDHandler } from './_common.js';
-import { supabase } from '../../db/supabase';
+import { pb } from '../../db/pocketbase.js';
 
 import {
 	ActionRowBuilder,
@@ -64,24 +64,27 @@ export const tag_create_handler: TagCRUDHandler = async ({
 
 	const content = submission.fields.getTextInputValue('tag--modal__content');
 
-	const { error } = await supabase.from('tags').insert({
-		tag_name: tag_name,
-		tag_content: content,
-		author_id: interaction.user.id,
-	});
+	const result = await pb
+		.collection('tags')
+		.create({
+			author_id: interaction.user.id,
+			name: tag_name,
+			content,
+		})
+		.catch(() => null);
 
 	await submission.reply(
-		error
+		result
 			? {
-					content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
-				}
-			: {
 					content: `Added tag "${tag_name}".`,
 					embeds: tags_embed_builder({
 						tag_name,
 						tag_content: content,
 						author: member,
 					}),
+				}
+			: {
+					content: `There was an error in creating the tag "${tag_name}". Tag names are case insensitive and should be unique.`,
 				},
 	);
 };

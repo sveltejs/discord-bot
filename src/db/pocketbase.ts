@@ -17,4 +17,13 @@ interface BaseModel {
 	updated: string;
 }
 
-interface TypedPocketbase extends Pocketbase {}
+interface TagsCollection extends BaseModel {
+	author_id: string;
+	/** Should be lowercase & between 1-255 chars */
+	name: string;
+	content: string;
+}
+
+interface TypedPocketbase extends Pocketbase {
+	collection(idOrName: 'tags'): RecordService<TagsCollection>;
+}

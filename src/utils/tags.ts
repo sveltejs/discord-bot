@@ -1,13 +1,11 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { list_embed_builder } from './embed_helpers.js';
-import { supabase } from '../db/supabase';
+import { pb } from '../db/pocketbase.js';
 
 export async function get_tags_list(page_number: number) {
-	const { data, error } = await supabase.rpc('get_tags_list', {
-		page_number,
-	});
-
-	if (error || !data?.length) return null;
+	const { items, totalPages } = await pb
+		.collection('tags')
+		.getList(page_number, 10);
 
 	const prev_button = new ButtonBuilder()
 		.setLabel('Previous')
@@ -18,9 +16,7 @@ export async function get_tags_list(page_number: number) {
 	const next_button = new ButtonBuilder()
 		.setLabel('Next')
 		.setCustomId(`tags_page_${page_number + 1}`)
-		// @todo This is not robust, will give the wrong result when we have
-		// exactly a multiple of 10 tags
-		.setDisabled(data.length !== 10)
+		.setDisabled(page_number == totalPages)
 		.setStyle(ButtonStyle.Primary);
 
 	const row = new ActionRowBuilder<ButtonBuilder>({
@@ -28,8 +24,8 @@ export async function get_tags_list(page_number: number) {
 	});
 
 	/** @todo Figure out a nice way to format these */
-	const tags = data.map(
-		(tag) => `\`${tag.tag_name.padEnd(32)}\` | <@${tag.author_id}>`,
+	const tags = items.map(
+		(tag) => `\`${tag.name.padEnd(32)}\` | <@${tag.author_id}>`,
 	);
 
 	return {
