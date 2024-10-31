@@ -1,15 +1,11 @@
 import { GuildMember, Snowflake, ThreadChannel } from 'discord.js';
 import { has_any_role_or_id } from './snowflake.js';
 import { THREAD_ADMIN_IDS } from '../config.js';
-import { supabase } from '../db/supabase';
+import { pb } from '../db/pocketbase.js';
 import { no_op } from './promise.js';
 
 export async function increment_solve_count(id: Snowflake) {
-	const { error } = await supabase.rpc('increment_solve_count', {
-		solver_id: id,
-	});
-
-	if (error) throw new Error(error.message);
+	await pb.send(`/api/sdb/increment-solve-count/${id}`, {});
 }
 
 export async function check_autothread_permissions(

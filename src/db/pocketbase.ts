@@ -24,6 +24,15 @@ interface TagsCollection extends BaseModel {
 	content: string;
 }
 
+interface ThreadSolvesCollection extends BaseModel {
+	user_id: string;
+	count: number;
+}
+
+type LeaderboardView = Pick<ThreadSolvesCollection, 'id' | 'user_id' | 'count'>;
+
 interface TypedPocketbase extends Pocketbase {
 	collection(idOrName: 'tags'): RecordService<TagsCollection>;
+	collection(idOrName: 'threadSolves'): RecordService<ThreadSolvesCollection>;
+	collection(idOrName: 'leaderboard'): RecordService<LeaderboardView>;
 }

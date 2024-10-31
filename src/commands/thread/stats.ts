@@ -1,5 +1,5 @@
 import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
-import { supabase } from '../../db/supabase';
+import { pb } from '../../db/pocketbase';
 import { command } from 'jellycommands';
 
 export default command({
@@ -40,20 +40,23 @@ export default command({
 					interaction.options.getUser('user') ?? interaction.user
 				).id;
 
-				const { data, error } = await supabase
-					.from('thread_solves')
-					.select('count')
-					.eq('user_id', user_id)
-					.maybeSingle();
+				const data = await pb
+					.collection('threadSolves')
+					.getFirstListItem(
+						pb.filter('user_id = {:id}', {
+							id: interaction.user.id,
+						}),
+					)
+					.catch(() => null);
 
-				if (error) {
+				if (!data) {
 					await interaction.followUp('Something went wrong');
 					return;
 				}
 
 				await interaction.followUp(
 					wrap_in_embed(
-						data?.count
+						data.count
 							? // prettier-ignore
 								`<@${user_id}> has solved ${data.count} thread${data.count === 1 ? '' : 's'}. Thank you for your contribution.`
 							: `<@${user_id}> has not solved any threads yet.`,
@@ -63,11 +66,12 @@ export default command({
 			}
 
 			case 'server': {
-				const { data, error } = await supabase
-					.from('leaderboard')
-					.select('*');
+				const data = await pb
+					.collection('leaderboard')
+					.getFullList()
+					.catch(() => null);
 
-				if (error || !data?.length) {
+				if (!data) {
 					await interaction.followUp('Could not fetch data');
 					return;
 				}
