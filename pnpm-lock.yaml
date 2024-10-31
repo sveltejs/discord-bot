@@ -42,6 +42,9 @@ importers:
       nodemon:
         specifier: ^3.1.7
         version: 3.1.7
+      pocketbase:
+        specifier: ^0.21.5
+        version: 0.21.5
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -647,6 +650,9 @@ packages:
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+
+  pocketbase@0.21.5:
+    resolution: {integrity: sha512-bnI/uinnQps+ElSlzxkc4yvwuSFfKcoszDtXH/4QT2FhGq2mJVUvDlxn+rjRXVntUjPfmMG5LEPZ1eGqV6ssog==}
 
   prettier@3.3.3:
     resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
@@ -1403,6 +1409,8 @@ snapshots:
       minipass: 7.1.2
 
   picomatch@2.3.1: {}
+
+  pocketbase@0.21.5: {}
 
   prettier@3.3.3: {}
 

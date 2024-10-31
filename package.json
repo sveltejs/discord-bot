@@ -27,6 +27,7 @@
 		"@types/flexsearch": "^0.7.6",
 		"@types/node": "^22.8.2",
 		"nodemon": "^3.1.7",
+		"pocketbase": "^0.21.5",
 		"prettier": "^3.3.3",
 		"supabase": "^1.207.9",
 		"typescript": "^5.6.3"
