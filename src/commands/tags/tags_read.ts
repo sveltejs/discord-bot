@@ -30,7 +30,7 @@ export default command({
 			await interaction.reply({
 				embeds: tags_embed_builder({
 					tag_name,
-					tag_content: tag.tag_content,
+					tag_content: tag.content,
 					author: await get_member(interaction, tag.author_id),
 				}),
 			});

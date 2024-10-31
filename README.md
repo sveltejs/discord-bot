@@ -44,12 +44,11 @@ Click on the links below to view the documentation on the different parts of the
 
 -   [TypeScript](https://www.typescriptlang.org/docs/)
 -   [JellyCommands](https://github.com/ghostdevv/jellycommands)
--   [SupaBase](https://supabase.com/docs)
+-   [Pocketbase](https://pocketbase.io)
 
 # Config
 
 -   The bots main config is located at [src/config.ts](src/config.ts), by default it will have the Svelte Discord & Testing configurations.
-
 -   All secrets should be in a `.env` file, the template/example can be found [here](./.env.example).
 
 # Contributing
@@ -58,13 +57,15 @@ All contributions are welcome, please try and make an issue first since most new
 
 ## Running for development
 
+You'll need at least Node 22.10, pnpm 9.12.3, and go 1.23.2.
+
 1. Once you have the bot cloned and have run `pnpm install` then you need to make a .env file and fill out the fields:
 
     ```sh
     cp .env.example .env
     ```
 
-2. Run the database with `pnpm supabase start`
+2. Run the database locally with `pnpm db:dev`. This will also create a pocketbase admin account for you with the email `dev@local.host` and password `testtest`.
 
 3. Run the bot with `pnpm dev`
 

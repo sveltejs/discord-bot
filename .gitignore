@@ -1,5 +1,6 @@
 node_modules
-package-lock.json
-.env
-dist
 .jellycommands
+.env
+
+pocketbase/pb_data
+pocketbase/svelte-bot-db

@@ -2,7 +2,6 @@ import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { get_tag, TagCRUDHandler } from './_common.js';
 import { get_member } from '../../utils/snowflake.js';
-import { supabase } from '../../db/supabase';
 
 import {
 	ActionRowBuilder,
@@ -10,6 +9,7 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from 'discord.js';
+import { pb } from '../../db/pocketbase.js';
 
 export const tag_update_handler: TagCRUDHandler = async ({
 	interaction,
@@ -45,7 +45,7 @@ export const tag_update_handler: TagCRUDHandler = async ({
 						.setLabel('Content')
 						.setMaxLength(2000)
 						.setRequired(true)
-						.setValue(tag.tag_content),
+						.setValue(tag.content),
 				),
 			),
 	);
@@ -62,13 +62,13 @@ export const tag_update_handler: TagCRUDHandler = async ({
 
 	const content = submission.fields.getTextInputValue('tag--modal__content');
 
-	const { error } = await supabase
-		.from('tags')
-		.update({ tag_content: content })
-		.eq('id', tag.id);
+	const result = await pb
+		.collection('tags')
+		.update(tag.id, { content })
+		.catch(() => false);
 
 	await submission.reply(
-		error
+		!result
 			? {
 					content: `Failed to update tag "${tag_name}."`,
 				}
