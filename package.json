@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "nodemon -e js,ts --loader tsm .",
 		"format": "prettier --write .",
-		"dev:db": "./pocketbase/dev.sh",
+		"db:dev": "./pocketbase/dev.sh",
 		"start": "tsm ."
 	},
 	"license": "MIT",
