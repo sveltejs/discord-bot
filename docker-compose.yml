@@ -1,0 +1,26 @@
+services:
+    svelte-bot:
+        container_name: svelte-bot
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+        env_file: .env
+        depends_on:
+            - svelte-bot-db
+    svelte-bot-db:
+        container_name: svelte-bot-db
+        restart: always
+        build:
+            context: ./pocketbase
+            dockerfile: Dockerfile
+        volumes:
+            - ./pb_data:/app/pb_data
+        healthcheck:
+            test:
+                # prettier-ignore
+                ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8090/api/health']
+            interval: 60s
+            timeout: 5s
+            retries: 3
+            start_period: 5s
