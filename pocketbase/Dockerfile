@@ -8,4 +8,4 @@ COPY . .
 RUN go build
 RUN ./svelte-bot-db migrate up
 
-CMD ["./svelte-bot-db", "serve"]
+CMD ["./svelte-bot-db", "serve", "--http", "0.0.0.0:8090"]
