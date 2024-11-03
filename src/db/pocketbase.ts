@@ -29,10 +29,16 @@ interface ThreadSolvesCollection extends BaseModel {
 	count: number;
 }
 
+interface AnalyticsCollection extends BaseModel {
+	member_count: number;
+	presence_count: number;
+}
+
 type LeaderboardView = Pick<ThreadSolvesCollection, 'id' | 'user_id' | 'count'>;
 
 interface TypedPocketbase extends Pocketbase {
 	collection(idOrName: 'tags'): RecordService<TagsCollection>;
 	collection(idOrName: 'threadSolves'): RecordService<ThreadSolvesCollection>;
 	collection(idOrName: 'leaderboard'): RecordService<LeaderboardView>;
+	collection(idOrName: 'analytics'): RecordService<AnalyticsCollection>;
 }

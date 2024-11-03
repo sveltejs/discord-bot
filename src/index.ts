@@ -1,5 +1,7 @@
 import 'dotenv/config';
-import { DEV_MODE, TEST_GUILD_ID } from './config.js';
+import { analyticsTask } from './scheduled/analytics';
+import { DEV_MODE, TEST_GUILD_ID } from './config';
+import { Scheduler } from './scheduled/_scheduler';
 import { JellyCommands } from 'jellycommands';
 import { IntentsBitField } from 'discord.js';
 
@@ -31,6 +33,8 @@ const client = new JellyCommands({
 	// This should hopefully fix the issues in production
 	cache: DEV_MODE,
 });
+
+new Scheduler(client).addTask(analyticsTask);
 
 // Auto reads the DISCORD_TOKEN environment variable
 client.login();
