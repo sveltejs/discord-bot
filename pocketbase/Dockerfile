@@ -1,11 +1,16 @@
-FROM golang:1.23-alpine
+FROM golang:1.23-alpine as build
 
-RUN apk add --no-cache curl
 
 WORKDIR /app
 COPY . .
 
 RUN go build
-RUN ./svelte-bot-db migrate up
+
+FROM alpine:3.14
+
+RUN apk add --no-cache curl
+
+WORKDIR /app
+COPY --from=build /app/svelte-bot-db .
 
 CMD ["./svelte-bot-db", "serve", "--http", "0.0.0.0:8090"]
