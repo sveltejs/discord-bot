@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { guildEventsTask } from './scheduled/guild-events';
 import { analyticsTask } from './scheduled/analytics';
 import { DEV_MODE, TEST_GUILD_ID } from './config';
 import { Scheduler } from './scheduled/_scheduler';
@@ -32,7 +33,7 @@ const client = new JellyCommands({
 	cache: DEV_MODE,
 });
 
-new Scheduler(client).addTask(analyticsTask);
+new Scheduler(client).addTask(analyticsTask).addTask(guildEventsTask);
 
 // Auto reads the DISCORD_TOKEN environment variable
 client.login();

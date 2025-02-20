@@ -34,6 +34,11 @@ interface AnalyticsCollection extends BaseModel {
 	presence_count: number;
 }
 
+interface GuildEventSyncCollection extends BaseModel {
+	event_slug: string;
+	discord_event_id: string;
+}
+
 type LeaderboardView = Pick<ThreadSolvesCollection, 'id' | 'user_id' | 'count'>;
 
 interface TypedPocketbase extends Pocketbase {
@@ -41,4 +46,7 @@ interface TypedPocketbase extends Pocketbase {
 	collection(idOrName: 'threadSolves'): RecordService<ThreadSolvesCollection>;
 	collection(idOrName: 'leaderboard'): RecordService<LeaderboardView>;
 	collection(idOrName: 'analytics'): RecordService<AnalyticsCollection>;
+	collection(
+		idOrName: 'guildEventSync',
+	): RecordService<GuildEventSyncCollection>;
 }
