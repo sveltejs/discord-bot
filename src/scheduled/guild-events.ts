@@ -109,33 +109,51 @@ interface PageInfo {
 
 // todo doesn't handle pagination
 
+const GUILD_IDS = [
+	'svelte-society-london',
+	'svelte-society-stockholm',
+	'svelte-society-zurich',
+	'svelte-society-melbourne',
+	'svelte-society-portugal',
+	'san-diego-svelte',
+	'svelte-society-austria',
+	'svelte-society-bangalore',
+	'svelte-society-bay-area',
+];
+
+function log(...messages: any[]) {
+	console.log('[guild-events-sync]', ...messages);
+}
+
 export const guildEventsTask: ScheduledTask = {
 	interval: 86400,
 	name: 'guild-events',
 	async handle(client) {
-		try {
-			console.log('Fetching guild events');
+		log('Running');
+
+		const discord_server = await client.guilds.fetch(
+			DEV_MODE ? TEST_GUILD_ID : '457912077277855764',
+		);
+
+		if (!discord_server) {
+			throw new Error('Failed to fetch svelte/testing guild');
+		}
+
+		for (const guild_id of GUILD_IDS) {
+			log(`Fetching events for ${guild_id}`);
 
 			const response = await fetch(
-				'https://guild.host/api/next/svelte-society-london/events/upcoming',
+				`https://guild.host/api/next/${guild_id}/events/upcoming`,
 				{
 					headers: {
+						Accept: 'application/json',
 						'User-Agent':
 							'Svelte Bot (+https://github.com/sveltejs/discord-bot)',
-						Accept: 'application/json',
 					},
 				},
 			);
 
 			const data: ResponseData = await response.json();
-
-			const guild = await client.guilds.fetch(
-				DEV_MODE ? TEST_GUILD_ID : '457912077277855764',
-			);
-
-			if (!guild) {
-				throw new Error('Failed to fetch guild');
-			}
 
 			for (const event of data.events.edges) {
 				const event_slug = event.node.prettyUrl;
@@ -153,35 +171,34 @@ export const guildEventsTask: ScheduledTask = {
 
 				if (exists) {
 					// prettier-ignore
-					console.log(`  Skipping ${event.node.name} as it already exists`);
+					log(`  Skipping ${event.node.name} as it already exists`);
 					continue;
 				}
 
-				console.log(`  Creating ${event.node.name}`);
+				log(`  Creating ${event.node.name}`);
 
-				const discordEvent = await guild.scheduledEvents.create({
-					name: event.node.name,
-					image: event.node.generatedSocialCardURL.replace(
-						/\.svg$/,
-						'.png',
-					),
-					description: event.node.description,
-					scheduledStartTime: event.node.startAt,
-					scheduledEndTime: event.node.endAt,
-					entityType: GuildScheduledEventEntityType.External,
-					privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
-					entityMetadata: {
-						location: event.node.fullUrl,
-					},
-				});
+				const discordEvent =
+					await discord_server.scheduledEvents.create({
+						name: event.node.name,
+						image: event.node.generatedSocialCardURL.replace(
+							/\.svg$/,
+							'.png',
+						),
+						description: event.node.description,
+						scheduledStartTime: event.node.startAt,
+						scheduledEndTime: event.node.endAt,
+						entityType: GuildScheduledEventEntityType.External,
+						privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+						entityMetadata: {
+							location: event.node.fullUrl,
+						},
+					});
 
 				await pb.collection('guildEventSync').create({
 					event_slug,
 					discord_event_id: discordEvent.id,
 				});
 			}
-		} catch (error) {
-			console.error('failed to save analytics', error);
 		}
 	},
 };
