@@ -25,7 +25,12 @@ export class Scheduler {
 					: `Skipping task ${task.name} to wait for client`,
 			);
 
-			task.handle(this.client);
+			task.handle(this.client).catch((error) => {
+				console.error(
+					`Task run failed ${task.name} at ${Date.now()}`,
+					error,
+				);
+			});
 		}, task.interval * 1000);
 
 		this.tasks.push(task);
