@@ -128,6 +128,7 @@ function log(...messages: any[]) {
 export const guildEventsTask: ScheduledTask = {
 	interval: 86400,
 	name: 'guild-events',
+	runImmediately: true,
 	async handle(client) {
 		log('Running');
 
