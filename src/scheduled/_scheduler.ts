@@ -26,7 +26,8 @@ export class Scheduler {
 	}
 
 	private async runTask(task: ScheduledTask) {
-		console.info(
+		this.client.log.log(
+			'[scheduler]',
 			this.client.isReady()
 				? `Running task ${task.name} ${task.interval}`
 				: `Skipping task ${task.name} to wait for client`,
@@ -35,7 +36,8 @@ export class Scheduler {
 		try {
 			await task.handle(this.client);
 		} catch (error) {
-			console.error(
+			this.client.log.error(
+				'[scheduler]',
 				`Task run failed ${task.name} at ${Date.now()}`,
 				error,
 			);
