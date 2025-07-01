@@ -63,7 +63,7 @@ type SlowModeActivation = {
 	expiry: number;
 };
 
-let slowModeActivation: SlowModeActivation = {
+let currentSlowMode: SlowModeActivation = {
 	level: 0,
 	timestamp: 0,
 	expiry: 0,
@@ -73,7 +73,6 @@ export default async function slow_mode(message: Message): Promise<void> {
 	const now = Date.now();
 
 	if (
-		slowModeActivation.expiry > now ||
 		message.channel.type != ChannelType.GuildText ||
 		message.author.bot ||
 		!COMMUNITY_TEXT_CHANNELS.includes(message.channelId)
@@ -90,8 +89,10 @@ export default async function slow_mode(message: Message): Promise<void> {
 
 	const newLevel = checkBusyLevel(now);
 
-	// No change
-	if (newLevel === slowModeActivation.level) return;
+	// Return early if target level is lower or equal to the current level
+	// and current rate limit expired
+	const expired = now > currentSlowMode.expiry;
+	if (newLevel <= currentSlowMode.level && !expired) return;
 
 	const targetConfig = levelConfigs.find((el) => el.level === newLevel);
 	if (!targetConfig) return;
@@ -102,7 +103,7 @@ export default async function slow_mode(message: Message): Promise<void> {
 	);
 
 	const setTime = Date.now();
-	slowModeActivation = {
+	currentSlowMode = {
 		level: targetConfig.level,
 		timestamp: setTime,
 		expiry: setTime + targetConfig.timeout,
