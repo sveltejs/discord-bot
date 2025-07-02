@@ -79,13 +79,21 @@ const COMMUNITY_CHANNELS = [
 	'1060265526439456858',
 ];
 
-export const COMMUNITY_TEXT_CHANNELS = [
-	// #tech-chat
-	'1059917031295680562',
+export const COMMUNITY_TEXT_CHANNELS = DEV_MODE
+	? [
+			// #test-link-validation
+			'918915215368810566',
 
-	// #non-tech-chat
-	'728292755087818924'
-]
+			// #both-both-is-good
+			'919196322303725568',
+		]
+	: [
+			// #tech-chat
+			'1059917031295680562',
+
+			// #non-tech-chat
+			'728292755087818924',
+		];
 
 export const LINK_ONLY_CHANNELS = DEV_MODE
 	? [
