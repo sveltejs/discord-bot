@@ -81,11 +81,8 @@ const COMMUNITY_CHANNELS = [
 
 export const COMMUNITY_TEXT_CHANNELS = DEV_MODE
 	? [
-			// #test-link-validation
-			'918915215368810566',
-
-			// #both-both-is-good
-			'919196322303725568',
+			// #this-is-a-text-channel
+			'918887934822858805',
 		]
 	: [
 			// #tech-chat

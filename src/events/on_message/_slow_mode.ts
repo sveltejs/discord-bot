@@ -1,5 +1,15 @@
 import { ChannelType, type Message } from 'discord.js';
-import { COMMUNITY_TEXT_CHANNELS } from 'src/config';
+import { COMMUNITY_TEXT_CHANNELS } from '../../config';
+
+function debug(args: any | []) {
+	if (process.env.NODE_ENV !== 'development') return;
+
+	if (Array.isArray(args)) {
+		console.log('slow_mode debug:', ...args);
+	} else {
+		console.log('slow_mod debug:', args);
+	}
+}
 
 type QueueItem = { userId: string; timestamp: number };
 const messageQueueChannelMap = new Map<string, QueueItem[]>([]);
@@ -12,6 +22,9 @@ const THIRTY_MINUTES = 1_800_000;
 /** Allowed time range for items in message queue */
 const QUEUE_TIME_RANGE = FIVE_MINUTES;
 
+/** Number of messages to trigger a thread emoji reaction before next level change. */
+const EMOJI_REACTION_MESSAGE_THRESHOLD = 2;
+
 type LevelConfig = {
 	level: number;
 	uniqueUsers: number;
@@ -20,6 +33,8 @@ type LevelConfig = {
 	timeRange: number;
 	timeout: number;
 	rateLimitPerUser: number;
+	/* Message to notify channel users. */
+	channelMessage: string;
 };
 
 const levelConfigs = Object.freeze([
@@ -30,14 +45,17 @@ const levelConfigs = Object.freeze([
 		timeRange: 0,
 		timeout: 0,
 		rateLimitPerUser: 0,
+		channelMessage: '',
 	},
 	{
 		level: 1,
-		uniqueUsers: 2,
-		messages: 6,
+		uniqueUsers: 1,
+		messages: 10,
 		timeRange: ONE_MINUTE,
 		timeout: FIFTEEN_MINUTES,
 		rateLimitPerUser: 15,
+		channelMessage:
+			'Slow mode set to 15 seconds per message. To evade slow mode, consider opening a thread.',
 	},
 	{
 		level: 2,
@@ -46,6 +64,8 @@ const levelConfigs = Object.freeze([
 		timeRange: FIVE_MINUTES,
 		timeout: THIRTY_MINUTES,
 		rateLimitPerUser: 30,
+		channelMessage:
+			'Slow mode set to 15 seconds per message. To evade slow mode, consider opening a thread.',
 	},
 ] as const) satisfies Readonly<LevelConfig[]>;
 
@@ -65,6 +85,7 @@ export default async function slow_mode(message: Message): Promise<void> {
 		message.author.bot ||
 		!COMMUNITY_TEXT_CHANNELS.includes(message.channelId)
 	) {
+		debug('return early due to channel mismatch or bot message');
 		return;
 	}
 
@@ -77,6 +98,13 @@ export default async function slow_mode(message: Message): Promise<void> {
 	}
 
 	const channelMessageQueue = messageQueueChannelMap.get(channelId)!;
+	debug([
+		'queue on message',
+		{
+			channelMessageQueue,
+			messageQueueChannelMap,
+		},
+	]);
 
 	channelMessageQueue.push({ userId: message.author.id, timestamp: now });
 
@@ -85,21 +113,67 @@ export default async function slow_mode(message: Message): Promise<void> {
 		channelMessageQueue.shift();
 	}
 
-	const newLevel = checkBusyLevel(now, channelMessageQueue);
+	debug(['queue on purge', channelMessageQueue]);
+	const { level: newLevel, messagesUntilNextLevel } = checkBusyLevel(
+		now,
+		channelMessageQueue,
+	);
 
-	// Return early if target level is lower or equal to the current level
-	// and current rate limit expired
+	// Return early if:
+	//
+	// - new level is equal to current level
+	// OR
+	// - new level is lower or equal to the current level AND current rate limit
+	//   hasn't expired
 	const currentModeExpired = now > (currentSlowMode?.expiry ?? 0);
 	const currentLevel = currentSlowMode?.level ?? -1;
-	if (newLevel <= currentLevel && !currentModeExpired) return;
+	if (
+		newLevel === currentLevel ||
+		(newLevel <= currentLevel && !currentModeExpired)
+	) {
+		debug([
+			'early return due to new level not exceeding current, or current rate limit has not expired',
+			{
+				newLevel,
+				currentLevel,
+				currentModeExpired,
+			},
+		]);
+
+		// Add thread emoji reaction to message before next rate limit applies
+		if (
+			messagesUntilNextLevel >= 0 &&
+			messagesUntilNextLevel <= EMOJI_REACTION_MESSAGE_THRESHOLD
+		)
+			await message.react('🧵');
+		return;
+	}
+
+	debug([
+		'applying config',
+		{
+			newLevel,
+			currentLevel,
+			currentModeExpired,
+		},
+	]);
 
 	const targetConfig = levelConfigs.find((el) => el.level === newLevel);
-	if (!targetConfig) return;
+	if (!targetConfig) {
+		debug(['early return', { targetConfig }]);
+		return;
+	}
 
+	// Set rate limit.
+	debug(['setting rate limit', { targetConfig }]);
 	await message.channel.setRateLimitPerUser(
 		targetConfig.rateLimitPerUser,
 		`Configuring ${message.channel} slow mode to ${targetConfig.rateLimitPerUser}.`,
 	);
+
+	// Notify channel users of rate limit change.
+	if (targetConfig.channelMessage)
+		await message.channel.send(targetConfig.channelMessage);
 
 	const setTime = Date.now();
 	currentSlowMode = {
@@ -126,23 +200,47 @@ function queueLengthWithinRange(
 	now: number,
 	queue: QueueItem[],
 ) {
-	return queue.filter((item) => {
-		return item.timestamp < now - timeRange;
+	const itemsInRange = queue.filter((item) => {
+		return item.timestamp > now - timeRange;
 	}).length;
+
+	return itemsInRange;
 }
 
-function checkBusyLevel(now: number, queue: QueueItem[]): BusyLevels {
+function checkBusyLevel(
+	now: number,
+	queue: QueueItem[],
+): { level: BusyLevels; messagesUntilNextLevel: number } {
+	let messagesUntilNextLevel = Infinity;
+
 	// Analyze triggers in reverse; from highest threshold to least
 	for (let i = levelConfigs.length - 1; i > 0; i--) {
 		const { timeRange, messages, uniqueUsers, level } = levelConfigs[i];
 
-		if (
-			queueLengthWithinRange(timeRange, now, queue) > messages &&
-			uniqueUsersInQueue(queue) >= uniqueUsers
-		) {
-			return level;
+		const messagesWithinRange = queueLengthWithinRange(
+			timeRange,
+			now,
+			queue,
+		);
+		messagesUntilNextLevel = messages - messagesWithinRange;
+
+		const exceedsMessageThreshold = messagesWithinRange > messages;
+		const hasMoreOrEqualUniqueUsers =
+			uniqueUsersInQueue(queue) >= uniqueUsers;
+
+		debug([
+			'checking busy level',
+			{
+				config: levelConfigs[i],
+				exceedsMessageThreshold,
+				hasMoreOrEqualUniqueUsers,
+			},
+		]);
+
+		if (exceedsMessageThreshold && hasMoreOrEqualUniqueUsers) {
+			return { level, messagesUntilNextLevel };
 		}
 	}
 
-	return 0;
+	return { level: 0, messagesUntilNextLevel };
 }
