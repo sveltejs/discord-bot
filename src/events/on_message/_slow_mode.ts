@@ -27,10 +27,11 @@ const EMOJI_REACTION_MESSAGE_THRESHOLD = 2;
 
 type LevelConfig = {
 	level: number;
-	uniqueUsers: number;
-	/** Number of messages to invoke level change. */
-	messages: number;
-	timeRange: number;
+	triggers: Array<{
+		uniqueUsers: number;
+		messages: number;
+		timeRange: number;
+	}>;
 	timeout: number;
 	rateLimitPerUser: number;
 	/* Message to notify channel users. */
@@ -40,18 +41,25 @@ type LevelConfig = {
 const levelConfigs = Object.freeze([
 	{
 		level: 0,
-		uniqueUsers: 1,
-		messages: 1,
-		timeRange: 0,
+		triggers: [{ uniqueUsers: 1, messages: 1, timeRange: 0 }],
 		timeout: 0,
 		rateLimitPerUser: 0,
 		channelMessage: '',
 	},
 	{
 		level: 1,
-		uniqueUsers: 1,
-		messages: 10,
-		timeRange: ONE_MINUTE,
+		triggers: [
+			{
+				uniqueUsers: 1,
+				messages: 10,
+				timeRange: ONE_MINUTE,
+			},
+			{
+				uniqueUsers: 3,
+				messages: 20,
+				timeRange: FIVE_MINUTES,
+			},
+		],
 		timeout: FIFTEEN_MINUTES,
 		rateLimitPerUser: 15,
 		channelMessage:
@@ -59,13 +67,17 @@ const levelConfigs = Object.freeze([
 	},
 	{
 		level: 2,
-		uniqueUsers: 3,
-		messages: 20,
-		timeRange: FIVE_MINUTES,
+		triggers: [
+			{
+				uniqueUsers: 5,
+				messages: 30,
+				timeRange: FIVE_MINUTES,
+			},
+		],
 		timeout: THIRTY_MINUTES,
 		rateLimitPerUser: 30,
 		channelMessage:
-			'Slow mode set to 15 seconds per message. To evade slow mode, consider opening a thread.',
+			'Slow mode set to 30 seconds per message. To evade slow mode, consider opening a thread.',
 	},
 ] as const) satisfies Readonly<LevelConfig[]>;
 
@@ -213,33 +225,46 @@ function checkBusyLevel(
 ): { level: BusyLevels; messagesUntilNextLevel: number } {
 	let messagesUntilNextLevel = Infinity;
 
-	// Analyze triggers in reverse; from highest threshold to least
+	// Analyze levels in reverse; from highest to lowest
 	for (let i = levelConfigs.length - 1; i > 0; i--) {
-		const { timeRange, messages, uniqueUsers, level } = levelConfigs[i];
+		const { triggers, level } = levelConfigs[i];
 
-		const messagesWithinRange = queueLengthWithinRange(
-			timeRange,
-			now,
-			queue,
-		);
-		messagesUntilNextLevel = messages - messagesWithinRange;
+		// Analyze all triggers
+		const triggered = triggers.some((trigger) => {
+			const { timeRange, messages, uniqueUsers } = trigger;
 
-		const exceedsMessageThreshold = messagesWithinRange > messages;
-		const hasMoreOrEqualUniqueUsers =
-			uniqueUsersInQueue(queue) >= uniqueUsers;
+			const messagesWithinRange = queueLengthWithinRange(
+				timeRange,
+				now,
+				queue,
+			);
 
-		debug([
-			'checking busy level',
-			{
-				config: levelConfigs[i],
-				exceedsMessageThreshold,
-				hasMoreOrEqualUniqueUsers,
-			},
-		]);
+			const exceedsMessageThreshold = messagesWithinRange > messages;
+			const hasMoreOrEqualUniqueUsers =
+				uniqueUsersInQueue(queue) >= uniqueUsers;
 
-		if (exceedsMessageThreshold && hasMoreOrEqualUniqueUsers) {
-			return { level, messagesUntilNextLevel };
-		}
+			const remainingMessages = messages - messagesWithinRange;
+			if (remainingMessages < messagesUntilNextLevel) {
+				messagesUntilNextLevel = remainingMessages;
+			}
+
+			debug([
+				'checking busy level',
+				{
+					config: levelConfigs[i],
+					exceedsMessageThreshold,
+					hasMoreOrEqualUniqueUsers,
+				},
+			]);
+
+			if (exceedsMessageThreshold && hasMoreOrEqualUniqueUsers) {
+				return true;
+			}
+
+			return false;
+		});
+
+		if (triggered) return { level, messagesUntilNextLevel };
 	}
 
 	return { level: 0, messagesUntilNextLevel };
