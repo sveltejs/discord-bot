@@ -158,6 +158,7 @@ export default async function slow_mode(message: Message): Promise<void> {
 			messagesUntilNextLevel <= EMOJI_REACTION_MESSAGE_THRESHOLD
 		)
 			await message.react('🧵');
+
 		return;
 	}
 
@@ -219,10 +220,12 @@ function queueLengthWithinRange(
 	return itemsInRange;
 }
 
-function checkBusyLevel(
-	now: number,
-	queue: QueueItem[],
-): { level: BusyLevels; messagesUntilNextLevel: number } {
+type BusyLevelsReturn = {
+	level: BusyLevels;
+	/** Number of messages remaining before upgrading slow mode level. */
+	messagesUntilNextLevel: number;
+};
+function checkBusyLevel(now: number, queue: QueueItem[]): BusyLevelsReturn {
 	let messagesUntilNextLevel = Infinity;
 
 	// Analyze levels in reverse; from highest to lowest
