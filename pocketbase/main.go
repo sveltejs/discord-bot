@@ -2,17 +2,14 @@ package main
 
 import (
 	"log"
+	"net/http"
+	"os"
 
-	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/forms"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-
-	_ "svelte-bot-db/migrations"
 )
 
 func main() {
@@ -22,35 +19,29 @@ func main() {
 		Automigrate: true,
 	})
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/api/sdb/increment-solve-count/:userId", func(c echo.Context) error {
-			userId := c.PathParam("userId")
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+		se.Router.GET("/api/sdb/increment-solve-count/{userId}", func(e *core.RequestEvent) error {
+			userId := e.Request.PathValue("userId")
 
-			_, err := app.Dao().FindFirstRecordByFilter(
+			_, err := app.FindFirstRecordByFilter(
 				"threadSolves", "user_id = {:userId}",
 				dbx.Params{"userId": userId},
 			)
 
 			if err != nil {
-				threadSolvesCollection, err := app.Dao().FindCollectionByNameOrId("threadSolves")
+				threadSolvesCollection, err := app.FindCollectionByNameOrId("threadSolves")
 				if err != nil {
 					return err
 				}
 
-				record := models.NewRecord(threadSolvesCollection)
-				form := forms.NewRecordUpsert(app, record)
+				record := core.NewRecord(threadSolvesCollection)
+				record.Set("user_id", userId)
+				record.Set("count", 0)
 
-				form.LoadData(map[string]any{
-					"user_id": userId,
-					"count":   0,
-				})
-
-				if err := form.Submit(); err != nil {
-					return err
-				}
+				app.Save(record)
 			}
 
-			_, err = app.Dao().
+			_, err = app.
 				DB().
 				NewQuery("UPDATE threadSolves SET count = count + 1 WHERE user_id = {:userId}").
 				Bind(dbx.Params{"userId": userId}).
@@ -60,10 +51,13 @@ func main() {
 				return err
 			}
 
-			return c.String(200, "Incremented")
-		}, apis.ActivityLogger(app), apis.RequireAdminAuth())
+			return e.String(http.StatusOK, "Incremented")
+		}).Bind(apis.RequireSuperuserAuth())
 
-		return nil
+		// serves static files from the provided public dir (if exists)
+		se.Router.GET("/{path...}", apis.Static(os.DirFS("./pb_public"), false))
+
+		return se.Next()
 	})
 
 	if err := app.Start(); err != nil {
