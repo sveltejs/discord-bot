@@ -1,4 +1,4 @@
-import { ChannelType, Message } from 'discord.js';
+import { ChannelType, type Message } from 'discord.js';
 import { has_link } from './_common.js';
 import urlRegex from 'url-regex';
 
@@ -46,22 +46,13 @@ export default async function mutate_content(message: Message) {
 
 	const updatedLinkList = updatedLinks.map((link) => `- ${link}\n`).join('');
 
-	const updatedMessage: string = (function () {
-		let newContent = message.content;
-		replacementMap.forEach(
-			(item) =>
-				(newContent = newContent.replace(item.test, item.replace)),
-		);
-		return newContent;
-	})();
-
 	try {
 		await message.author.send(
 			`Re: ${message.url}\n\nI see you've provided a link to \`x.com\`. Please consider posting a new message having \`x.com\` replaced with \`xcancel.com\`, that way server members may view the message and thread without requiring an account.\n\n${updatedPhrase}\`\`\`${updatedLinkList}\`\`\`\n\nHere is your entire message with adjusted links:\n\`\`\`${updatedLinkList}\`\`\``,
 		);
 
 		return; // mission complete
-	} catch (e) {
+	} catch (_) {
 		// assume user disabled DMs upon error
 	}
 
@@ -70,7 +61,7 @@ export default async function mutate_content(message: Message) {
 		await message.reply(
 			`I converted your \`x.com\` links to use \`xcancel.com\` so that server members won't require an account to view content and threads.\n\n${updatedLinkList}`,
 		);
-	} catch (e) {
+	} catch (_) {
 		// don't handle failures
 	}
 }
