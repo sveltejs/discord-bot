@@ -11,21 +11,21 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"discord.js": "^14.16.3",
-		"dotenv": "^16.4.5",
-		"flexsearch": "^0.7.43",
-		"jellycommands": "1.0.0-next.44",
+		"discord.js": "^14.21.0",
+		"dotenv": "^17.2.0",
+		"flexsearch": "^0.8.205",
+		"jellycommands": "1.0.0-next.45",
 		"tsm": "^2.3.0",
 		"unfurl.js": "^6.4.0",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@types/flexsearch": "^0.7.6",
-		"@types/node": "^22.8.2",
-		"nodemon": "^3.1.7",
-		"pocketbase": "^0.21.5",
-		"prettier": "^3.3.3",
-		"typescript": "^5.6.3"
+		"@types/flexsearch": "^0.7.42",
+		"@types/node": "^24.0.14",
+		"nodemon": "^3.1.10",
+		"pocketbase": "^0.26.1",
+		"prettier": "^3.6.2",
+		"typescript": "^5.8.3"
 	},
 	"packageManager": "pnpm@9.12.3",
 	"volta": {
