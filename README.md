@@ -8,48 +8,43 @@ Welcome to the repo for the official Svelte Discord bot!
 
 ## Commands
 
--   Bookmark
+- Bookmark
+    - Message command that lets you save a reference to a message from the server in your DMs. Right click any message then go to `Apps` in the context menu to use.
 
-    -   Message command that lets you save a reference to a message from the server in your DMs. Right click any message then go to `Apps` in the context menu to use.
+- Docs
+    - `/docs svelte` or `/docs sveltekit`: Quickly search the Svelte or SvelteKit docs and send a link in the chat.
+    - `/mdn` Same as above but for the MDN web docs.
 
--   Docs
+- Github
+    - `/discussion`, `/issue` or `/pr` search for matching discussions, issues or PRs in some of the `sveltejs/*` repositories and send links to the results in the chat.
 
-    -   `/docs svelte` or `/docs sveltekit`: Quickly search the Svelte or SvelteKit docs and send a link in the chat.
-    -   `/mdn` Same as above but for the MDN web docs.
+- Tags: Tags are a way to store and reuse frequent responses so that you don't have to look up and type them out every time.
+    - `/tag` Sends an existing tag to the chat.
+    - `/tags create` Create a tag. You must have the threadlord role to use it.
+    - `/tags update` Edit a tag. You must be the author of the tag to use it.
+    - `/tags delete` Delete a tag. You must be the author of the tag or have the threadlord role.
 
--   Github
+- Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people with the threadlord role.
+    - `/thread rename`
+    - `/thread solve` Renames the thread to have a green checkmark at the start and sets the archive duration to 1hr.
+    - `/thread archive` Archive an active thread without marking it as solved.
+    - `/thread reopen` Reopen a thread that's been accidentally marked as solved.
 
-    -   `/discussion`, `/issue` or `/pr` search for matching discussions, issues or PRs in some of the `sveltejs/*` repositories and send links to the results in the chat.
-
--   Tags: Tags are a way to store and reuse frequent responses so that you don't have to look up and type them out every time.
-
-    -   `/tag` Sends an existing tag to the chat.
-    -   `/tags create` Create a tag. You must have the threadlord role to use it.
-    -   `/tags update` Edit a tag. You must be the author of the tag to use it.
-    -   `/tags delete` Delete a tag. You must be the author of the tag or have the threadlord role.
-
--   Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people with the threadlord role.
-
-    -   `/thread rename`
-    -   `/thread solve` Renames the thread to have a green checkmark at the start and sets the archive duration to 1hr.
-    -   `/thread archive` Archive an active thread without marking it as solved.
-    -   `/thread reopen` Reopen a thread that's been accidentally marked as solved.
-
--   Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.  
-    <span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
+- Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.  
+  <span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
 
 # Stack
 
 Click on the links below to view the documentation on the different parts of the bot's tech stack:
 
--   [TypeScript](https://www.typescriptlang.org/docs/)
--   [JellyCommands](https://github.com/ghostdevv/jellycommands)
--   [Pocketbase](https://pocketbase.io)
+- [TypeScript](https://www.typescriptlang.org/docs/)
+- [JellyCommands](https://github.com/ghostdevv/jellycommands)
+- [Pocketbase](https://pocketbase.io)
 
 # Config
 
--   The bots main config is located at [src/config.ts](src/config.ts), by default it will have the Svelte Discord & Testing configurations.
--   All secrets should be in a `.env` file, the template/example can be found [here](./.env.example).
+- The bots main config is located at [src/config.ts](src/config.ts), by default it will have the Svelte Discord & Testing configurations.
+- All secrets should be in a `.env` file, the template/example can be found [here](./.env.example).
 
 # Contributing
 
