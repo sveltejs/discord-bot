@@ -76,7 +76,7 @@ export default command({
 					list_embed_builder(results, `${repo_details.NAME} Docs`),
 				],
 			});
-		} catch (error) {
+		} catch {
 			await interaction.reply({
 				content: 'An error occurred while searching the docs.',
 				ephemeral: true,

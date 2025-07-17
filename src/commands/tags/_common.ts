@@ -1,6 +1,6 @@
-import { CommandInteraction } from 'discord.js';
+import type { CommandInteraction } from 'discord.js';
 import { pb } from '../../db/pocketbase';
-import { ClientResponseError } from 'pocketbase';
+import type { ClientResponseError } from 'pocketbase';
 
 export async function get_tag(name: string) {
 	return await pb
@@ -20,7 +20,9 @@ export async function get_matching_tag_names(name: string) {
 	return items.map((tag) => tag.name);
 }
 
-export type TagCRUDHandler = ({}: {
+export type TagCRUDHandler = (options: {
 	interaction: CommandInteraction;
 	tag_name: string;
+	// biome-ignore lint/suspicious/noExplicitAny: easier
+	// biome-ignore lint/suspicious/noConfusingVoidType: easier
 }) => any | void;

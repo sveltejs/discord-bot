@@ -11,10 +11,10 @@ import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonStyle,
-	InteractionReplyOptions,
-	Snowflake,
+	type InteractionReplyOptions,
+	type Snowflake,
 	ThreadAutoArchiveDuration,
-	ThreadChannel,
+	type ThreadChannel,
 } from 'discord.js';
 
 export default command({

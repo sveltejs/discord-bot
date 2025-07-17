@@ -1,4 +1,4 @@
-import { GuildMember, Interaction, Snowflake } from 'discord.js';
+import type { GuildMember, Interaction, Snowflake } from 'discord.js';
 
 /**
  * Check if a member has any of the given roles or ids.

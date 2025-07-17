@@ -1,11 +1,11 @@
 import { increment_solve_count } from '../utils/threads.js';
-import { setTimeout } from 'timers/promises';
+import { setTimeout } from 'node:timers/promises';
 import { no_op } from '../utils/promise.js';
 import { event } from 'jellycommands';
 import {
 	ActionRowBuilder,
 	ButtonBuilder,
-	ButtonComponent,
+	type ButtonComponent,
 	ComponentType,
 } from 'discord.js';
 
@@ -13,7 +13,7 @@ const validator = /^thread_solver_\d+$/;
 
 export default event({
 	name: 'interactionCreate',
-	run: async ({}, interaction) => {
+	run: async (_, interaction) => {
 		if (!interaction.isButton() || !validator.test(interaction.customId))
 			return;
 

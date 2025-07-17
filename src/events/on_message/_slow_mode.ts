@@ -1,6 +1,7 @@
 import { ChannelType, type Message } from 'discord.js';
 import { COMMUNITY_TEXT_CHANNELS } from '../../config';
 
+// biome-ignore lint/suspicious/noExplicitAny: todo
 function debug(args: any | []) {
 	if (process.env.NODE_ENV !== 'development') return;
 
@@ -198,11 +199,11 @@ export default async function slow_mode(message: Message): Promise<void> {
 
 /** Get number of unique users in message queue */
 function uniqueUsersInQueue(queue: QueueItem[]) {
-	let users = new Set<string>();
+	const users = new Set<string>();
 
-	queue.forEach((item) => {
+	for (const item of queue) {
 		users.add(item.userId);
-	});
+	}
 
 	return users.size;
 }
@@ -226,7 +227,7 @@ type BusyLevelsReturn = {
 	messagesUntilNextLevel: number;
 };
 function checkBusyLevel(now: number, queue: QueueItem[]): BusyLevelsReturn {
-	let messagesUntilNextLevel = Infinity;
+	let messagesUntilNextLevel = Number.POSITIVE_INFINITY;
 
 	// Analyze levels in reverse; from highest to lowest
 	for (let i = levelConfigs.length - 1; i > 0; i--) {

@@ -1,6 +1,6 @@
 import { LINK_ONLY_CHANNELS } from '../../config';
-import { setTimeout } from 'timers/promises';
-import { Message } from 'discord.js';
+import { setTimeout } from 'node:timers/promises';
+import type { Message } from 'discord.js';
 import url_regex from 'url-regex';
 
 export function has_link(message: Message) {
@@ -18,6 +18,7 @@ export function in_link_only_channel(message: Message) {
 export const STOP = Symbol();
 
 export async function delete_message(message: Message, retries = 3) {
+	// biome-ignore lint/style/noParameterAssign: todo
 	while (--retries && message.deletable) {
 		try {
 			await message.delete();

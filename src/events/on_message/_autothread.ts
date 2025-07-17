@@ -1,4 +1,4 @@
-import { ChannelType, Message, MessageType, ThreadChannel } from 'discord.js';
+import { ChannelType, type Message, MessageType, type ThreadChannel } from 'discord.js';
 import { delete_message, in_link_only_channel, STOP } from './_common.js';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../../config.js';
 import { wrap_in_embed } from '../../utils/embed_helpers.js';

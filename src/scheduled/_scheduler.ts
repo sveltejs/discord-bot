@@ -1,4 +1,4 @@
-import { JellyCommands } from 'jellycommands';
+import type { JellyCommands } from 'jellycommands';
 
 export interface ScheduledTask {
 	name: string;

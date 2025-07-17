@@ -1,5 +1,5 @@
 import { DEV_MODE, TEST_GUILD_ID } from '../config';
-import { ScheduledTask } from './_scheduler';
+import type { ScheduledTask } from './_scheduler';
 import { pb } from '../db/pocketbase';
 
 export const analyticsTask: ScheduledTask = {

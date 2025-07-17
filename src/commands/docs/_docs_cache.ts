@@ -30,6 +30,7 @@ export async function build_cache(repo: Repos) {
 		const title = block.breadcrumbs.join('/');
 		lookup.set(block.href, title);
 
+		// biome-ignore lint/suspicious/noAssignInExpressions: todo
 		(indexes[block.rank ?? 0] ??= new flexsearch.Index({
 			tokenize: 'forward',
 		})).add(block.href, `${title} ${block.content}`);

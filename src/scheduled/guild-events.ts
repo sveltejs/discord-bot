@@ -1,11 +1,11 @@
 import { DEV_MODE, TEST_GUILD_ID } from '../config';
-import { ScheduledTask } from './_scheduler';
+import type { ScheduledTask } from './_scheduler';
 import { pb } from '../db/pocketbase';
 import {
 	GuildScheduledEventEntityType,
 	GuildScheduledEventPrivacyLevel,
 } from 'discord.js';
-import { ClientResponseError } from 'pocketbase';
+import type { ClientResponseError } from 'pocketbase';
 
 interface ResponseData {
 	__typename: string;
@@ -38,7 +38,7 @@ interface Node {
 	hasVenue: boolean;
 	hasExternalUrl: boolean;
 	owner: Owner;
-	uploadedSocialCard: any;
+	uploadedSocialCard: unknown;
 	generatedSocialCardURL: string;
 	presentations: Presentations;
 	venue: Venue;
@@ -121,6 +121,7 @@ const GUILD_IDS = [
 	'svelte-society-bay-area',
 ];
 
+// biome-ignore lint/suspicious/noExplicitAny: correct here
 function log(...messages: any[]) {
 	console.log('[guild-events-sync]', ...messages);
 }
@@ -167,7 +168,7 @@ export const guildEventsTask: ScheduledTask = {
 					.then(() => true)
 					.catch((e: ClientResponseError) => {
 						if (e.status == 404) return false;
-						else throw e;
+						throw e;
 					});
 
 				if (exists) {

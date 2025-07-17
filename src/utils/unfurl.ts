@@ -1,5 +1,5 @@
 import { unfurl } from 'unfurl.js';
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 function get_url_host(raw_url: string) {
 	const url = new URL(raw_url);

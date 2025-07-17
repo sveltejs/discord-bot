@@ -1,6 +1,6 @@
-import { Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { type Repos, RepositoryDetails } from '../../utils/repositories.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import { GITHUB_TOKEN } from '../../config.js';
 
 const query =
@@ -62,6 +62,7 @@ async function search_github(
 
 	if (!res.ok) return null;
 
+	// biome-ignore lint/suspicious/noExplicitAny: laziness
 	const body = (await res.json()) as Record<string, any>;
 
 	const results: SearchResult[] = body.data.search.nodes;
@@ -110,10 +111,10 @@ export async function github_command_handler(
 	);
 }
 
-export const enum GithubResultType {
-	ISSUE,
-	PULL_REQUEST,
-	DISCUSSION,
+export enum GithubResultType {
+	ISSUE = 0,
+	PULL_REQUEST = 1,
+	DISCUSSION = 2,
 }
 
 interface SearchResult {

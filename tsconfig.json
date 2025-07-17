@@ -4,7 +4,7 @@
 		"module": "esnext",
 		"outDir": "./dist",
 		"moduleResolution": "Node",
-
+		"verbatimModuleSyntax": true,
 		"strict": true,
 		"declaration": false,
 		"strictNullChecks": true,

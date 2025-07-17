@@ -1,8 +1,8 @@
 import { has_any_role_or_id } from '../../utils/snowflake';
 import { DEV_MODE, THREAD_ADMIN_IDS } from '../../config';
 import { RateLimitStore } from '../../utils/ratelimit';
-import { GuildMember, Message } from 'discord.js';
-import { setTimeout } from 'timers/promises';
+import type { GuildMember, Message } from 'discord.js';
+import { setTimeout } from 'node:timers/promises';
 import { has_link, STOP } from './_common';
 
 // 3 messages within a 10 second period
@@ -44,6 +44,7 @@ export default async function spam_filter(message: Message) {
 
 async function ban(member: GuildMember, tries: number) {
 	console.log(tries, member.bannable); // TODO Remove these when I figure out why it's not working
+	// biome-ignore lint/style/noParameterAssign: todo
 	while (--tries && member.bannable) {
 		try {
 			await member.ban({

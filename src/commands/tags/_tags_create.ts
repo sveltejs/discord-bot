@@ -1,7 +1,7 @@
 import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
 import { tags_embed_builder } from '../../utils/embed_helpers.js';
 import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
-import { get_tag, TagCRUDHandler } from './_common.js';
+import { get_tag, type TagCRUDHandler } from './_common.js';
 import { pb } from '../../db/pocketbase.js';
 
 import {
@@ -11,7 +11,7 @@ import {
 	TextInputStyle,
 } from 'discord.js';
 
-const validator_regex = /^[a-z0-9\-\+\_\.\ ]*$/;
+const validator_regex = /^[a-z0-9\-+_. ]*$/;
 
 export const tag_create_handler: TagCRUDHandler = async ({
 	interaction,

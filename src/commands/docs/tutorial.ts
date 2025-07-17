@@ -39,7 +39,7 @@ export default command({
 						`Have you gone through the tutorial page on ${top_result}?`,
 					)
 				: {
-						content: `No matching result found. Try again with a different search term.`,
+						content: "No matching result found. Try again with a different search term.",
 						ephemeral: true,
 					},
 		);

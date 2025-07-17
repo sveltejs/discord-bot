@@ -1,4 +1,4 @@
-import { ChannelType, ThreadChannel } from 'discord.js';
+import { ChannelType, type ThreadChannel } from 'discord.js';
 
 export function i_solemnly_swear_it_is_not_null<T>(
 	t: T,

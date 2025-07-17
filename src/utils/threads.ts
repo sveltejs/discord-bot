@@ -1,4 +1,4 @@
-import { GuildMember, Snowflake, ThreadChannel } from 'discord.js';
+import type { GuildMember, Snowflake, ThreadChannel } from 'discord.js';
 import { has_any_role_or_id } from './snowflake.js';
 import { THREAD_ADMIN_IDS } from '../config.js';
 import { pb } from '../db/pocketbase.js';

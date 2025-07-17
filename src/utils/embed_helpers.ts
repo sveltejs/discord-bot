@@ -1,4 +1,4 @@
-import { GuildMember, EmbedBuilder, EmbedData } from 'discord.js';
+import { type GuildMember, EmbedBuilder, type EmbedData } from 'discord.js';
 import { SVELTE_ORANGE } from '../config.js';
 
 export const build_embed = (options: EmbedData) =>

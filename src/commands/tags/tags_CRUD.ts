@@ -4,7 +4,7 @@ import { tag_update_handler } from './_tags_update.js';
 import { tag_list_handler } from './_tags_list.js';
 import { command } from 'jellycommands';
 
-const enum Actions {
+enum Actions {
 	CREATE = 'create',
 	UPDATE = 'update',
 	DELETE = 'delete',
@@ -75,8 +75,8 @@ export default command({
 
 		// Make tag names case insensitive to disallow similar names and avoid confusion
 		const tag_name = interaction.options
-			.getString('name', subcommand !== Actions.LIST)!
-			?.toLowerCase();
+			.getString('name', subcommand !== Actions.LIST)
+			?.toLowerCase()!;
 
 		await handlers[subcommand]({ interaction, tag_name });
 	},
