@@ -8,7 +8,7 @@
 		"format": "prettier --write .",
 		"db:dev": "./pocketbase/dev.sh",
 		"start": "tsm .",
-		"check": "biome check"
+		"check": "biome check && prettier --check ."
 	},
 	"license": "MIT",
 	"dependencies": {
