@@ -1,6 +1,6 @@
 import { Repos, RepositoryDetails } from '../../utils/repositories.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { GITHUB_TOKEN } from '../../config.js';
 
 const query =
@@ -75,7 +75,7 @@ async function search_github(
 }
 
 export async function github_command_handler(
-	interaction: CommandInteraction,
+	interaction: ChatInputCommandInteraction,
 	type: GithubResultType,
 ) {
 	const repo_name =

@@ -41,6 +41,8 @@ export default event({
 					[];
 
 				for (const buttons_row of old_buttons_group) {
+					if (buttons_row.type != ComponentType.ActionRow) continue;
+
 					const filtered_buttons_row = buttons_row.components.filter(
 						(button): button is ButtonComponent =>
 							button.type == ComponentType.Button &&
