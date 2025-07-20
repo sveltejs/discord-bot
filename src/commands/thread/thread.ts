@@ -44,6 +44,7 @@ export default command({
 	],
 
 	global: true,
+	dm: false,
 	defer: {
 		ephemeral: true,
 	},
