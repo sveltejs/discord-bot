@@ -1,13 +1,8 @@
+import { type Message, hideLinkEmbed, codeBlock } from 'discord.js';
 import urlRegex from 'url-regex';
-import {
-	type Message,
-	ChannelType,
-	hideLinkEmbed,
-	codeBlock,
-} from 'discord.js';
 
 export default async function mutate_content(message: Message) {
-	if (message.channel.type != ChannelType.GuildText) return;
+	if (message.channel.isTextBased()) return;
 
 	const links = message.content
 		.match(urlRegex())
