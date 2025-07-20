@@ -2,7 +2,7 @@ import { type Message, hideLinkEmbed, codeBlock } from 'discord.js';
 import urlRegex from 'url-regex';
 
 export default async function mutate_content(message: Message) {
-	if (message.channel.isTextBased()) return;
+	if (message.channel.isTextBased() && !message.channel.isDMBased()) return;
 
 	const links = message.content
 		.match(urlRegex())
