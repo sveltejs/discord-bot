@@ -1,4 +1,4 @@
-import { type Message, hideLinkEmbed, codeBlock } from 'discord.js';
+import { type Message } from 'discord.js';
 import urlRegex from 'url-regex';
 
 export default async function mutate_content(message: Message) {
@@ -15,36 +15,17 @@ export default async function mutate_content(message: Message) {
 		return;
 	}
 
-	const updated_phrase: string =
-		links.length > 1
-			? 'Here are the updated links:'
-			: 'Here is the updated link:';
+	const updated_link_list = links.map((link) => `- ${link}`).join('\n');
 
-	const updated_link_list = links
-		.map((link) => `- ${hideLinkEmbed(link)}`)
-		.join('\n');
+	const link_term = updated_link_list.length === 1 ? 'link' : 'links';
 
-	const updated_content = message.content.replace(urlRegex(), (match) => {
-		return match.startsWith('https://x.com')
-			? match.replace(/^https:\/\/x\.com/, 'https://xcancel.com')
-			: match;
-	});
-
-	try {
-		await message.author.send(
-			`Re: ${message.url}\n\nI see you've provided a link to \`x.com\`. Please consider posting a new message having \`x.com\` replaced with \`xcancel.com\`, that way server members may view the message and thread without requiring an account.\n\n${updated_phrase}\n${updated_link_list}\n\nHere is your entire message with adjusted links:\n${codeBlock(updated_content)}`,
-		);
-
-		return; // mission complete
-	} catch {
-		// assume user disabled DMs upon error
-	}
-
-	// Plan B: inline reply
+	// Reply inline
 	try {
 		await message.reply(
-			`I converted your \`x.com\` links to use \`xcancel.com\` so that server members won't require an account to view content and threads:\n${updated_link_list}`,
+			`I converted your \`x.com\` ${link_term} to use \`xcancel.com\` so that server members won't require an account to view content and threads:\n${updated_link_list}`,
 		);
+
+		await message.suppressEmbeds(true);
 	} catch {
 		// don't handle failures
 	}
