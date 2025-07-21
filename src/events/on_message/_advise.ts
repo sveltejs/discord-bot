@@ -17,12 +17,12 @@ export default async function mutate_content(message: Message) {
 
 	const updated_link_list = links.map((link) => `- ${link}`).join('\n');
 
-	const pluralLink = updated_link_list.length === 1 ? 'link' : 'links';
+	const link_term = updated_link_list.length === 1 ? 'link' : 'links';
 
 	// Reply inline
 	try {
 		await message.reply(
-			`I converted your \`x.com\` ${pluralLink} to use \`xcancel.com\` so that server members won't require an account to view content and threads:\n${updated_link_list}`,
+			`I converted your \`x.com\` ${link_term} to use \`xcancel.com\` so that server members won't require an account to view content and threads:\n${updated_link_list}`,
 		);
 
 		await message.suppressEmbeds(true);
