@@ -24,6 +24,8 @@ export default async function mutate_content(message: Message) {
 		await message.reply(
 			`I converted your \`x.com\` ${pluralLink} to use \`xcancel.com\` so that server members won't require an account to view content and threads:\n${updated_link_list}`,
 		);
+
+		await message.suppressEmbeds(true);
 	} catch {
 		// don't handle failures
 	}
