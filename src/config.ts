@@ -11,14 +11,16 @@ export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 // #region people
 const ADMIN_ROLES = [
 	// Moderators role in main server
-	// '919214972557484073',
+	'919214972557484073',
 
 	// // Maintainers role
 	// '571775211431526410',
 
 	// // Admins role
-	// '476141440091815947',
+	'476141440091815947',
+];
 
+const PRIVILEGED_ROLES = [
 	// Threadlords
 	'949258457352114176',
 ];
@@ -29,14 +31,16 @@ const TEST_ADMIN_ROLES = ['918888136581476402'];
 /**
  * List of roles/user IDs allowed to delete tags even if they're not the author.
  */
-export const TAG_DEL_PERMITTED_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
+export const TAG_DEL_PERMITTED_IDS = DEV_MODE
+	? TEST_ADMIN_ROLES
+	: PRIVILEGED_ROLES;
 
 /**
  * List of roles/user IDs allowed to create tags.
  */
 export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	? TEST_ADMIN_ROLES
-	: ADMIN_ROLES;
+	: PRIVILEGED_ROLES;
 
 export const BOT_DEVS = [
 	// cirilla
@@ -50,8 +54,10 @@ export const BOT_DEVS = [
  */
 export const THREAD_ADMIN_IDS = [
 	...BOT_DEVS,
-	...(DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES),
+	...(DEV_MODE ? TEST_ADMIN_ROLES : PRIVILEGED_ROLES),
 ];
+
+export const MODERATOR_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
 
 // #endregion
 
