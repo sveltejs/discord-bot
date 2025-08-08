@@ -92,6 +92,13 @@ type SlowModeActivation = {
 
 let currentSlowMode: SlowModeActivation | undefined;
 
+/** Look up rate limit per user based on level. */
+function level_to_rate_limit(level: BusyLevels | -1): number {
+	return (
+		levelConfigs.find((el) => el.level === level)?.rateLimitPerUser ?? -1
+	);
+}
+
 export default async function slow_mode(message: Message): Promise<void> {
 	if (
 		message.channel.type != ChannelType.GuildText ||
@@ -138,11 +145,16 @@ export default async function slow_mode(message: Message): Promise<void> {
 	// OR
 	// - new level is lower or equal to the current level AND current rate limit
 	//   hasn't expired
+	// BUT ALSO
+	// - channel has slow mode already activated
 	const currentModeExpired = now > (currentSlowMode?.expiry ?? 0);
 	const currentLevel = currentSlowMode?.level ?? -1;
+	const hasStateMismatch =
+		level_to_rate_limit(currentLevel) !== message.channel.rateLimitPerUser;
 	if (
-		newLevel === currentLevel ||
-		(newLevel <= currentLevel && !currentModeExpired)
+		!hasStateMismatch &&
+		(newLevel === currentLevel ||
+			(newLevel <= currentLevel && !currentModeExpired))
 	) {
 		debug([
 			'early return due to new level not exceeding current, or current rate limit has not expired',
