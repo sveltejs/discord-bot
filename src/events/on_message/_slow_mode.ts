@@ -13,7 +13,7 @@ function debug(args: any | []) {
 }
 
 type QueueItem = { userId: string; timestamp: number };
-const messageQueueChannelMap = new Map<string, QueueItem[]>([]);
+const message_queue_channel_map = new Map<string, QueueItem[]>([]);
 
 const ONE_MINUTE = 60_000;
 const FIVE_MINUTES = 300_000;
@@ -90,7 +90,8 @@ type SlowModeActivation = {
 	expiry: number;
 };
 
-let currentSlowMode: SlowModeActivation | undefined;
+/** Track slow mode state per channel */
+const slow_mode_state_channel_map = new Map<string, SlowModeActivation>();
 
 /** Look up rate limit per user based on level. */
 function level_to_rate_limit(level: BusyLevels | -1): number {
@@ -112,31 +113,31 @@ export default async function slow_mode(message: Message): Promise<void> {
 	const now = Date.now();
 	const { channelId } = message;
 
-	if (!Array.isArray(messageQueueChannelMap.get(channelId))) {
+	if (!Array.isArray(message_queue_channel_map.get(channelId))) {
 		// instantiate array, mapped against channel id
-		messageQueueChannelMap.set(channelId, []);
+		message_queue_channel_map.set(channelId, []);
 	}
 
-	const channelMessageQueue = messageQueueChannelMap.get(channelId)!;
+	const channel_message_queue = message_queue_channel_map.get(channelId)!;
 	debug([
 		'queue on message',
 		{
-			channelMessageQueue,
-			messageQueueChannelMap,
+			channelMessageQueue: channel_message_queue,
+			messageQueueChannelMap: message_queue_channel_map,
 		},
 	]);
 
-	channelMessageQueue.push({ userId: message.author.id, timestamp: now });
+	channel_message_queue.push({ userId: message.author.id, timestamp: now });
 
 	// Remove old messages from queue
-	while (channelMessageQueue[0].timestamp < now - QUEUE_TIME_RANGE) {
-		channelMessageQueue.shift();
+	while (channel_message_queue[0].timestamp < now - QUEUE_TIME_RANGE) {
+		channel_message_queue.shift();
 	}
 
-	debug(['queue on purge', channelMessageQueue]);
+	debug(['queue on purge', channel_message_queue]);
 	const { level: newLevel, messagesUntilNextLevel } = checkBusyLevel(
 		now,
-		channelMessageQueue,
+		channel_message_queue,
 	);
 
 	// Return early if:
@@ -147,6 +148,7 @@ export default async function slow_mode(message: Message): Promise<void> {
 	//   hasn't expired
 	// BUT ALSO
 	// - channel has slow mode already activated
+	const currentSlowMode = slow_mode_state_channel_map.get(channelId);
 	const currentModeExpired = now > (currentSlowMode?.expiry ?? 0);
 	const currentLevel = currentSlowMode?.level ?? -1;
 	const hasStateMismatch =
@@ -202,11 +204,11 @@ export default async function slow_mode(message: Message): Promise<void> {
 		await message.channel.send(targetConfig.channelMessage);
 
 	const setTime = Date.now();
-	currentSlowMode = {
+	slow_mode_state_channel_map.set(channelId, {
 		level: targetConfig.level,
 		timestamp: setTime,
 		expiry: setTime + targetConfig.timeout,
-	};
+	});
 }
 
 /** Get number of unique users in message queue */
