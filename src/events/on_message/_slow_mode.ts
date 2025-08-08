@@ -140,6 +140,12 @@ export default async function slow_mode(message: Message): Promise<void> {
 		channel_message_queue,
 	);
 
+	// Secret joke
+	// TODO: refactor into its own hook
+	if (message.content.includes('the bot is here')) {
+		await message.react('👀');
+	}
+
 	// Return early if:
 	//
 	// - new level is equal to current level
