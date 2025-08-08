@@ -7,7 +7,7 @@ on:
             - main
 
 jobs:
-    publish-npm:
+    lint:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
