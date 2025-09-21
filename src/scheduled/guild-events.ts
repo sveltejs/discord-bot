@@ -127,6 +127,10 @@ function log(...messages: any[]) {
 	console.log('[guild-events-sync]', ...messages);
 }
 
+function capString(str: string, limit: number) {
+	return str.length > limit ? `${str.slice(0, limit - 3)}...` : str;
+}
+
 export const guildEventsTask: ScheduledTask = {
 	interval: 86400,
 	name: 'guild-events',
@@ -187,7 +191,7 @@ export const guildEventsTask: ScheduledTask = {
 							/\.svg$/,
 							'.png',
 						),
-						description: event.node.description,
+						description: capString(event.node.description, 1000),
 						scheduledStartTime: event.node.startAt,
 						scheduledEndTime: event.node.endAt,
 						entityType: GuildScheduledEventEntityType.External,
