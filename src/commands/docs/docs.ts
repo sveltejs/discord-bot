@@ -1,105 +1,157 @@
-import { Repos, RepositoryDetails } from '../../utils/repositories.js';
-import { into_name_value_pair } from '../../utils/autocomplete.js';
-import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { search_docs } from './_docs_cache.js';
-import { no_op } from '../../utils/promise.js';
+import {
+	ButtonStyle,
+	ComponentType,
+	MessageFlags,
+	SectionBuilder,
+	SeparatorBuilder,
+	SeparatorSpacingSize,
+	TextDisplayBuilder,
+	userMention,
+} from 'discord.js';
+import { createDocsClient, type BlockGroup } from './svelte-docs';
 import { command } from 'jellycommands';
+import dedent from 'dedent';
 
-function get_repo(subcommand: string) {
-	return subcommand == 'svelte' ? Repos.SVELTE : Repos.SVELTE_KIT;
+const docs = await createDocsClient();
+
+function max(content: string[], limit: number) {
+	let currentLength = 0;
+
+	for (let i = 0; i < content.length; i++) {
+		currentLength += content[i].length;
+		if (currentLength > limit) {
+			return content.slice(0, i);
+		}
+	}
+
+	return content;
+}
+
+// Based on https://github.com/sveltejs/svelte.dev/blob/a61f12f5097b44c4523f1094a9ed8ec7d6027a81/packages/site-kit/src/lib/search/SearchResultList.svelte#L16-L34
+function excerpt(content: string, query: string) {
+	const index = content.toLowerCase().indexOf(query.toLowerCase());
+	if (index === -1) return content.slice(0, 80);
+
+	const prefix =
+		index > 25 && content.length > 50
+			? content.slice(index - 20, index)
+			: content.slice(0, index);
+
+	const suffix = content.slice(
+		index + query.length,
+		index + query.length + (80 - (prefix.length + query.length)),
+	);
+
+	return `${prefix}${content.slice(index, index + query.length)}${suffix}`;
+}
+
+function stringifySearchResult(
+	result: BlockGroup,
+	query: string,
+	maxLength = 500,
+) {
+	// prettier-ignore
+	const blocks = result.blocks.map((block) => dedent`
+        [${block.breadcrumbs.slice(2).join(' • ')}](https://svelte.dev${block.href})
+        ${excerpt(block.content, query)
+            .replaceAll('\n', '')
+            .replaceAll(query, `**${query}**`)
+            .trim()}
+    `);
+
+	return dedent`
+        ## ${result.breadcrumbs.join(' • ')}
+
+        ${max(blocks, maxLength).join('\n\n')}
+    `;
 }
 
 export default command({
 	name: 'docs',
-	description: 'Search svelte or sveltekit docs',
+	description: 'Search the Svelte docs',
 	global: true,
 
 	options: [
 		{
-			name: 'svelte',
-			type: 'Subcommand',
-			description: 'Search svelte docs',
-			options: [
-				{
-					name: 'query',
-					type: 'String',
-					description: 'The string to search for in the docs.',
-					autocomplete: true,
-				},
-			],
-		},
-		{
-			name: 'sveltekit',
-			type: 'Subcommand',
-			description: 'Search sveltekit docs',
-			options: [
-				{
-					name: 'query',
-					type: 'String',
-					description: 'The string to search for in the docs.',
-					autocomplete: true,
-				},
-			],
+			type: 'String',
+			name: 'query',
+			description: 'The search query',
+			required: true,
 		},
 	],
 
 	run: async ({ interaction }) => {
-		const repo = get_repo(interaction.options.getSubcommand(true));
+		const query = interaction.options.getString('query', true);
+		const results = docs.search(query);
 
-		const repo_details = RepositoryDetails[repo];
-		const query = interaction.options.getString('query');
+		const buttonPrefix = crypto.randomUUID();
+		const components = [];
 
-		try {
-			if (!query) {
-				await interaction.reply(
-					wrap_in_embed(
-						`[${repo_details.NAME} Docs](${repo_details.HOMEPAGE}/docs)`,
-					),
+		for (let i = 0; i < results.length; i++) {
+			const str = stringifySearchResult(results[i], query);
+			const section = new SectionBuilder()
+				.addTextDisplayComponents((text) => text.setContent(str))
+				.setButtonAccessory((button) =>
+					button
+						.setCustomId(`${buttonPrefix}-${i}`)
+						.setLabel('Send in Chat')
+						.setStyle(ButtonStyle.Secondary),
 				);
-				return;
+
+			components.push(section);
+
+			if (results.length > i + 1) {
+				components.push(
+					new SeparatorBuilder()
+						.setDivider(true)
+						.setSpacing(SeparatorSpacingSize.Large),
+				);
 			}
-
-			const results = await search_docs(query, repo);
-
-			if (!results.length) {
-				await interaction.reply({
-					content:
-						'No matching result found. Try again with a different search term.',
-					ephemeral: true,
-				});
-				return;
-			}
-
-			await interaction.reply({
-				embeds: [
-					list_embed_builder(results, `${repo_details.NAME} Docs`),
-				],
-			});
-		} catch {
-			await interaction.reply({
-				content: 'An error occurred while searching the docs.',
-				ephemeral: true,
-			});
 		}
-	},
 
-	autocomplete: async ({ interaction }) => {
-		const focused = interaction.options.getFocused(true);
-		if (focused.name !== 'query') return;
-
-		const query = focused.value as string;
-		if (!query) return await interaction.respond([]);
-
-		const repo = get_repo(interaction.options.getSubcommand(true));
-
-		const results = await search_docs(query, repo, {
-			limit: 10,
-			as_link: false,
+		const response = await interaction.reply({
+			flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+			withResponse: true,
+			components,
 		});
 
-		await interaction
-			.respond(results.map(into_name_value_pair))
-			.catch(no_op);
+		const button = await response.resource?.message?.awaitMessageComponent({
+			filter: (i) => i.user.id == interaction.user.id,
+			time: 60_000 * 10,
+		});
+
+		if (button) {
+			const resultIndex = Number.parseInt(
+				button.customId.slice(buttonPrefix.length + 1),
+			);
+
+			await button.reply({
+				flags: MessageFlags.IsComponentsV2,
+				components: [
+					new TextDisplayBuilder().setContent(
+						stringifySearchResult(
+							results[resultIndex],
+							query,
+							1200,
+						),
+					),
+					new SeparatorBuilder()
+						.setDivider(true)
+						.setSpacing(SeparatorSpacingSize.Large),
+					new TextDisplayBuilder().setContent(
+						`</${interaction.commandName}:${interaction.commandId}> query: \`${query}\` | Search by ${userMention(interaction.user.id)}`,
+					),
+				],
+			});
+
+			await interaction.editReply({
+				flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
+				components: button.message.components.flatMap((component) =>
+					component.type === ComponentType.Section
+						? component.components
+						: component,
+				),
+			});
+		}
 	},
 });

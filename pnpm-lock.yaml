@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      dedent:
+        specifier: ^1.7.0
+        version: 1.7.0
       discord.js:
         specifier: ^14.21.0
         version: 14.21.0
@@ -15,8 +18,8 @@ importers:
         specifier: ^17.2.0
         version: 17.2.0
       flexsearch:
-        specifier: ^0.8.205
-        version: 0.8.205
+        specifier: ^0.8.212
+        version: 0.8.212
       jellycommands:
         specifier: 1.0.0-next.45
         version: 1.0.0-next.45(discord.js@14.21.0)
@@ -352,6 +355,14 @@ packages:
       supports-color:
         optional: true
 
+  dedent@1.7.0:
+    resolution: {integrity: sha512-HGFtf8yhuhGhqO07SV79tRp+br4MnbdjeVxotpn1QBl30pcLLCQjX5b2295ll0fv8RKDKsmWYrl05usHM9CewQ==}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
   destr@2.0.5:
     resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
@@ -398,8 +409,8 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  flexsearch@0.8.205:
-    resolution: {integrity: sha512-REFjMqy86DKkCTJ4gIE42c9MVm9t1vUWfEub/8taixYuhvyu4jd4XmFALk5VuKW4GH4VLav8A4BJboTsslHF1w==}
+  flexsearch@0.8.212:
+    resolution: {integrity: sha512-wSyJr1GUWoOOIISRu+X2IXiOcVfg9qqBRyCPRUdLMIGJqPzMo+jMRlvE83t14v1j0dRMEaBbER/adQjp6Du2pw==}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -830,6 +841,8 @@ snapshots:
     optionalDependencies:
       supports-color: 5.5.0
 
+  dedent@1.7.0: {}
+
   destr@2.0.5: {}
 
   discord-api-types@0.37.120: {}
@@ -912,7 +925,7 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  flexsearch@0.8.205: {}
+  flexsearch@0.8.212: {}
 
   fsevents@2.3.3:
     optional: true
