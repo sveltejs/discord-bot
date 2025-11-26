@@ -23,7 +23,6 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.1.2",
 		"@types/node": "^24.0.14",
-		"nodemon": "^3.1.10",
 		"pocketbase": "^0.26.1",
 		"prettier": "^3.6.2",
 		"typescript": "^5.8.3"
