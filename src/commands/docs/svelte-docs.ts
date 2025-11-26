@@ -60,55 +60,12 @@ export async function createDocsClient() {
 	}
 
 	function lookup(href: string) {
-		return map.get(href)!;
+		return map.get(href);
 	}
 
 	return {
-		search(query: string): BlockGroup[] {
-			const escaped = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-			const exact_match = new RegExp(`^${escaped}$`, 'i');
-			const word_match = new RegExp(`(^|\\b)${escaped}($|\\b)`, 'i');
-			const near_match = new RegExp(`(^|\\b)${escaped}`, 'i');
-
-			// const parts = path.split('/');
-
-			const blocks = indexes
-				.flatMap((index) => index.search(query))
-				// @ts-expect-error flexsearch types are wrong i think?
-				.map(lookup)
-				.map((block, rank) => {
-					const block_parts = block.href.split('/');
-
-					// // prioritise current section
-					// let score = block_parts.findIndex(
-					// 	(part, i) => part !== parts[i],
-					// );
-					// if (score === -1) score = block_parts.length;
-					let score = block_parts.length;
-					score *= CURRENT_SECTION_BOOST;
-
-					if (
-						block.breadcrumbs.some((text) => exact_match.test(text))
-					) {
-						score += EXACT_MATCH_BOOST;
-					} else if (
-						block.breadcrumbs.some((text) => word_match.test(text))
-					) {
-						score += WORD_MATCH_BOOST;
-					} else if (
-						block.breadcrumbs.some((text) => near_match.test(text))
-					) {
-						score += NEAR_MATCH_BOOST;
-					}
-
-					// prioritise branches over leaves
-					score -= block.breadcrumbs.length * BREADCRUMB_LENGTH_BOOST;
-
-					const entry: Entry = { block, score, rank };
-
-					return entry;
-				});
-
+		lookup,
+		group(blocks: Entry[]): BlockGroup[] {
 			const grouped: Record<
 				string,
 				{ breadcrumbs: string[]; entries: Entry[] }
@@ -143,6 +100,58 @@ export async function createDocsClient() {
 					blocks: group.entries.map((entry) => entry.block),
 				};
 			});
+		},
+		search(query: string) {
+			const escaped = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+			const exact_match = new RegExp(`^${escaped}$`, 'i');
+			const word_match = new RegExp(`(^|\\b)${escaped}($|\\b)`, 'i');
+			const near_match = new RegExp(`(^|\\b)${escaped}`, 'i');
+
+			// const parts = path.split('/');
+
+			const blocks = indexes
+				.flatMap((index) => index.search(query))
+				// @ts-expect-error flexsearch types are wrong i think?
+				.map(lookup)
+				.map((block, rank) => {
+					if (!block) {
+						throw new Error('missing block');
+					}
+
+					const block_parts = block.href.split('/');
+
+					// // prioritise current section
+					// let score = block_parts.findIndex(
+					// 	(part, i) => part !== parts[i],
+					// );
+					// if (score === -1) score = block_parts.length;
+					let score = block_parts.length;
+					score *= CURRENT_SECTION_BOOST;
+
+					if (
+						block.breadcrumbs.some((text) => exact_match.test(text))
+					) {
+						score += EXACT_MATCH_BOOST;
+					} else if (
+						block.breadcrumbs.some((text) => word_match.test(text))
+					) {
+						score += WORD_MATCH_BOOST;
+					} else if (
+						block.breadcrumbs.some((text) => near_match.test(text))
+					) {
+						score += NEAR_MATCH_BOOST;
+					}
+
+					// prioritise branches over leaves
+					score -= block.breadcrumbs.length * BREADCRUMB_LENGTH_BOOST;
+
+					const entry: Entry = { block, score, rank };
+
+					return entry;
+				})
+				.toSorted((a, b) => b.score - a.score || a.rank - b.rank);
+
+			return blocks;
 		},
 	};
 }

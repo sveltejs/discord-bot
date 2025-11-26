@@ -2,6 +2,7 @@ import { createDocsClient, type BlockGroup } from './svelte-docs';
 import { command } from 'jellycommands';
 import dedent from 'dedent';
 import {
+	ButtonBuilder,
 	ButtonStyle,
 	ComponentType,
 	MessageFlags,
@@ -77,12 +78,44 @@ export default command({
 			name: 'query',
 			description: 'The search query',
 			required: true,
+			autocomplete: true,
 		},
 	],
 
-	run: async ({ interaction }) => {
+	async run({ interaction }) {
 		const query = interaction.options.getString('query', true);
-		const results = docs.search(query);
+
+		if (URL.canParse(query)) {
+			const url = new URL(query);
+			const block = docs.lookup(`${url.pathname}${url.hash}`);
+
+			if (block) {
+				await interaction.reply({
+					flags: MessageFlags.IsComponentsV2,
+					components: [
+						new SectionBuilder()
+							.addTextDisplayComponents((text) =>
+								text.setContent(
+									`## ${block.breadcrumbs.join(' • ')}\n\n${block.content.slice(0, 1600).trim()}`,
+								),
+							)
+							.setButtonAccessory(
+								new ButtonBuilder()
+									.setURL(`https://svelte.dev${block.href}`)
+									.setStyle(ButtonStyle.Link)
+									.setLabel(
+										block.content.length > 1600
+											? 'Continue Reading'
+											: 'Open on svelte.dev',
+									),
+							),
+					],
+				});
+				return;
+			}
+		}
+
+		const results = docs.group(docs.search(query));
 
 		if (!results.length) {
 			await interaction.reply({
@@ -161,5 +194,21 @@ export default command({
 				),
 			});
 		}
+	},
+
+	async autocomplete({ interaction }) {
+		const query = interaction.options.getString('query', true);
+		const results = docs.search(query);
+
+		if (!results.length) {
+			return await interaction.respond([]);
+		}
+
+		return await interaction.respond(
+			results.slice(0, 16).map((result) => ({
+				name: result.block.breadcrumbs.join(' • '),
+				value: `https://svelte.dev${result.block.href}`,
+			})),
+		);
 	},
 });
