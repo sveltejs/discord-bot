@@ -1,3 +1,6 @@
+import { createDocsClient, type BlockGroup } from './svelte-docs';
+import { command } from 'jellycommands';
+import dedent from 'dedent';
 import {
 	ButtonStyle,
 	ComponentType,
@@ -8,9 +11,6 @@ import {
 	TextDisplayBuilder,
 	userMention,
 } from 'discord.js';
-import { createDocsClient, type BlockGroup } from './svelte-docs';
-import { command } from 'jellycommands';
-import dedent from 'dedent';
 
 const docs = await createDocsClient();
 
@@ -84,6 +84,14 @@ export default command({
 		const query = interaction.options.getString('query', true);
 		const results = docs.search(query);
 
+		if (!results.length) {
+			await interaction.reply({
+				flags: MessageFlags.Ephemeral,
+				content: 'No results found',
+			});
+			return;
+		}
+
 		const buttonPrefix = crypto.randomUUID();
 		const components = [];
 
@@ -112,7 +120,7 @@ export default command({
 		const response = await interaction.reply({
 			flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral,
 			withResponse: true,
-			components,
+			components: components.slice(0, 18),
 		});
 
 		const button = await response.resource?.message?.awaitMessageComponent({
