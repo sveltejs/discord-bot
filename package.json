@@ -1,13 +1,12 @@
 {
 	"name": "svelte-bot",
 	"private": true,
-	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "nodemon -e js,ts --loader tsm .",
-		"format": "prettier --write .",
+		"dev": "tsx --watch src/index.ts",
 		"db:dev": "./pocketbase/dev.sh",
-		"start": "tsm .",
+		"start": "tsx src/index.ts",
+		"format": "prettier --write .",
 		"check": "biome check && prettier --check ."
 	},
 	"license": "MIT",
@@ -16,7 +15,7 @@
 		"dotenv": "^17.2.0",
 		"flexsearch": "^0.8.205",
 		"jellycommands": "1.0.0-next.45",
-		"tsm": "^2.3.0",
+		"tsx": "^4.20.6",
 		"unfurl.js": "^6.4.0",
 		"url-regex": "^5.0.0"
 	},
