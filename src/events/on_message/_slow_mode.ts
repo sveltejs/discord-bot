@@ -17,6 +17,7 @@ const message_queue_channel_map = new Map<string, QueueItem[]>([]);
 
 const ONE_MINUTE = 60_000;
 const FIVE_MINUTES = 300_000;
+const SEVEN_MINUTES = 420_000;
 const FIFTEEN_MINUTES = 900_000;
 const THIRTY_MINUTES = 1_800_000;
 
@@ -52,33 +53,33 @@ const levelConfigs = Object.freeze([
 		triggers: [
 			{
 				uniqueUsers: 1,
-				messages: 10,
+				messages: 9,
 				timeRange: ONE_MINUTE,
 			},
 			{
-				uniqueUsers: 3,
-				messages: 20,
+				uniqueUsers: 2,
+				messages: 18,
 				timeRange: FIVE_MINUTES,
 			},
 		],
 		timeout: FIFTEEN_MINUTES,
-		rateLimitPerUser: 15,
+		rateLimitPerUser: 30,
 		channelMessage:
-			'Slow mode set to 15 seconds per message. To evade slow mode, consider opening a thread.',
+			'Slow mode set to 30 seconds per message. To evade slow mode, consider opening a thread.',
 	},
 	{
 		level: 2,
 		triggers: [
 			{
-				uniqueUsers: 5,
-				messages: 30,
-				timeRange: FIVE_MINUTES,
+				uniqueUsers: 3,
+				messages: 25,
+				timeRange: SEVEN_MINUTES,
 			},
 		],
 		timeout: THIRTY_MINUTES,
-		rateLimitPerUser: 30,
+		rateLimitPerUser: 60,
 		channelMessage:
-			'Slow mode set to 30 seconds per message. To evade slow mode, consider opening a thread.',
+			'Slow mode set to 60 seconds per message. To evade slow mode, consider opening a thread.',
 	},
 ] as const) satisfies Readonly<LevelConfig[]>;
 
