@@ -121,3 +121,12 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			'640884695890133012', // jobs
 		];
 // #endregion
+
+// #region webhook
+export const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT) || 3000;
+export const WEBHOOK_API_KEY = process.env.WEBHOOK_API_KEY;
+
+export const JOBS_CHANNEL_ID = DEV_MODE
+	? '918887934822858805' // Test channel in dev
+	: '640884695890133012'; // Production jobs channel
+// #endregion
