@@ -8,6 +8,9 @@ export const SVELTE_ORANGE = 0xff3e00;
 
 export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
+export const AI_API_URL = process.env.AI_API_URL ?? 'http://localhost:3000';
+export const AI_SECRET_KEY = process.env.AI_SECRET_KEY;
+
 // #region people
 const ADMIN_ROLES = [
 	// Moderators role in main server
