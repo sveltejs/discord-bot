@@ -21,20 +21,37 @@ export default command({
 	run: async ({ interaction }) => {
 		const question = interaction.options.getString('question', true);
 
+		console.log(`[ask] question: "${question}"`);
+		console.log(`[ask] posting to ${AI_API_URL}/q`);
+
 		const defer = interaction.deferReply();
 
-		const res = await fetch(`${AI_API_URL}/q`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'x-secret-key': AI_SECRET_KEY ?? '',
-			},
-			body: JSON.stringify({ question }),
-		});
+		let res: Response;
+		try {
+			res = await fetch(`${AI_API_URL}/q`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'x-secret-key': AI_SECRET_KEY ?? '',
+				},
+				body: JSON.stringify({ question }),
+			});
+		} catch (err) {
+			console.error('[ask] fetch failed:', err);
+			await defer;
+			await interaction.followUp({
+				embeds: [build_embed({ description: 'Could not reach the AI service.' })],
+			});
+			return;
+		}
+
+		console.log(`[ask] response status: ${res.status}`);
 
 		await defer;
 
 		if (!res.ok) {
+			const body = await res.text();
+			console.error(`[ask] error response: ${body}`);
 			await interaction.followUp({
 				embeds: [build_embed({ description: 'Something went wrong, please try again later.' })],
 			});
@@ -42,6 +59,7 @@ export default command({
 		}
 
 		const data = (await res.json()) as { text: string; steps: number };
+		console.log(`[ask] steps: ${data.steps}, response length: ${data.text.length}`);
 
 		let text = data.text;
 		if (text.length > MAX_EMBED_LENGTH) {
