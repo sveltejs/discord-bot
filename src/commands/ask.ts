@@ -1,8 +1,8 @@
 import { command } from 'jellycommands';
+import { MessageFlags } from 'discord.js';
 import { AI_API_URL, AI_SECRET_KEY } from '../config.js';
-import { build_embed } from '../utils/embed_helpers.js';
 
-const MAX_EMBED_LENGTH = 4096;
+const MAX_MESSAGE_LENGTH = 2000;
 
 export default command({
 	name: 'ask',
@@ -39,9 +39,7 @@ export default command({
 		} catch (err) {
 			console.error('[ask] fetch failed:', err);
 			await defer;
-			await interaction.followUp({
-				embeds: [build_embed({ description: 'Could not reach the AI service.' })],
-			});
+			await interaction.followUp({ content: 'Could not reach the AI service.' });
 			return;
 		}
 
@@ -52,9 +50,7 @@ export default command({
 		if (!res.ok) {
 			const body = await res.text();
 			console.error(`[ask] error response: ${body}`);
-			await interaction.followUp({
-				embeds: [build_embed({ description: 'Something went wrong, please try again later.' })],
-			});
+			await interaction.followUp({ content: 'Something went wrong, please try again later.' });
 			return;
 		}
 
@@ -62,12 +58,10 @@ export default command({
 		console.log(`[ask] steps: ${data.steps}, response length: ${data.text.length}`);
 
 		let text = data.text;
-		if (text.length > MAX_EMBED_LENGTH) {
-			text = text.slice(0, MAX_EMBED_LENGTH - 3) + '...';
+		if (text.length > MAX_MESSAGE_LENGTH) {
+			text = text.slice(0, MAX_MESSAGE_LENGTH - 3) + '...';
 		}
 
-		await interaction.followUp({
-			embeds: [build_embed({ description: text })],
-		});
+		await interaction.followUp({ content: text, flags: MessageFlags.SuppressEmbeds });
 	},
 });
