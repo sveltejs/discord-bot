@@ -39,7 +39,9 @@ export default command({
 		} catch (err) {
 			console.error('[ask] fetch failed:', err);
 			await defer;
-			await interaction.followUp({ content: 'Could not reach the AI service.' });
+			await interaction.followUp({
+				content: 'Could not reach the AI service.',
+			});
 			return;
 		}
 
@@ -50,18 +52,25 @@ export default command({
 		if (!res.ok) {
 			const body = await res.text();
 			console.error(`[ask] error response: ${body}`);
-			await interaction.followUp({ content: 'Something went wrong, please try again later.' });
+			await interaction.followUp({
+				content: 'Something went wrong, please try again later.',
+			});
 			return;
 		}
 
 		const data = (await res.json()) as { text: string; steps: number };
-		console.log(`[ask] steps: ${data.steps}, response length: ${data.text.length}`);
+		console.log(
+			`[ask] steps: ${data.steps}, response length: ${data.text.length}`,
+		);
 
 		let text = data.text;
 		if (text.length > MAX_MESSAGE_LENGTH) {
 			text = text.slice(0, MAX_MESSAGE_LENGTH - 3) + '...';
 		}
 
-		await interaction.followUp({ content: text, flags: MessageFlags.SuppressEmbeds });
+		await interaction.followUp({
+			content: text,
+			flags: MessageFlags.SuppressEmbeds,
+		});
 	},
 });
