@@ -15,9 +15,7 @@ export default async function mutate_content(message: Message) {
 
 	const links = message.content
 		.match(X_URL_REGEX)
-		?.map((link) =>
-			link.replace(X_URL_REGEX, 'https://xcancel.com/$1'),
-		);
+		?.map((link) => link.replace(X_URL_REGEX, 'https://xcancel.com/$1'));
 
 	if (!links || links.length === 0) {
 		return;
