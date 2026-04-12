@@ -8,15 +8,15 @@ import {
 } from 'discord.js';
 
 // Matches x.com links, but discards surrounding <> and () and trailing dots.
-const xUrlRegex = /(?:<|\()?https:\/\/x\.com\/([^>)\n .]+)(?:>|\))?/gm;
+const X_URL_REGEX = /(?:<|\()?https:\/\/x\.com\/([^>)\n .]+)(?:>|\))?/gm;
 
 export default async function mutate_content(message: Message) {
 	if (!message.channel.isTextBased() || message.channel.isDMBased()) return;
 
 	const links = message.content
-		.match(xUrlRegex)
+		.match(X_URL_REGEX)
 		?.map((link) =>
-			link.replace(xUrlRegex, 'https://xcancel.com/$1'),
+			link.replace(X_URL_REGEX, 'https://xcancel.com/$1'),
 		);
 
 	if (!links || links.length === 0) {
