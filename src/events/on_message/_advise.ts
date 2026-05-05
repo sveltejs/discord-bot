@@ -6,17 +6,16 @@ import {
 	userMention,
 	type Message,
 } from 'discord.js';
-import urlRegex from 'url-regex';
+
+// Matches x.com links, but discards surrounding <> and () and trailing dots.
+const X_URL_REGEX = /(?:<|\()?https:\/\/x\.com\/([^>)\n .]+)(?:>|\))?/gm;
 
 export default async function mutate_content(message: Message) {
 	if (!message.channel.isTextBased() || message.channel.isDMBased()) return;
 
 	const links = message.content
-		.match(urlRegex())
-		?.filter((link) => link.startsWith('https://x.com'))
-		.map((link) =>
-			link.replace(/^https:\/\/x\.com/, 'https://xcancel.com'),
-		);
+		.match(X_URL_REGEX)
+		?.map((link) => link.replace(X_URL_REGEX, 'https://xcancel.com/$1'));
 
 	if (!links || links.length === 0) {
 		return;
