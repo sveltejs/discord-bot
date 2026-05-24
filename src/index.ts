@@ -5,6 +5,7 @@ import { DEV_MODE, TEST_GUILD_ID } from './config';
 import { Scheduler } from './scheduled/_scheduler';
 import { JellyCommands } from 'jellycommands';
 import { IntentsBitField } from 'discord.js';
+import { start_webhook_server } from './webhook/server';
 
 const client = new JellyCommands({
 	components: ['src/commands', 'src/buttons', 'src/events'],
@@ -34,6 +35,10 @@ const client = new JellyCommands({
 });
 
 new Scheduler(client).addTask(analyticsTask).addTask(guildEventsTask);
+
+client.once('ready', () => {
+	start_webhook_server(client);
+});
 
 // Auto reads the DISCORD_TOKEN environment variable
 client.login();
