@@ -164,6 +164,7 @@ export default command({
 		if (button) {
 			const resultIndex = Number.parseInt(
 				button.customId.slice(buttonPrefix.length + 1),
+				10,
 			);
 
 			await button.reply({

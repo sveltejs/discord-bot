@@ -1,4 +1,4 @@
-FROM ghcr.io/ghostdevv/node:24-alpine
+FROM ghcr.io/ghostdevv/node:26-alpine
 
 WORKDIR /app
 COPY . .

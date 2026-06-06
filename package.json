@@ -11,21 +11,21 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"dedent": "^1.7.0",
-		"discord.js": "^14.21.0",
-		"dotenv": "^17.2.0",
+		"dedent": "^1.7.2",
+		"discord.js": "^14.26.4",
+		"dotenv": "^17.4.2",
 		"flexsearch": "^0.8.212",
 		"jellycommands": "1.0.0-next.45",
-		"tsx": "^4.20.6",
+		"tsx": "^4.22.4",
 		"unfurl.js": "^6.4.0",
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.1.2",
-		"@types/node": "^24.0.14",
-		"pocketbase": "^0.26.1",
-		"prettier": "^3.6.2",
-		"typescript": "^5.8.3"
+		"@biomejs/biome": "2.4.16",
+		"@types/node": "^24.13.1",
+		"pocketbase": "^0.27.0",
+		"prettier": "^3.8.3",
+		"typescript": "^6.0.3"
 	},
 	"packageManager": "pnpm@11.5.2",
 	"volta": {

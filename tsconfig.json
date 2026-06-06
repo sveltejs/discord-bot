@@ -3,7 +3,7 @@
 		"target": "esnext",
 		"module": "esnext",
 		"outDir": "./dist",
-		"moduleResolution": "Node",
+		"moduleResolution": "bundler",
 		"verbatimModuleSyntax": true,
 		"strict": true,
 		"declaration": false,
@@ -17,10 +17,7 @@
 		"resolveJsonModule": true,
 		"allowJs": true,
 		"skipLibCheck": true,
-		"baseUrl": ".",
-		"paths": {
-			"flexsearch": ["node_modules/@types/flexsearch"]
-		}
+		"types": ["node", "flexsearch"]
 	},
 	"include": ["src/**/*"],
 	"exclude": ["dist"]

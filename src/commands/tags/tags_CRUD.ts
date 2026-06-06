@@ -76,7 +76,15 @@ export default command({
 		// Make tag names case insensitive to disallow similar names and avoid confusion
 		const tag_name = interaction.options
 			.getString('name', subcommand !== Actions.LIST)
-			?.toLowerCase()!;
+			?.toLowerCase();
+
+		if (!tag_name) {
+			await interaction.reply({
+				content: 'Unable to find `name` option',
+				ephemeral: true,
+			});
+			return;
+		}
 
 		await handlers[subcommand]({ interaction, tag_name });
 	},
