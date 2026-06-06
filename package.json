@@ -6,8 +6,8 @@
 		"dev": "tsx --watch src/index.ts",
 		"db:dev": "./pocketbase/dev.sh",
 		"start": "tsx src/index.ts",
-		"format": "prettier --write .",
-		"check": "biome check && prettier --check ."
+		"fix": "prettier --write . && biome check --write",
+		"check": "prettier --check . && tsc --noEmit && biome check"
 	},
 	"license": "MIT",
 	"dependencies": {
