@@ -24,5 +24,3 @@ export async function get_title_from_url(url: string): Promise<string> {
 		return new URL(url).host;
 	}
 }
-
-console.log(await get_title_from_url('https://willow.sh'));
