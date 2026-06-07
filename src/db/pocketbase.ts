@@ -1,6 +1,5 @@
 // todo enable verbatim module syntax
 import Pocketbase, { type RecordService } from 'pocketbase';
-import 'dotenv/config';
 
 export const pb = new Pocketbase(
 	process.env.POCKETBASE_URL!,

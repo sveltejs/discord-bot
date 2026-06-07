@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { guildEventsTask } from './scheduled/guild-events';
 import { analyticsTask } from './scheduled/analytics';
 import { DEV_MODE, TEST_GUILD_ID } from './config';
