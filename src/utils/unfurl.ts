@@ -1,34 +1,28 @@
-import { unfurl } from 'unfurl.js';
 import { URL } from 'node:url';
 
-function get_url_host(raw_url: string) {
-	const url = new URL(raw_url);
-
-	if (url.host == 'github.com') {
-		const parts = url.pathname.split('/').filter(Boolean);
-		if (parts.length < 2) return url.host;
-
-		return `GitHub - ${parts[0]}/${parts[1]}`;
-	}
-
-	return url.host;
+interface UnfurlResult {
+	title: string | null;
+	description: string | null;
+	url: string | null;
 }
 
 export async function get_title_from_url(url: string): Promise<string> {
 	try {
-		const data = await unfurl(url, {
-			compress: true,
-			oembed: false,
-			timeout: 2000,
+		const endpoint = new URL('https://unfurl.willow.rest/v0');
+		endpoint.searchParams.set('url', url);
+
+		const response = await fetch(endpoint, {
+			headers: {
+				'User-Agent':
+					'svelte-bot (+https://github.com/sveltejs/discord-bot)',
+			},
 		});
 
-		return (
-			data.open_graph?.title ||
-			data.twitter_card?.title ||
-			data.title ||
-			get_url_host(url)
-		);
+		const data: UnfurlResult = await response.json();
+		return data.title || new URL(url).host;
 	} catch {
-		return get_url_host(url);
+		return new URL(url).host;
 	}
 }
+
+console.log(await get_title_from_url('https://willow.sh'));
