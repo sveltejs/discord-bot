@@ -2,7 +2,6 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"outDir": "./dist",
 		"moduleResolution": "bundler",
 		"verbatimModuleSyntax": true,
 		"strict": true,
