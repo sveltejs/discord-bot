@@ -121,3 +121,9 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			'640884695890133012', // jobs
 		];
 // #endregion
+
+export const MOD_LOGS_CHANNEL = DEV_MODE
+	? //#moderator-only
+		'1023930138724925503'
+	: // #mod-logs
+		'1516107307082186772';
