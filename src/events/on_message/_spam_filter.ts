@@ -3,8 +3,19 @@ import { mod_forward, mod_log } from '../../utils/mod_logs';
 import { has_any_role_or_id } from '../../utils/snowflake';
 import { DEV_MODE, THREAD_ADMIN_IDS } from '../../config';
 import { RateLimitStore } from '../../utils/ratelimit';
-import { setTimeout } from 'node:timers/promises';
 import { has_link, STOP } from './_common';
+import { timeout } from '../../utils/member_actions';
+import { wait } from '../../utils';
+
+const BOT_ACTIONS = Object.freeze({
+	warn: 'warn',
+	ban: 'ban',
+});
+type Bot_Actions_Type = (typeof BOT_ACTIONS)[keyof typeof BOT_ACTIONS];
+
+// Flags
+const spam_filter_multi_channel_action: Bot_Actions_Type | string | undefined =
+	process.env.SPAM_FILTER_MULTI_CHANNEL_ACTION;
 
 // 3 messages within a 5 second period
 const singleChannelLimit = new RateLimitStore(3, 5_000, 1);
@@ -52,19 +63,34 @@ export default async function spam_filter(message: Message) {
 		await message.reply('Oi, stop spamming you troglodyte.');
 		// Unlikely to be spam from trusted members
 	} else if (!debug(is_threadlord)) {
-		// Ban hammer
 		await mod_forward(message);
 
-		await Promise.allSettled([
-			ban(member, 3),
-			member.send(
-				'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at <https://github.com/pngwn/svelte-bot/issues/38>',
-			),
-			mod_log(
-				message.client,
-				`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
-			),
-		]);
+		if (
+			posts_many_links_within_a_channel ||
+			(posts_many_messages_across_channels &&
+				spam_filter_multi_channel_action === 'ban')
+		) {
+			// Ban
+			await Promise.allSettled([
+				ban(member, 3),
+				member.send(
+					'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at <https://github.com/pngwn/svelte-bot/issues/38>',
+				),
+				mod_log(
+					message.client,
+					`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
+				),
+			]);
+		} else {
+			// Timeout
+			await Promise.allSettled([
+				timeout(member, 43_200_000, 'Multi-channel spam'),
+				mod_log(
+					message.client,
+					`User ${userMention(message.author.id)} was suspected of spamming and was timed out.`,
+				),
+			]);
+		}
 	}
 
 	throw STOP;
@@ -84,7 +110,7 @@ async function ban(member: GuildMember, tries: number) {
 			);
 			break;
 		} catch {
-			await setTimeout(1_000);
+			await wait(1_000);
 		}
 	}
 }
