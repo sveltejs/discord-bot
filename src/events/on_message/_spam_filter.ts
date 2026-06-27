@@ -1,10 +1,10 @@
+import { userMention, type GuildMember, type Message } from 'discord.js';
+import { mod_forward, mod_log } from '../../utils/mod_logs';
 import { has_any_role_or_id } from '../../utils/snowflake';
 import { DEV_MODE, THREAD_ADMIN_IDS } from '../../config';
 import { RateLimitStore } from '../../utils/ratelimit';
-import { userMention, type GuildMember, type Message } from 'discord.js';
 import { setTimeout } from 'node:timers/promises';
 import { has_link, STOP } from './_common';
-import { mod_forward, mod_log } from '../../utils/mod_logs';
 
 // 3 messages within a 5 second period
 const singleChannelLimit = new RateLimitStore(3, 5_000, 1);

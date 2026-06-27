@@ -1,7 +1,7 @@
-type LimitRecord = {
+interface LimitRecord {
 	limit: number;
 	channel_ids: Set<string>;
-};
+}
 
 export class RateLimitStore {
 	private available_uses = new Map<string, LimitRecord>();

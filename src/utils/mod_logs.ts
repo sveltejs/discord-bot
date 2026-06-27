@@ -1,4 +1,4 @@
-import { ChannelType, Message, type Client } from 'discord.js';
+import { ChannelType, type Message, type Client } from 'discord.js';
 import { MOD_LOGS_CHANNEL } from '../config';
 
 /** Send a message to a moderator-visible channel */
