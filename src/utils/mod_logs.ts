@@ -7,6 +7,8 @@ export async function mod_log(client: Client, message: string) {
 
 	if (mod_logs_channel && mod_logs_channel.type === ChannelType.GuildText) {
 		await mod_logs_channel.send(message);
+	} else {
+		console.error('failed to find mod logs channel');
 	}
 }
 
