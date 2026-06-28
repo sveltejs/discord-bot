@@ -1,4 +1,4 @@
-import { type GuildMember } from 'discord.js';
+import type { GuildMember } from 'discord.js';
 import { wait } from '.';
 // TODO: ban, warn
 
@@ -7,16 +7,18 @@ import { wait } from '.';
  * @param member
  * @param timeout_length Timeout period in ms
  * @param reason Timeout reason
- * @param tries Timeout action retries
+ * @param retries Timeout action retries
  */
 export async function timeout(
 	member: GuildMember,
 	timeout_length = 43_200_000, // 12 hours
 	reason = 'Bot action',
 	/** @default 3 */
-	tries = 3,
+	retries = 3,
 ) {
-	while (--tries && member.timeout) {
+	let retries_remaining = retries;
+
+	while (--retries_remaining && member.timeout) {
 		try {
 			await member.timeout(timeout_length, reason);
 			console.log(
