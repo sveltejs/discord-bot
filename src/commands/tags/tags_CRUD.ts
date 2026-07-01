@@ -74,11 +74,12 @@ export default command({
 		if (subcommand !== Actions.LIST && !interaction.member) return;
 
 		// Make tag names case insensitive to disallow similar names and avoid confusion
-		const tag_name = interaction.options
-			.getString('name', subcommand !== Actions.LIST)
-			?.toLowerCase();
+		const tag_name =
+			interaction.options
+				.getString('name', subcommand !== Actions.LIST)
+				?.toLowerCase() ?? '';
 
-		if (!tag_name) {
+		if (!tag_name && subcommand !== 'list') {
 			await interaction.reply({
 				content: 'Unable to find `name` option',
 				ephemeral: true,
