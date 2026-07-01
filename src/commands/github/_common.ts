@@ -1,4 +1,4 @@
-import { type Repos, RepositoryDetails } from '../../utils/repositories.js';
+import { type Repo, RepositoryDetails } from '../../utils/repositories.js';
 import { list_embed_builder } from '../../utils/embed_helpers.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { GITHUB_TOKEN } from '../../config.js';
@@ -81,22 +81,18 @@ export async function github_command_handler(
 ) {
 	const repo_name =
 		RepositoryDetails[
-			interaction.options.get('repository', true).value as Repos
+			interaction.options.getString('repository', true) as Repo
 		].REPOSITORY_NAME;
 
 	const topic = interaction.options.get('topic')?.value;
 
 	const search_string = `repo:${repo_name} ${topic ?? ''} ${
-		type === GithubResultType.ISSUE
-			? 'is:issue'
-			: type === GithubResultType.PULL_REQUEST
-				? 'is:pr'
-				: '' // Discussion ignores the `is:` filter
+		type === 'issue' ? 'is:issue' : type === 'pull' ? 'is:pr' : '' // Discussion ignores the `is:` filter
 	}`;
 
 	const results = await search_github(
 		search_string,
-		type === GithubResultType.DISCUSSION ? 'DISCUSSION' : 'ISSUE',
+		type === 'discussion' ? 'DISCUSSION' : 'ISSUE',
 	);
 
 	await interaction.reply(
@@ -111,11 +107,7 @@ export async function github_command_handler(
 	);
 }
 
-export enum GithubResultType {
-	ISSUE = 0,
-	PULL_REQUEST = 1,
-	DISCUSSION = 2,
-}
+export type GithubResultType = 'issue' | 'pull' | 'discussion';
 
 interface SearchResult {
 	title: string;

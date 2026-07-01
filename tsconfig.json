@@ -16,7 +16,10 @@
 		"resolveJsonModule": true,
 		"allowJs": true,
 		"skipLibCheck": true,
-		"types": ["node", "flexsearch"]
+		"types": ["node", "flexsearch"],
+		"erasableSyntaxOnly": true,
+		"allowImportingTsExtensions": true,
+		"noEmit": true
 	},
 	"include": ["src/**/*"],
 	"exclude": ["dist"]

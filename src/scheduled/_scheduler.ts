@@ -12,10 +12,12 @@ export class Scheduler {
 	private intervals = new Map<ScheduledTask, NodeJS.Timeout>();
 	private tasks: ScheduledTask[] = [];
 	private destroyed = false;
+	private readonly client;
 	private ready: boolean;
 
-	constructor(private readonly client: JellyCommands) {
+	constructor(client: JellyCommands) {
 		this.ready = client.isReady();
+		this.client = client;
 
 		if (!this.ready) {
 			// todo check this

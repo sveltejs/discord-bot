@@ -5,13 +5,16 @@ interface LimitRecord {
 
 export class RateLimitStore {
 	private available_uses = new Map<string, LimitRecord>();
+	/** How many unique channels to track */
+	private unique_channels;
+	private time_period;
+	private count;
 
-	constructor(
-		private count: number,
-		private time_period: number,
-		/** How many unique channels to track */
-		private unique_channels: number,
-	) {}
+	constructor(count: number, time_period: number, unique_channels: number) {
+		this.count = count;
+		this.time_period = time_period;
+		this.unique_channels = unique_channels;
+	}
 
 	/**
 	 * Check whether provide key/user reaches rate limit.

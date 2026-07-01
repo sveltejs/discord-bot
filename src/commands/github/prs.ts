@@ -1,5 +1,5 @@
-import { GithubResultType, github_command_handler } from './_common.js';
-import { Repos } from '../../utils/repositories.js';
+import type { Repo } from '../../utils/repositories.js';
+import { github_command_handler } from './_common.js';
 import { command } from 'jellycommands';
 
 export default command({
@@ -11,23 +11,23 @@ export default command({
 		{
 			name: 'repository',
 			description: 'The repository to search within',
-			type: 'Integer',
+			type: 'String',
 			choices: [
 				{
 					name: 'Svelte',
-					value: Repos.SVELTE,
+					value: 'svelte' as const satisfies Repo,
 				},
 				{
 					name: 'SvelteKit',
-					value: Repos.SVELTE_KIT,
+					value: 'sveltekit' as const satisfies Repo,
 				},
 				{
 					name: 'RFCs',
-					value: Repos.RFCS,
+					value: 'rfcs' as const satisfies Repo,
 				},
 				{
 					name: 'Language Tools',
-					value: Repos.LANGUAGE_TOOLS,
+					value: 'language-tools' as const satisfies Repo,
 				},
 			],
 			required: true,
@@ -40,8 +40,5 @@ export default command({
 	],
 
 	run: async ({ interaction }) =>
-		await github_command_handler(
-			interaction,
-			GithubResultType.PULL_REQUEST,
-		),
+		await github_command_handler(interaction, 'pull'),
 });

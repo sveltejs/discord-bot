@@ -4,19 +4,14 @@ import { tag_update_handler } from './_tags_update.js';
 import { tag_list_handler } from './_tags_list.js';
 import { command } from 'jellycommands';
 
-enum Actions {
-	CREATE = 'create',
-	UPDATE = 'update',
-	DELETE = 'delete',
-	LIST = 'list',
-}
+const HANDLERS = Object.freeze({
+	create: tag_create_handler,
+	update: tag_update_handler,
+	delete: tag_delete_handler,
+	list: tag_list_handler,
+});
 
-const handlers = {
-	[Actions.CREATE]: tag_create_handler,
-	[Actions.UPDATE]: tag_update_handler,
-	[Actions.DELETE]: tag_delete_handler,
-	[Actions.LIST]: tag_list_handler,
-};
+type Action = keyof typeof HANDLERS;
 
 export default command({
 	name: 'tags',
@@ -24,7 +19,7 @@ export default command({
 	global: true,
 	options: [
 		{
-			name: Actions.CREATE,
+			name: 'create' as const satisfies Action,
 			type: 'Subcommand',
 			description: 'Create a tag',
 			options: [
@@ -37,7 +32,7 @@ export default command({
 			],
 		},
 		{
-			name: Actions.UPDATE,
+			name: 'update' as const satisfies Action,
 			type: 'Subcommand',
 			description: 'Update a tag',
 			options: [
@@ -50,7 +45,7 @@ export default command({
 			],
 		},
 		{
-			name: Actions.DELETE,
+			name: 'delete' as const satisfies Action,
 			type: 'Subcommand',
 			description: 'Delete a tag',
 			options: [
@@ -63,20 +58,20 @@ export default command({
 			],
 		},
 		{
-			name: Actions.LIST,
+			name: 'list' as const satisfies Action,
 			type: 'Subcommand',
 			description: 'List all tags',
 		},
 	],
 
 	run: async ({ interaction }) => {
-		const subcommand = interaction.options.getSubcommand() as Actions;
-		if (subcommand !== Actions.LIST && !interaction.member) return;
+		const subcommand = interaction.options.getSubcommand() as Action;
+		if (subcommand !== 'list' && !interaction.member) return;
 
 		// Make tag names case insensitive to disallow similar names and avoid confusion
 		const tag_name =
 			interaction.options
-				.getString('name', subcommand !== Actions.LIST)
+				.getString('name', subcommand !== 'list')
 				?.toLowerCase() ?? '';
 
 		if (!tag_name && subcommand !== 'list') {
@@ -87,6 +82,6 @@ export default command({
 			return;
 		}
 
-		await handlers[subcommand]({ interaction, tag_name });
+		await HANDLERS[subcommand]({ interaction, tag_name });
 	},
 });

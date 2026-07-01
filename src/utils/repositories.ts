@@ -1,26 +1,21 @@
-export enum Repos {
-	'SVELTE' = 1,
-	'SVELTE_KIT' = 2,
-	'RFCS' = 3,
-	'LANGUAGE_TOOLS' = 4,
-}
+export type Repo = 'svelte' | 'sveltekit' | 'rfcs' | 'language-tools';
 
-export const RepositoryDetails: Record<Repos, RepoInfo> = {
-	1: {
+export const RepositoryDetails: Record<Repo, RepoInfo> = {
+	svelte: {
 		NAME: 'Svelte',
 		HOMEPAGE: 'https://svelte.dev',
 		REPOSITORY_NAME: 'sveltejs/svelte',
 	},
-	2: {
+	sveltekit: {
 		NAME: 'SvelteKit',
 		HOMEPAGE: 'https://kit.svelte.dev',
 		REPOSITORY_NAME: 'sveltejs/kit',
 	},
-	3: {
+	rfcs: {
 		NAME: 'Svelte RFCs',
 		REPOSITORY_NAME: 'sveltejs/rfcs',
 	},
-	4: {
+	'language-tools': {
 		NAME: 'Svelte Language Tools',
 		REPOSITORY_NAME: 'sveltejs/language-tools',
 	},
