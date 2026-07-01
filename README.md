@@ -52,7 +52,7 @@ All contributions are welcome, please try and make an issue first since most new
 
 ## Running for development
 
-You'll need at least Node 24.11.1, pnpm 10.23.0, and go 1.23.2.
+You'll need at least Node 26.3.0, pnpm 11.5.2, and go 1.25.0.
 
 1. Once you have the bot cloned and have run `pnpm install` then you need to make a .env file and fill out the fields:
 
@@ -70,7 +70,7 @@ Since there is no user facing code, prefer `snake_case` for variables and functi
 
 # Deploying
 
-The bot uses the [tsm](https://github.com/lukeed/tsm) module loader to transpile its Typescript code on the fly so there's no build step involved.
+Node.js has built-in TypeScript type stripping, so there's no build step involved.
 
 ```sh
 pnpm install
