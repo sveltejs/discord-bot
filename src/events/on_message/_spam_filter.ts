@@ -1,21 +1,21 @@
 import { userMention, type GuildMember, type Message } from 'discord.js';
 import { mod_forward, mod_log } from '../../utils/mod_logs';
 import { has_any_role_or_id } from '../../utils/snowflake';
-import {
-	DEV_MODE,
-	SPAM_FILTER_MULTI_CHANNEL_ACTION,
-	THREAD_ADMIN_IDS,
-} from '../../config';
 import { RateLimitStore } from '../../utils/ratelimit';
-import { has_link, STOP } from './_common';
 import { timeout } from '../../utils/member_actions';
 import { setTimeout } from 'node:timers/promises';
+import { has_link, STOP } from './_common';
+import {
+	SPAM_FILTER_MULTI_CHANNEL_ACTION,
+	THREAD_ADMIN_IDS,
+	DEV_MODE,
+} from '../../config';
 
 // 3 messages within a 5 second period
-const singleChannelLimit = new RateLimitStore(3, 5_000, 1);
+const single_channel_limit = new RateLimitStore(3, 5_000, 1);
 
 // 3 messages across 3 channels within a 10 second period
-const multiChannelLimit = new RateLimitStore(3, 10_000, 3);
+const multi_channel_limit = new RateLimitStore(3, 10_000, 3);
 
 function debug<T>(val: T): T {
 	console.log(val);
@@ -27,7 +27,7 @@ export default async function spam_filter(message: Message) {
 		message.inGuild() &&
 		!message.thread &&
 		has_link(message) &&
-		singleChannelLimit.is_limited(
+		single_channel_limit.is_limited(
 			message.author.id,
 			message.channelId,
 			true,
@@ -36,7 +36,7 @@ export default async function spam_filter(message: Message) {
 	const posts_many_messages_across_channels =
 		message.inGuild() &&
 		!message.thread &&
-		multiChannelLimit.is_limited(
+		multi_channel_limit.is_limited(
 			message.author.id,
 			message.channelId,
 			true,
