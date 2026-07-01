@@ -8,6 +8,14 @@ export const SVELTE_ORANGE = 0xff3e00;
 
 export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
+/**
+ * Feature flag for spam filtering.
+ * If a user posts any kind of message across multiple channels,
+ * either time them out or ban them.
+ */
+export const SPAM_FILTER_MULTI_CHANNEL_ACTION = process.env
+	.SPAM_FILTER_MULTI_CHANNEL_ACTION as 'timeout' | 'ban' | undefined;
+
 // #region people
 const ADMIN_ROLES = [
 	// Moderators role in main server

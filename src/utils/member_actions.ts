@@ -1,5 +1,5 @@
 import type { GuildMember } from 'discord.js';
-import { wait } from '.';
+import { setTimeout } from 'node:timers/promises';
 // TODO: ban, warn
 
 /**
@@ -26,7 +26,7 @@ export async function timeout(
 			);
 			break;
 		} catch {
-			await wait(1000);
+			await setTimeout(1_000);
 		}
 	}
 }

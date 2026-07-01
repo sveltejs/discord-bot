@@ -1,21 +1,15 @@
 import { userMention, type GuildMember, type Message } from 'discord.js';
 import { mod_forward, mod_log } from '../../utils/mod_logs';
 import { has_any_role_or_id } from '../../utils/snowflake';
-import { DEV_MODE, THREAD_ADMIN_IDS } from '../../config';
+import {
+	DEV_MODE,
+	SPAM_FILTER_MULTI_CHANNEL_ACTION,
+	THREAD_ADMIN_IDS,
+} from '../../config';
 import { RateLimitStore } from '../../utils/ratelimit';
 import { has_link, STOP } from './_common';
 import { timeout } from '../../utils/member_actions';
-import { wait } from '../../utils';
-
-const BOT_ACTIONS = Object.freeze({
-	warn: 'warn',
-	ban: 'ban',
-});
-type Bot_Actions_Type = (typeof BOT_ACTIONS)[keyof typeof BOT_ACTIONS];
-
-// Flags
-const spam_filter_multi_channel_action: Bot_Actions_Type | string | undefined =
-	process.env.SPAM_FILTER_MULTI_CHANNEL_ACTION;
+import { setTimeout } from 'node:timers/promises';
 
 // 3 messages within a 5 second period
 const singleChannelLimit = new RateLimitStore(3, 5_000, 1);
@@ -68,7 +62,7 @@ export default async function spam_filter(message: Message) {
 		if (
 			posts_many_links_within_a_channel ||
 			(posts_many_messages_across_channels &&
-				spam_filter_multi_channel_action === 'ban')
+				SPAM_FILTER_MULTI_CHANNEL_ACTION === 'ban')
 		) {
 			// Ban
 			await Promise.allSettled([
@@ -110,7 +104,7 @@ async function ban(member: GuildMember, tries: number) {
 			);
 			break;
 		} catch {
-			await wait(1_000);
+			await setTimeout(1_000);
 		}
 	}
 }
