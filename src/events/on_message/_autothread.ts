@@ -4,10 +4,10 @@ import {
 	MessageType,
 	type ThreadChannel,
 } from 'discord.js';
-import { delete_message, in_link_only_channel, STOP } from './_common.js';
-import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../../config.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { get_title_from_url } from '../../utils/unfurl.js';
+import { delete_message, in_link_only_channel, STOP } from './_common.ts';
+import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../../config.ts';
+import { wrap_in_embed } from '../../utils/embed_helpers.ts';
+import { get_title_from_url } from '../../utils/unfurl.ts';
 import url_regex from 'url-regex';
 
 export default async function autothread(message: Message) {

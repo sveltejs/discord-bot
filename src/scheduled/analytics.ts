@@ -1,6 +1,6 @@
-import { DEV_MODE, TEST_GUILD_ID } from '../config';
-import type { ScheduledTask } from './_scheduler';
-import { pb } from '../db/pocketbase';
+import { DEV_MODE, TEST_GUILD_ID } from '../config.ts';
+import type { ScheduledTask } from './_scheduler.ts';
+import { pb } from '../db/pocketbase.ts';
 
 export const analyticsTask: ScheduledTask = {
 	interval: 60 * 60 * 6,

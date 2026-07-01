@@ -1,4 +1,4 @@
-import { createDocsClient, type BlockGroup } from './svelte-docs';
+import { createDocsClient, type BlockGroup } from './svelte-docs.ts';
 import { command } from 'jellycommands';
 import dedent from 'dedent';
 import {

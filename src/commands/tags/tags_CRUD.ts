@@ -1,7 +1,7 @@
-import { tag_create_handler } from './_tags_create.js';
-import { tag_delete_handler } from './_tags_delete.js';
-import { tag_update_handler } from './_tags_update.js';
-import { tag_list_handler } from './_tags_list.js';
+import { tag_create_handler } from './_tags_create.ts';
+import { tag_delete_handler } from './_tags_delete.ts';
+import { tag_update_handler } from './_tags_update.ts';
+import { tag_list_handler } from './_tags_list.ts';
 import { command } from 'jellycommands';
 
 const HANDLERS = Object.freeze({

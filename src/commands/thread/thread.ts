@@ -1,5 +1,5 @@
-import { check_autothread_permissions } from '../../utils/threads.js';
-import { get_member } from '../../utils/snowflake.js';
+import { check_autothread_permissions } from '../../utils/threads.ts';
+import { get_member } from '../../utils/snowflake.ts';
 import { RouteBases, Routes } from 'discord.js';
 import { command } from 'jellycommands';
 

@@ -1,7 +1,6 @@
+import { get_member, has_any_role_or_id } from '../utils/snowflake.ts';
+import { MODERATOR_IDS } from '../config.ts';
 import { button } from 'jellycommands';
-import { MODERATOR_IDS } from '../config';
-import { get_member, has_any_role_or_id } from '../utils/snowflake';
-import type advise from '../events/on_message/_advise';
 
 /**
  * Handle interaction responses in {@link advise}.

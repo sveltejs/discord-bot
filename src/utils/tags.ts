@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { list_embed_builder } from './embed_helpers.js';
-import { pb } from '../db/pocketbase.js';
+import { list_embed_builder } from './embed_helpers.ts';
+import { pb } from '../db/pocketbase.ts';
 
 export async function get_tags_list(page_number: number) {
 	const { items, totalPages } = await pb

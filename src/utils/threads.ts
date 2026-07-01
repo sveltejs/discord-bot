@@ -1,8 +1,8 @@
 import type { GuildMember, Snowflake, ThreadChannel } from 'discord.js';
-import { has_any_role_or_id } from './snowflake.js';
-import { THREAD_ADMIN_IDS } from '../config.js';
-import { pb } from '../db/pocketbase.js';
-import { no_op } from './promise.js';
+import { has_any_role_or_id } from './snowflake.ts';
+import { THREAD_ADMIN_IDS } from '../config.ts';
+import { pb } from '../db/pocketbase.ts';
+import { no_op } from './promise.ts';
 
 export async function increment_solve_count(id: Snowflake) {
 	await pb.send(`/api/sdb/increment-solve-count/${id}`, {});

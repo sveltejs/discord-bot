@@ -1,5 +1,5 @@
 import { ChannelType, type Message, type Client } from 'discord.js';
-import { MOD_LOGS_CHANNEL } from '../config';
+import { MOD_LOGS_CHANNEL } from '../config.ts';
 
 /** Send a message to a moderator-visible channel */
 export async function mod_log(client: Client, message: string) {

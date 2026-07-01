@@ -1,8 +1,8 @@
-import { get_member, has_any_role_or_id } from '../../utils/snowflake.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { TAG_CREATE_PERMITTED_IDS } from '../../config.js';
-import { get_tag, type TagCRUDHandler } from './_common.js';
-import { pb } from '../../db/pocketbase.js';
+import { get_member, has_any_role_or_id } from '../../utils/snowflake.ts';
+import { tags_embed_builder } from '../../utils/embed_helpers.ts';
+import { TAG_CREATE_PERMITTED_IDS } from '../../config.ts';
+import { get_tag, type TagCRUDHandler } from './_common.ts';
+import { pb } from '../../db/pocketbase.ts';
 
 import {
 	ActionRowBuilder,

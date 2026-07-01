@@ -1,5 +1,5 @@
-import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
+import { list_embed_builder } from '../../utils/embed_helpers.ts';
+import { wrap_in_embed } from '../../utils/embed_helpers.ts';
 import { command } from 'jellycommands';
 import { URL } from 'node:url';
 

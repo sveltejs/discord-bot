@@ -1,6 +1,6 @@
-import { delete_message, fails_link_test, STOP } from './_common.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { no_op } from '../../utils/promise.js';
+import { delete_message, fails_link_test, STOP } from './_common.ts';
+import { wrap_in_embed } from '../../utils/embed_helpers.ts';
+import { no_op } from '../../utils/promise.ts';
 import type { Message } from 'discord.js';
 
 export default async function check_links(message: Message) {

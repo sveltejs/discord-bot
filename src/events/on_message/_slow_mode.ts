@@ -1,5 +1,5 @@
+import { COMMUNITY_TEXT_CHANNELS } from '../../config.ts';
 import { ChannelType, type Message } from 'discord.js';
-import { COMMUNITY_TEXT_CHANNELS } from '../../config';
 
 // biome-ignore lint/suspicious/noExplicitAny: todo
 function debug(args: any | []) {

@@ -1,8 +1,8 @@
-import { into_name_value_pair } from '../../utils/autocomplete.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { list_embed_builder } from '../../utils/embed_helpers.js';
-import { get_matching_tag_names, get_tag } from './_common.js';
-import { get_member } from '../../utils/snowflake.js';
+import { into_name_value_pair } from '../../utils/autocomplete.ts';
+import { tags_embed_builder } from '../../utils/embed_helpers.ts';
+import { list_embed_builder } from '../../utils/embed_helpers.ts';
+import { get_matching_tag_names, get_tag } from './_common.ts';
+import { get_member } from '../../utils/snowflake.ts';
 import { command } from 'jellycommands';
 
 export default command({

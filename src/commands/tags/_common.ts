@@ -1,6 +1,6 @@
-import type { CommandInteraction } from 'discord.js';
-import { pb } from '../../db/pocketbase';
 import type { ClientResponseError } from 'pocketbase';
+import type { CommandInteraction } from 'discord.js';
+import { pb } from '../../db/pocketbase.ts';
 
 export async function get_tag(name: string) {
 	return await pb

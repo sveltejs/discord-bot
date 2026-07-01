@@ -1,5 +1,5 @@
-import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
-import { pb } from '../../db/pocketbase';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.ts';
+import { pb } from '../../db/pocketbase.ts';
 import { command } from 'jellycommands';
 
 export default command({

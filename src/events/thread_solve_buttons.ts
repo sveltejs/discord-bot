@@ -1,6 +1,6 @@
-import { increment_solve_count } from '../utils/threads.js';
+import { increment_solve_count } from '../utils/threads.ts';
 import { setTimeout } from 'node:timers/promises';
-import { no_op } from '../utils/promise.js';
+import { no_op } from '../utils/promise.ts';
 import { event } from 'jellycommands';
 import {
 	ActionRowBuilder,

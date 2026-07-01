@@ -1,4 +1,4 @@
-import { get_tags_list, NO_TAGS_FOUND } from '../utils/tags.js';
+import { get_tags_list, NO_TAGS_FOUND } from '../utils/tags.ts';
 import { button } from 'jellycommands';
 
 export default button({

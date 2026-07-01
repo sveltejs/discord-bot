@@ -1,5 +1,5 @@
-import type { Repo } from '../../utils/repositories.js';
-import { github_command_handler } from './_common.js';
+import type { Repo } from '../../utils/repositories.ts';
+import { github_command_handler } from './_common.ts';
 import { command } from 'jellycommands';
 
 export default command({

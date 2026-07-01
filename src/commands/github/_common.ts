@@ -1,7 +1,7 @@
-import { type Repo, RepositoryDetails } from '../../utils/repositories.js';
-import { list_embed_builder } from '../../utils/embed_helpers.js';
+import { type Repo, RepositoryDetails } from '../../utils/repositories.ts';
+import { list_embed_builder } from '../../utils/embed_helpers.ts';
 import type { ChatInputCommandInteraction } from 'discord.js';
-import { GITHUB_TOKEN } from '../../config.js';
+import { GITHUB_TOKEN } from '../../config.ts';
 
 const query =
 	`query searchResults($search_string: String!, $type: SearchType!, $num: Int!) {

@@ -1,7 +1,7 @@
-import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.js';
-import { tags_embed_builder } from '../../utils/embed_helpers.js';
-import { get_tag, type TagCRUDHandler } from './_common.js';
-import { get_member } from '../../utils/snowflake.js';
+import { i_solemnly_swear_it_is_not_null } from '../../utils/smh_typescript.ts';
+import { tags_embed_builder } from '../../utils/embed_helpers.ts';
+import { get_tag, type TagCRUDHandler } from './_common.ts';
+import { get_member } from '../../utils/snowflake.ts';
 
 import {
 	ActionRowBuilder,
@@ -9,7 +9,7 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from 'discord.js';
-import { pb } from '../../db/pocketbase.js';
+import { pb } from '../../db/pocketbase.ts';
 
 export const tag_update_handler: TagCRUDHandler = async ({
 	interaction,

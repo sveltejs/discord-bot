@@ -1,5 +1,5 @@
 import { type GuildMember, EmbedBuilder, type EmbedData } from 'discord.js';
-import { SVELTE_ORANGE } from '../config.js';
+import { SVELTE_ORANGE } from '../config.ts';
 
 export const build_embed = (options: EmbedData) =>
 	new EmbedBuilder({ color: SVELTE_ORANGE, ...options });

@@ -1,4 +1,4 @@
-import { LINK_ONLY_CHANNELS } from '../../config';
+import { LINK_ONLY_CHANNELS } from '../../config.ts';
 import { setTimeout } from 'node:timers/promises';
 import type { Message } from 'discord.js';
 import url_regex from 'url-regex';

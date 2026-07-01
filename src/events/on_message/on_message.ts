@@ -1,10 +1,10 @@
-import check_links from './_check_links.js';
-import spam_filter from './_spam_filter.js';
-import autothread from './_autothread.js';
-import slow_mode from './_slow_mode.js';
-import advise from './_advise.js';
+import check_links from './_check_links.ts';
+import spam_filter from './_spam_filter.ts';
+import autothread from './_autothread.ts';
+import slow_mode from './_slow_mode.ts';
+import advise from './_advise.ts';
 import { event } from 'jellycommands';
-import { STOP } from './_common.js';
+import { STOP } from './_common.ts';
 
 export default event({
 	name: 'messageCreate',

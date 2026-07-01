@@ -1,10 +1,10 @@
-import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.js';
-import { DEV_MODE, SOLVED_TAGS_MAP, HELP_CHANNELS } from '../../config.js';
-import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.js';
-import { check_autothread_permissions } from '../../utils/threads.js';
-import { undefined_on_error } from '../../utils/promise.js';
-import { get_member } from '../../utils/snowflake.js';
-import { chunk_array } from '../../utils/chunk.js';
+import { i_solemnly_swear_it_is_a_forum_thread } from '../../utils/smh_typescript.ts';
+import { DEV_MODE, SOLVED_TAGS_MAP, HELP_CHANNELS } from '../../config.ts';
+import { build_embed, wrap_in_embed } from '../../utils/embed_helpers.ts';
+import { check_autothread_permissions } from '../../utils/threads.ts';
+import { undefined_on_error } from '../../utils/promise.ts';
+import { get_member } from '../../utils/snowflake.ts';
+import { chunk_array } from '../../utils/chunk.ts';
 import { command } from 'jellycommands';
 
 import {

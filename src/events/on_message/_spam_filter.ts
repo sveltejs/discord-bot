@@ -1,15 +1,15 @@
 import { userMention, type GuildMember, type Message } from 'discord.js';
-import { mod_forward, mod_log } from '../../utils/mod_logs';
-import { has_any_role_or_id } from '../../utils/snowflake';
-import { RateLimitStore } from '../../utils/ratelimit';
-import { timeout } from '../../utils/member_actions';
+import { mod_forward, mod_log } from '../../utils/mod_logs.ts';
+import { has_any_role_or_id } from '../../utils/snowflake.ts';
+import { RateLimitStore } from '../../utils/ratelimit.ts';
+import { timeout } from '../../utils/member_actions.ts';
 import { setTimeout } from 'node:timers/promises';
-import { has_link, STOP } from './_common';
+import { has_link, STOP } from './_common.ts';
 import {
 	SPAM_FILTER_MULTI_CHANNEL_ACTION,
 	THREAD_ADMIN_IDS,
 	DEV_MODE,
-} from '../../config';
+} from '../../config.ts';
 
 // 3 messages within a 5 second period
 const single_channel_limit = new RateLimitStore(3, 5_000, 1);

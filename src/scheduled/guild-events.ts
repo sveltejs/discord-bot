@@ -1,11 +1,11 @@
-import { DEV_MODE, TEST_GUILD_ID } from '../config';
-import type { ScheduledTask } from './_scheduler';
-import { pb } from '../db/pocketbase';
+import { DEV_MODE, TEST_GUILD_ID } from '../config.ts';
+import type { ClientResponseError } from 'pocketbase';
+import type { ScheduledTask } from './_scheduler.ts';
+import { pb } from '../db/pocketbase.ts';
 import {
 	GuildScheduledEventEntityType,
 	GuildScheduledEventPrivacyLevel,
 } from 'discord.js';
-import type { ClientResponseError } from 'pocketbase';
 
 interface ResponseData {
 	__typename: string;

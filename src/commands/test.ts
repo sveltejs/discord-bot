@@ -1,5 +1,5 @@
-import { wrap_in_embed } from '../utils/embed_helpers.js';
-import { DEV_MODE } from '../config.js';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
+import { DEV_MODE } from '../config.ts';
 import { command } from 'jellycommands';
 
 export default command({

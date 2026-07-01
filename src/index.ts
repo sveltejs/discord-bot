@@ -1,7 +1,7 @@
-import { guildEventsTask } from './scheduled/guild-events';
-import { analyticsTask } from './scheduled/analytics';
-import { DEV_MODE, TEST_GUILD_ID } from './config';
-import { Scheduler } from './scheduled/_scheduler';
+import { guildEventsTask } from './scheduled/guild-events.ts';
+import { analyticsTask } from './scheduled/analytics.ts';
+import { DEV_MODE, TEST_GUILD_ID } from './config.ts';
+import { Scheduler } from './scheduled/_scheduler.ts';
 import { JellyCommands } from 'jellycommands';
 import { IntentsBitField } from 'discord.js';
 
