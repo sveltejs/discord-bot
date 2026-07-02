@@ -120,6 +120,7 @@ const GUILD_IDS = [
 	'svelte-society-bangalore',
 	'svelte-society-bay-area',
 	'svelte-chicago',
+	'svelte-society-berlin',
 ];
 
 // biome-ignore lint/suspicious/noExplicitAny: correct here
