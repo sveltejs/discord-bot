@@ -2,8 +2,6 @@ export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
 export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '918887934822858802';
 
-export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-
 export const SVELTE_ORANGE = 0xff3e00;
 
 export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -50,13 +48,14 @@ export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	? TEST_ADMIN_ROLES
 	: PRIVILEGED_ROLES;
 
-export const BOT_DEVS = [
+const BOT_DEVS = [
 	// cirilla
 	'339731096793251854',
 
 	// GHOST
 	'282839711834177537',
 ];
+
 /**
  * List of roles/user IDs other than the creator allowed to modify threads.
  */
