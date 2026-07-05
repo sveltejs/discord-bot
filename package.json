@@ -7,7 +7,7 @@
 		"db:dev": "./pocketbase/dev.sh",
 		"start": "node src/index.ts",
 		"fix": "prettier --write . && biome check --write",
-		"check": "prettier --check . && tsc --noEmit && biome check"
+		"check": "prettier --check . && tsc --noEmit && biome check && knip"
 	},
 	"license": "MIT",
 	"dependencies": {
@@ -20,6 +20,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.1",
 		"@types/node": "^26.0.1",
+		"knip": "^6.24.0",
 		"pocketbase": "^0.27.0",
 		"prettier": "^3.9.4",
 		"typescript": "^6.0.3"

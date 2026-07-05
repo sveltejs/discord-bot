@@ -1,0 +1,10 @@
+{
+	"$schema": "https://unpkg.com/knip@6/schema.json",
+	"tags": ["-lintignore"],
+	"entry": [
+		"src/index.ts",
+		"src/buttons/**/*.ts",
+		"src/commands/**/*.ts",
+		"src/events/**/*.ts"
+	]
+}
