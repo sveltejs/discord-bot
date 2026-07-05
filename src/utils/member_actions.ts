@@ -1,6 +1,8 @@
 import type { GuildMember } from 'discord.js';
 import { setTimeout } from 'node:timers/promises';
-// TODO: ban, warn
+
+/** Past 24 hours in seconds. */
+const PAST_24_HOURS = 86_400;
 
 /**
  * Time out member.
@@ -36,18 +38,29 @@ export async function timeout(
  * @param member
  * @param reason Kick reason
  * @param retries Kick action retries
+ * @param removeLastMessages Remove last messages, represented
+ * as past time in seconds
  */
 export async function kick(
 	member: GuildMember,
 	reason = 'Bot action',
 	/** @default 3 */
 	retries = 3,
+	removeLastMessages = PAST_24_HOURS,
 ) {
 	let retries_remaining = retries;
 
 	while (--retries_remaining && member.timeout) {
 		try {
-			await member.kick(reason);
+			// Ban then unban to easily remove messages
+			await member.ban({
+				reason,
+				deleteMessageSeconds: removeLastMessages,
+			});
+			await member.guild.members.unban(
+				member,
+				'Unbanning member with the intent to kick and delete messages.',
+			);
 			console.log(
 				`Kicked ${member.displayName} (ID: ${member.id}) due to ${reason}.`,
 			);
@@ -71,7 +84,7 @@ export async function ban(member: GuildMember, retries: number) {
 		try {
 			await member.ban({
 				reason: 'Spam',
-				deleteMessageSeconds: 24 * 60 * 60,
+				deleteMessageSeconds: PAST_24_HOURS,
 			});
 			console.log(
 				`Banned ${member.displayName} (ID: ${member.id}) for spamming`,
