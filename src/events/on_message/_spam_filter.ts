@@ -1,14 +1,15 @@
-import { userMention, type GuildMember, type Message } from 'discord.js';
+import { userMention, type Message } from 'discord.js';
 import { mod_forward, mod_log } from '../../utils/mod_logs.ts';
 import { has_any_role_or_id } from '../../utils/snowflake.ts';
 import { RateLimitStore } from '../../utils/ratelimit.ts';
-import { timeout } from '../../utils/member_actions.ts';
-import { setTimeout } from 'node:timers/promises';
+import { timeout, ban, kick } from '../../utils/member_actions.ts';
 import { has_link, STOP } from './_common.ts';
 import {
 	SPAM_FILTER_MULTI_CHANNEL_ACTION,
 	THREAD_ADMIN_IDS,
 	DEV_MODE,
+	HONEYPOT_CHANNEL,
+	MODERATOR_IDS,
 } from '../../config.ts';
 
 // 3 messages within a 5 second period
@@ -42,9 +43,16 @@ export default async function spam_filter(message: Message) {
 			true,
 		);
 
+	const posts_in_honeypot =
+		message.inGuild() &&
+		message.channelId === HONEYPOT_CHANNEL &&
+		// Message by non-admin
+		!has_any_role_or_id(message.member, MODERATOR_IDS);
+
 	const is_likely_spam =
 		posts_many_links_within_a_channel ||
-		posts_many_messages_across_channels;
+		posts_many_messages_across_channels ||
+		posts_in_honeypot;
 
 	if (!is_likely_spam) return;
 
@@ -75,6 +83,15 @@ export default async function spam_filter(message: Message) {
 					`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
 				),
 			]);
+		} else if (posts_in_honeypot) {
+			// Kick
+			await Promise.allSettled([
+				kick(member, 'Posting in honeypot'),
+				mod_log(
+					message.client,
+					`User ${userMention(message.author.id)} was kicked for posting in honeypot.`,
+				),
+			]);
 		} else {
 			// Timeout
 			await Promise.allSettled([
@@ -88,23 +105,4 @@ export default async function spam_filter(message: Message) {
 	}
 
 	throw STOP;
-}
-
-async function ban(member: GuildMember, tries: number) {
-	console.log(tries, member.bannable); // TODO Remove these when I figure out why it's not working
-	// biome-ignore lint/style/noParameterAssign: todo
-	while (--tries && member.bannable) {
-		try {
-			await member.ban({
-				reason: 'Spam',
-				deleteMessageSeconds: 24 * 60 * 60,
-			});
-			console.log(
-				`Banned ${member.displayName} (ID: ${member.id}) for spamming`,
-			);
-			break;
-		} catch {
-			await setTimeout(1_000);
-		}
-	}
 }
