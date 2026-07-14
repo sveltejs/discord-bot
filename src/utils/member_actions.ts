@@ -60,6 +60,11 @@ export async function kick(
 				reason,
 				deleteMessageSeconds: removeLastMessages,
 			});
+
+			// Artificial delay to ensure supposed message deletion
+			// background task completes before unbanning
+			await setTimeout(3_000);
+
 			await member.guild.members.unban(
 				member,
 				'Unbanning member with the intent to kick and delete messages.',
