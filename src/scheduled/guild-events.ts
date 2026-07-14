@@ -150,6 +150,8 @@ export const guildEventsTask: ScheduledTask = {
 		for (const guild_id of GUILD_IDS) {
 			log(`Fetching events for ${guild_id}`);
 
+			// visibility
+
 			const response = await fetch(
 				`https://guild.host/api/next/${guild_id}/events/upcoming`,
 				{
@@ -164,6 +166,7 @@ export const guildEventsTask: ScheduledTask = {
 			const data: ResponseData = await response.json();
 
 			for (const event of data.events.edges) {
+				if (event.node.visibility !== 'LISTED') continue;
 				const event_slug = event.node.prettyUrl;
 
 				const exists = await pb
