@@ -2,7 +2,7 @@ import { userMention, type Message } from 'discord.js';
 import { mod_forward, mod_log } from '../../utils/mod_logs.ts';
 import { has_any_role_or_id } from '../../utils/snowflake.ts';
 import { RateLimitStore } from '../../utils/ratelimit.ts';
-import { timeout, ban, kick } from '../../utils/member_actions.ts';
+import { ban, kick } from '../../utils/member_actions.ts';
 import { has_link, STOP } from './_common.ts';
 import {
 	SPAM_FILTER_MULTI_CHANNEL_ACTION,
@@ -28,18 +28,12 @@ export default async function spam_filter(message: Message) {
 		message.inGuild() &&
 		!message.thread &&
 		has_link(message) &&
-		single_channel_limit.is_limited(
-			message.author.id,
-			message.channelId,
-		);
+		single_channel_limit.is_limited(message.author.id, message.channelId);
 
 	const posts_many_messages_across_channels =
 		message.inGuild() &&
 		!message.thread &&
-		multi_channel_limit.is_limited(
-			message.author.id,
-			message.channelId,
-		);
+		multi_channel_limit.is_limited(message.author.id, message.channelId);
 
 	const posts_in_honeypot =
 		message.inGuild() &&
@@ -92,13 +86,10 @@ export default async function spam_filter(message: Message) {
 			]);
 		} else {
 			// Timeout
-			await Promise.allSettled([
-				timeout(member, 43_200_000, 'Multi-channel spam'),
-				mod_log(
-					message.client,
-					`User ${userMention(message.author.id)} was suspected of spamming and was timed out.`,
-				),
-			]);
+			mod_log(
+				message.client,
+				`User ${userMention(message.author.id)} was suspected of spamming.`,
+			);
 		}
 	}
 

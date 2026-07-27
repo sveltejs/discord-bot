@@ -8,21 +8,21 @@ export class RateLimitStore {
 	/** How many unique channels to track */
 	private unique_channels;
 	private time_period;
-  private count;
+	private count;
 
-  public static timers: NodeJS.Timeout[] = []
+	public static timers: NodeJS.Timeout[] = [];
 
 	constructor(count: number, time_period: number, unique_channels: number) {
 		this.count = count;
 		this.time_period = time_period;
 		this.unique_channels = unique_channels;
-  }
+	}
 
-  public static clear_timers() {
-    RateLimitStore.timers.forEach(timer => {
-      clearTimeout(timer)
-    })
-  }
+	public static clear_timers() {
+		for (const timer of RateLimitStore.timers) {
+			clearTimeout(timer);
+		}
+	}
 
 	/**
 	 * Check whether provide key/user reaches rate limit.
@@ -51,9 +51,9 @@ export class RateLimitStore {
 	private create_new_bucket(key: string) {
 		const timer = setTimeout(() => {
 			this.available_uses.delete(key);
-    }, this.time_period)
+		}, this.time_period);
 
-		RateLimitStore.timers.push(timer)
+		RateLimitStore.timers.push(timer);
 		return this.count;
 	}
 }
