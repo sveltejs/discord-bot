@@ -29,7 +29,7 @@ const SpamAction = Object.freeze({
 	KICK: 'kick',
 	BAN: 'ban',
 });
-type SpamActionValues = (typeof SpamAction)[keyof typeof SpamAction]
+type SpamActionValues = (typeof SpamAction)[keyof typeof SpamAction];
 
 type SpamOptions = {
 	/**
@@ -74,9 +74,12 @@ const spam_filters: SpamFilter[] = [
 				)
 			);
 		},
-    get action(): SpamActionValues {
-      return SPAM_FILTER_MULTI_CHANNEL_ACTION ?? 'log'
-    },
+		get action(): SpamActionValues {
+			return SPAM_FILTER_MULTI_CHANNEL_ACTION ?? 'log';
+		},
+		options: {
+			log_reason: 'posting messages across many channels',
+		},
 	},
 	{
 		name: 'Posts in honeypot',
@@ -98,9 +101,9 @@ const spam_filters: SpamFilter[] = [
 export default async function spam_filter(message: Message) {
 	const spam_detected = spam_filters.find((filter) => {
 		return filter.condition(message);
-  });
+	});
 
-  if (!spam_detected) return
+	if (!spam_detected) return;
 	console.log(`User ID: ${message.author.id} tripped spam filter`);
 
 	const member = debug(await message.guild?.members.fetch(message.author.id));
@@ -136,16 +139,22 @@ export default async function spam_filter(message: Message) {
 						`User ${userMention(message.author.id)} was kicked${log_reason ? ` for ${log_reason}` : ''}.`,
 					),
 				]);
-        break;
-      case SpamAction.TIMEOUT:
-        await Promise.allSettled([
-          timeout(member, { reason: log_reason }),
-          mod_log(
+				break;
+			case SpamAction.TIMEOUT:
+				await Promise.allSettled([
+					timeout(member, { reason: log_reason }),
+					mod_log(
 						message.client,
 						`User ${userMention(message.author.id)} was timed out${log_reason ? ` for ${log_reason}` : ''}.`,
 					),
-        ])
-        break;
+				]);
+				break;
+			default:
+				await mod_log(
+					message.client,
+					`Log note for user ${userMention(message.author.id)}: ${log_reason ?? 'no reason provided'}.`,
+				);
+				break;
 		}
 	}
 

@@ -25,11 +25,15 @@ type TimeoutOptions = {
  * @property options.retries Timeout action retries
  */
 export async function timeout(member: GuildMember, options?: TimeoutOptions) {
-	const { reason, retries, timeout_length } = Object.assign({}, {
-		timeout_length: TWELVE_HOURS_MS,
-		reason: 'Bot action',
-		retries: 3,
-	}, options);
+	const { reason, retries, timeout_length } = Object.assign(
+		{},
+		{
+			timeout_length: TWELVE_HOURS_MS,
+			reason: 'Bot action',
+			retries: 3,
+		},
+		options,
+	);
 
 	let retries_remaining = retries;
 
