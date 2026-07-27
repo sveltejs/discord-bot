@@ -10,7 +10,7 @@ export class RateLimitStore {
 	private time_period;
 	private count;
 
-	public static timers: NodeJS.Timeout[] = [];
+	public static timers = new Set<NodeJS.Timeout>();
 
 	constructor(count: number, time_period: number, unique_channels: number) {
 		this.count = count;
@@ -48,12 +48,15 @@ export class RateLimitStore {
 		return true;
 	}
 
-	private create_new_bucket(key: string) {
-		const timer = setTimeout(() => {
-			this.available_uses.delete(key);
+  private create_new_bucket(key: string) {
+    let timer: NodeJS.Timeout
+
+		timer = setTimeout(() => {
+      this.available_uses.delete(key);
+      RateLimitStore.timers.delete(timer)
 		}, this.time_period);
 
-		RateLimitStore.timers.push(timer);
+		RateLimitStore.timers.add(timer);
 		return this.count;
 	}
 }
