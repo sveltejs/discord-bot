@@ -48,12 +48,12 @@ export class RateLimitStore {
 		return true;
 	}
 
-  private create_new_bucket(key: string) {
-    let timer: NodeJS.Timeout
+	private create_new_bucket(key: string) {
+		let timer: NodeJS.Timeout;
 
 		timer = setTimeout(() => {
-      this.available_uses.delete(key);
-      RateLimitStore.timers.delete(timer)
+			this.available_uses.delete(key);
+			RateLimitStore.timers.delete(timer);
 		}, this.time_period);
 
 		RateLimitStore.timers.add(timer);
