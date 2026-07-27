@@ -30,7 +30,7 @@ export class RateLimitStore {
 			limit_record?.limit ?? this.create_new_bucket(key);
 		const channels = limit_record?.channel_ids ?? new Set();
 
-		if (available_uses > 0 && channels.size < this.unique_channels) {
+		if (available_uses > 0 || channels.size < this.unique_channels) {
 			if (consume) {
 				this.available_uses.set(key, {
 					limit: available_uses - 1,
