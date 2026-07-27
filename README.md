@@ -1,6 +1,6 @@
 # Svelte Bot - Cybernetically enhanced discord servers
 
-Welcome to the repo for the official Svelte Discord bot!
+Welcome to the repo for the official Svelte Discord bot! See [PRIVACY.md](./PRIVACY.md) for the bot's privacy policy.
 
 <div align="center"><img src="https://cdn.discordapp.com/avatars/918868862198509639/41ca0acf7bdbce019a1bf05fa0ea7062.png"></div>
 
