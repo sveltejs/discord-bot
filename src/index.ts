@@ -10,7 +10,6 @@ const client = new JellyCommands({
 
 	clientOptions: {
 		intents: [
-			IntentsBitField.Flags.GuildMessages,
 			IntentsBitField.Flags.Guilds,
 			IntentsBitField.Flags.GuildMembers,
 			IntentsBitField.Flags.GuildMessages,
