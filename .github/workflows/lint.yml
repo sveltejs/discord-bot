@@ -1,4 +1,4 @@
-name: Linting
+name: Linting and Testing
 
 on:
     pull_request:
@@ -13,8 +13,8 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    lint:
-        name: Lint
+    prepare:
+        name: Prepare
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -33,7 +33,17 @@ jobs:
                   cache: pnpm
 
             - name: Install
-              run: pnpm install --frozen-lockfile
+              run: pnpm ci
 
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
             - name: Check
               run: pnpm check
+    test:
+        name: Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run tests
+              run: pnpm test:ci

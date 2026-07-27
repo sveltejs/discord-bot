@@ -31,7 +31,6 @@ export default async function spam_filter(message: Message) {
 		single_channel_limit.is_limited(
 			message.author.id,
 			message.channelId,
-			true,
 		);
 
 	const posts_many_messages_across_channels =
@@ -40,7 +39,6 @@ export default async function spam_filter(message: Message) {
 		multi_channel_limit.is_limited(
 			message.author.id,
 			message.channelId,
-			true,
 		);
 
 	const posts_in_honeypot =
