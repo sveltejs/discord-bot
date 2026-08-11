@@ -1,4 +1,4 @@
-name: Linting
+name: Linting and Testing
 
 on:
     pull_request:
@@ -13,8 +13,8 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    lint:
-        name: Lint
+    lint_and_test:
+        name: Lint and test
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -37,3 +37,6 @@ jobs:
 
             - name: Check
               run: pnpm check
+
+            - name: Run tests
+              run: pnpm test:ci

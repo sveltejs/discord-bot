@@ -10,10 +10,18 @@ export class RateLimitStore {
 	private time_period;
 	private count;
 
+	public static timers = new Set<NodeJS.Timeout>();
+
 	constructor(count: number, time_period: number, unique_channels: number) {
 		this.count = count;
 		this.time_period = time_period;
 		this.unique_channels = unique_channels;
+	}
+
+	public static clear_timers() {
+		for (const timer of RateLimitStore.timers) {
+			clearTimeout(timer);
+		}
 	}
 
 	/**
@@ -21,31 +29,34 @@ export class RateLimitStore {
 	 *
 	 * @param key Reference key in available use store; usually `author.id`
 	 * @param channelId Unique channel ID where message was sent and tracked for rate limit.
-	 * @param consume If `true`, decrement remaining limit for `key` user.
+	 * @returns `true` when rate limited, otherwise `false`.
 	 */
-	public is_limited(key: string, channelId: string, consume = false) {
+	public is_limited(key: string, channelId: string) {
 		const limit_record = this.available_uses.get(key);
 
 		const available_uses =
 			limit_record?.limit ?? this.create_new_bucket(key);
 		const channels = limit_record?.channel_ids ?? new Set();
 
-		if (available_uses > 0 && channels.size < this.unique_channels) {
-			if (consume) {
-				this.available_uses.set(key, {
-					limit: available_uses - 1,
-					channel_ids: channels.add(channelId),
-				});
-			}
+		if (available_uses > 0 || channels.size < this.unique_channels) {
+			this.available_uses.set(key, {
+				limit: available_uses - 1,
+				channel_ids: channels.add(channelId),
+			});
 			return false;
 		}
 		return true;
 	}
 
 	private create_new_bucket(key: string) {
-		setTimeout(() => {
+		let timer: NodeJS.Timeout;
+
+		timer = setTimeout(() => {
 			this.available_uses.delete(key);
+			RateLimitStore.timers.delete(timer);
 		}, this.time_period);
+
+		RateLimitStore.timers.add(timer);
 		return this.count;
 	}
 }

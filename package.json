@@ -7,7 +7,9 @@
 		"db:dev": "./pocketbase/dev.sh",
 		"start": "node src/index.ts",
 		"fix": "prettier --write . && biome check --write",
-		"check": "prettier --check . && tsc --noEmit && biome check && knip"
+		"check": "prettier --check . && tsc --noEmit && biome check && knip",
+		"test": "node --test --watch",
+		"test:ci": "node --test"
 	},
 	"license": "MIT",
 	"dependencies": {

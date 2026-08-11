@@ -2,7 +2,7 @@ import { userMention, type Message } from 'discord.js';
 import { mod_forward, mod_log } from '../../utils/mod_logs.ts';
 import { has_any_role_or_id } from '../../utils/snowflake.ts';
 import { RateLimitStore } from '../../utils/ratelimit.ts';
-import { timeout, ban, kick } from '../../utils/member_actions.ts';
+import { ban, kick, timeout } from '../../utils/member_actions.ts';
 import { has_link, STOP } from './_common.ts';
 import {
 	SPAM_FILTER_MULTI_CHANNEL_ACTION,
@@ -23,84 +23,138 @@ function debug<T>(val: T): T {
 	return val;
 }
 
+const SpamAction = Object.freeze({
+	LOG: 'log',
+	TIMEOUT: 'timeout',
+	KICK: 'kick',
+	BAN: 'ban',
+});
+type SpamActionValues = (typeof SpamAction)[keyof typeof SpamAction];
+
+type SpamOptions = {
+	/**
+	 * Reason for kick/ban/timeout
+	 * e.g. `User was kicked for ${log_reason}`
+	 */
+	log_reason: string;
+};
+
+type SpamFilter = {
+	name: string;
+	condition: (message: Message) => boolean;
+	/** All actions log by default. */
+	action: SpamActionValues;
+	options?: SpamOptions;
+};
+const spam_filters: SpamFilter[] = [
+	{
+		name: 'Posts many links within a channel',
+		condition: (message) => {
+			return (
+				message.inGuild() &&
+				!message.thread &&
+				has_link(message) &&
+				single_channel_limit.is_limited(
+					message.author.id,
+					message.channelId,
+				)
+			);
+		},
+		action: 'ban',
+	},
+	{
+		name: 'Posts many messages across channels',
+		condition: (message) => {
+			return (
+				message.inGuild() &&
+				!message.thread &&
+				multi_channel_limit.is_limited(
+					message.author.id,
+					message.channelId,
+				)
+			);
+		},
+		get action(): SpamActionValues {
+			return SPAM_FILTER_MULTI_CHANNEL_ACTION ?? 'log';
+		},
+		options: {
+			log_reason: 'posting messages across many channels',
+		},
+	},
+	{
+		name: 'Posts in honeypot',
+		condition: (message) => {
+			return (
+				message.inGuild() &&
+				message.channelId === HONEYPOT_CHANNEL &&
+				// Message by non-admin
+				!has_any_role_or_id(message.member, MODERATOR_IDS)
+			);
+		},
+		action: 'kick',
+		options: {
+			log_reason: 'posting in honeypot',
+		},
+	},
+];
+
 export default async function spam_filter(message: Message) {
-	const posts_many_links_within_a_channel =
-		message.inGuild() &&
-		!message.thread &&
-		has_link(message) &&
-		single_channel_limit.is_limited(
-			message.author.id,
-			message.channelId,
-			true,
-		);
+	const spam_detected = spam_filters.find((filter) => {
+		return filter.condition(message);
+	});
 
-	const posts_many_messages_across_channels =
-		message.inGuild() &&
-		!message.thread &&
-		multi_channel_limit.is_limited(
-			message.author.id,
-			message.channelId,
-			true,
-		);
-
-	const posts_in_honeypot =
-		message.inGuild() &&
-		message.channelId === HONEYPOT_CHANNEL &&
-		// Message by non-admin
-		!has_any_role_or_id(message.member, MODERATOR_IDS);
-
-	const is_likely_spam =
-		posts_many_links_within_a_channel ||
-		posts_many_messages_across_channels ||
-		posts_in_honeypot;
-
-	if (!is_likely_spam) return;
-
+	if (!spam_detected) return;
 	console.log(`User ID: ${message.author.id} tripped spam filter`);
 
-	const member = debug(await message.guild.members.fetch(message.author.id));
+	const member = debug(await message.guild?.members.fetch(message.author.id));
 	const is_threadlord = has_any_role_or_id(member, THREAD_ADMIN_IDS);
 
 	if (DEV_MODE) {
 		await message.reply('Oi, stop spamming you troglodyte.');
 		// Unlikely to be spam from trusted members
-	} else if (!debug(is_threadlord)) {
+	} else if (!debug(is_threadlord) && spam_detected && member) {
+		// Forward last message
 		await mod_forward(message);
+		const log_reason = spam_detected.options?.log_reason;
 
-		if (
-			posts_many_links_within_a_channel ||
-			(posts_many_messages_across_channels &&
-				SPAM_FILTER_MULTI_CHANNEL_ACTION === 'ban')
-		) {
-			// Ban
-			await Promise.allSettled([
-				ban(member, 3),
-				member.send(
-					'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at <https://github.com/pngwn/svelte-bot/issues/38>',
-				),
-				mod_log(
+		switch (spam_detected.action) {
+			// TODO timeout case
+			case SpamAction.BAN:
+				await Promise.allSettled([
+					ban(member, 3),
+					member.send(
+						'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at <https://github.com/pngwn/svelte-bot/issues/38>',
+					),
+					mod_log(
+						message.client,
+						`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
+					),
+				]);
+				break;
+			case SpamAction.KICK:
+				await Promise.allSettled([
+					kick(member, log_reason),
+					mod_log(
+						message.client,
+						`User ${userMention(message.author.id)} was kicked${log_reason ? ` for ${log_reason}` : ''}.`,
+					),
+				]);
+				break;
+			case SpamAction.TIMEOUT:
+				await Promise.allSettled([
+					timeout(member, { reason: log_reason }),
+					mod_log(
+						message.client,
+						`User ${userMention(message.author.id)} was timed out${log_reason ? ` for ${log_reason}` : ''}.`,
+					),
+				]);
+				break;
+			default:
+				await mod_log(
 					message.client,
-					`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
-				),
-			]);
-		} else if (posts_in_honeypot) {
-			// Kick
-			await Promise.allSettled([
-				kick(member, 'Posting in honeypot'),
-				mod_log(
-					message.client,
-					`User ${userMention(message.author.id)} was kicked for posting in honeypot.`,
-				),
-			]);
-		} else {
-			// Timeout
-			await Promise.allSettled([
-				timeout(member, 43_200_000, 'Multi-channel spam'),
-				mod_log(
-					message.client,
-					`User ${userMention(message.author.id)} was suspected of spamming and was timed out.`,
-				),
-			]);
+					`Log note for user ${userMention(message.author.id)}: ${log_reason ?? 'no reason provided'}.`,
+				);
+				break;
 		}
 	}
 

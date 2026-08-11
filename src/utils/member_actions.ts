@@ -4,23 +4,37 @@ import { setTimeout } from 'node:timers/promises';
 /** 24 hours in seconds. */
 const TWENTY_FOUR_HOURS = 86_400;
 
+/** 12 hours in ms */
+const TWELVE_HOURS_MS = 43_200_000;
+
 /** Two hours in seconds */
 const TWO_HOURS = 7_200;
+
+type TimeoutOptions = {
+	timeout_length?: number;
+	reason?: string;
+	retries?: number;
+};
 
 /**
  * Time out member.
  * @param member
- * @param timeout_length Timeout period in ms
- * @param reason Timeout reason
- * @param retries Timeout action retries
+ * @param options
+ * @property options.timeout_length Timeout period in ms
+ * @property options.reason Timeout reason
+ * @property options.retries Timeout action retries
  */
-export async function timeout(
-	member: GuildMember,
-	timeout_length = 43_200_000, // 12 hours
-	reason = 'Bot action',
-	/** @default 3 */
-	retries = 3,
-) {
+export async function timeout(member: GuildMember, options?: TimeoutOptions) {
+	const { reason, retries, timeout_length } = Object.assign(
+		{},
+		{
+			timeout_length: TWELVE_HOURS_MS,
+			reason: 'Bot action',
+			retries: 3,
+		},
+		options,
+	);
+
 	let retries_remaining = retries;
 
 	while (--retries_remaining && member.timeout) {
