@@ -2,7 +2,7 @@ import {
 	ChannelType,
 	type Message,
 	type Client,
-	TextChannel,
+	type TextChannel,
 	EmbedBuilder,
 } from 'discord.js';
 import { MOD_LOGS_CHANNEL } from '../config.ts';
