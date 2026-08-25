@@ -40,3 +40,10 @@ export function tags_embed_builder({
 		}),
 	];
 }
+
+/** Colour map for Discord embeds. */
+export const LOG_LEVEL_COLOURS = Object.freeze({
+	INFO: 'Blue',
+	WARN: 'Yellow',
+	CRITICAL: 'Red',
+});

@@ -1,5 +1,5 @@
 import { userMention, type Message } from 'discord.js';
-import { mod_forward, mod_log } from '../../utils/mod_logs.ts';
+import { mod_copy, mod_log } from '../../utils/mod_logs.ts';
 import { has_any_role_or_id } from '../../utils/snowflake.ts';
 import { RateLimitStore } from '../../utils/ratelimit.ts';
 import { ban, kick, timeout } from '../../utils/member_actions.ts';
@@ -11,6 +11,7 @@ import {
 	HONEYPOT_CHANNEL,
 	MODERATOR_IDS,
 } from '../../config.ts';
+import { LOG_LEVEL_COLOURS } from '../../utils/embed_helpers.ts';
 
 // 3 messages within a 5 second period
 const single_channel_limit = new RateLimitStore(3, 5_000, 1);
@@ -114,7 +115,6 @@ export default async function spam_filter(message: Message) {
 		// Unlikely to be spam from trusted members
 	} else if (!debug(is_threadlord) && spam_detected && member) {
 		// Forward last message
-		await mod_forward(message);
 		const log_reason = spam_detected.options?.log_reason;
 
 		switch (spam_detected.action) {
@@ -125,28 +125,31 @@ export default async function spam_filter(message: Message) {
 					member.send(
 						'You were banned from the Svelte discord server for spamming. If you believe this was a mistake you can appeal the ban at <https://github.com/pngwn/svelte-bot/issues/38>',
 					),
-					mod_log(
-						message.client,
-						`User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
-					),
+					mod_copy(message, {
+						title: 'Spam detected - ban',
+						pre_content: `User ${userMention(message.author.id)} was suspected of spamming and was banned.`,
+						level: LOG_LEVEL_COLOURS.CRITICAL,
+					}),
 				]);
 				break;
 			case SpamAction.KICK:
 				await Promise.allSettled([
 					kick(member, log_reason),
-					mod_log(
-						message.client,
-						`User ${userMention(message.author.id)} was kicked${log_reason ? ` for ${log_reason}` : ''}.`,
-					),
+					mod_copy(message, {
+						title: 'Spam detected - kick',
+						pre_content: `User ${userMention(message.author.id)} was kicked${log_reason ? ` for ${log_reason}` : ''}.`,
+						level: LOG_LEVEL_COLOURS.WARN,
+					}),
 				]);
 				break;
 			case SpamAction.TIMEOUT:
 				await Promise.allSettled([
 					timeout(member, { reason: log_reason }),
-					mod_log(
-						message.client,
-						`User ${userMention(message.author.id)} was timed out${log_reason ? ` for ${log_reason}` : ''}.`,
-					),
+					mod_copy(message, {
+						title: 'Spam detected - timeout',
+						pre_content: `User ${userMention(message.author.id)} was timed out${log_reason ? ` for ${log_reason}` : ''}.`,
+						level: LOG_LEVEL_COLOURS.WARN,
+					}),
 				]);
 				break;
 			default:
