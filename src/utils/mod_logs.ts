@@ -19,11 +19,6 @@ export async function mod_log(client: Client, message: string) {
 	}
 }
 
-/** Forward a message to a moderator-visible channel */
-export async function mod_forward(message: Message) {
-	await message.forward(MOD_LOGS_CHANNEL);
-}
-
 /** Copy a message to a moderator-visible channel */
 export async function mod_copy(
 	message: Message,
