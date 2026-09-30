@@ -7,7 +7,12 @@ export default event({
 	name: 'messageDelete',
 
 	async run(_, message) {
-		if (message?.author?.bot || !message.inGuild() || message_is_in_private_channel(message)) return;
+		if (
+			message?.author?.bot ||
+			!message.inGuild() ||
+			message_is_in_private_channel(message)
+		)
+			return;
 
 		for (const handler of [log_message_deletion]) {
 			try {
