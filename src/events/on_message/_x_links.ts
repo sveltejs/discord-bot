@@ -10,7 +10,11 @@ import {
 // Matches x.com links, but discards surrounding <> and () and trailing dots.
 const X_URL_REGEX = /(?:<|\()?https:\/\/x\.com\/([^>)\n .]+)(?:>|\))?/gm;
 
-export default async function mutate_content(message: Message) {
+/*
+  TODO: wait for an alternative preview strategy
+*/
+
+export default async function handle_x_links(message: Message) {
 	if (!message.channel.isTextBased() || message.channel.isDMBased()) return;
 
 	const links = message.content

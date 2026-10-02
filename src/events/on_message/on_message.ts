@@ -2,7 +2,6 @@ import check_links from './_check_links.ts';
 import spam_filter from './_spam_filter.ts';
 import autothread from './_autothread.ts';
 import slow_mode from './_slow_mode.ts';
-import advise from './_advise.ts';
 import { event } from 'jellycommands';
 import { STOP } from './_common.ts';
 
@@ -17,7 +16,6 @@ export default event({
 			check_links,
 			autothread,
 			slow_mode,
-			advise,
 		]) {
 			try {
 				await handler(message);
