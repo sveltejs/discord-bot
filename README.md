@@ -30,6 +30,10 @@ Welcome to the repo for the official Svelte Discord bot! See [PRIVACY.md](./PRIV
     - `/thread archive` Archive an active thread without marking it as solved.
     - `/thread reopen` Reopen a thread that's been accidentally marked as solved.
 
+- Breakout
+    - `/breakout [title]` Continues a discussion in a new thread under the same text channel or forum. The title defaults to `Breakout: [current thread name]`, capped at 100 characters. The new thread begins with a link back to the original, which receives a link to the breakout.
+    - Requires permission to create threads/posts in the parent and send messages in threads. Only active public threads are supported; private threads are rejected. Forum breakouts inherit the original post's available tags.
+
 - Stats: _Currently disabled_ commands which let you see how many cookies‡ a user has and the server leaderboard.  
   <span style="margin-inline-start: 4ch; font-size: 0.8em;">‡ internet points for solving threads, not the evil tracking ones</small>
 
