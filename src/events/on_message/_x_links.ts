@@ -3,6 +3,7 @@ import {
 	ButtonBuilder,
 	ButtonStyle,
 	MessagePayload,
+	MessageFlags,
 	userMention,
 	type Message,
 } from 'discord.js';
@@ -17,15 +18,18 @@ const X_URL_REGEX = /(?:<|\()?https:\/\/x\.com\/([^>)\n .]+)(?:>|\))?/gm;
 export default async function handle_x_links(message: Message) {
 	if (!message.channel.isTextBased() || message.channel.isDMBased()) return;
 
-	const links = message.content
-		.match(X_URL_REGEX)
-		?.map((link) => link.replace(X_URL_REGEX, 'https://xcancel.com/$1'));
+	const links = message.content.match(X_URL_REGEX)?.map((link) => {
+		const hide_embed = link.startsWith('<') && link.endsWith('>');
+		const url = link.replace(X_URL_REGEX, 'https://xcancel.com/$1');
+		return { url: hide_embed ? `<${url}>` : url, hide_embed };
+	});
 
 	if (!links || links.length === 0) {
 		return;
 	}
 
-	const updated_link_list = links.map((link) => `- ${link}`).join('\n');
+	const updated_link_list = links.map((link) => `- ${link.url}`).join('\n');
+	const all_hidden = links.every((link) => link.hide_embed);
 
 	const link_term = updated_link_list.length === 1 ? 'link' : 'links';
 
@@ -47,7 +51,8 @@ export default async function handle_x_links(message: Message) {
 
 	const payload = new MessagePayload(message.channel, {
 		content,
-		components: [row],
+		components: all_hidden ? [] : [row],
+		flags: all_hidden ? MessageFlags.SuppressEmbeds : undefined,
 	});
 
 	// Send message with interactions
